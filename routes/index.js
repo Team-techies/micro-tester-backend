@@ -70,7 +70,7 @@ router.post("/checkUser", (req, res) => {
 
 router.post("/createClient", (req, res) => {
     ses = req.session;
-    ses.name != ""
+    //ses.name != ""
     if (true) {
         const mongoose = require("mongoose");
         mongoose.Promise = require("bluebird");
@@ -195,5 +195,21 @@ router.post("/saveRequest", (req, res) => {
         res.end();
     }
 });
-
+router.get("/logout", (req, res) => {
+    ses = req.session;
+    console.log("in logout" + ses.sesId);
+    if (true) {
+        ses.destroy();
+        info = {
+            stat: true
+        }
+    }
+    else {
+        info = {
+            stat: false
+        }
+    }
+    res.send(info);
+    res.end();
+});
 module.exports = router;
