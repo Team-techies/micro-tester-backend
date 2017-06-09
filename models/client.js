@@ -1,9 +1,18 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var clientSchema = new Schema({
+    _id: {
+        type: Number
+    },
     title: {
         type: String,
         required:true
+    },
+    appDesc: {
+        type: String,
+    },
+    appVer: {
+        type: String,
     },
     clientId:{
         type: String,
@@ -16,9 +25,12 @@ var clientSchema = new Schema({
         min: 6,
         max: 10
     },
+    email: {
+        type: String
+    },
     date: {
         type: Date,
         default: Date.now
     }
-});
+}, { _id: false });
 module.exports = clientSchema;

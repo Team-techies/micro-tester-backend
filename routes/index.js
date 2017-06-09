@@ -41,6 +41,7 @@ router.post("/checkUser", (req, res) => {
                         usrname: docs.username
                     }
                      ses.name = docs.username;
+                     ses.email = docs.email;
                 }
 
                 else {
@@ -67,14 +68,95 @@ router.post("/checkUser", (req, res) => {
     });
 });
 
+router.get("/getClientApps", (req, res) => {
+    ses = req.session;
+    ses.email="spandanabola@gmail.com";
+    const mongoose = require("mongoose");
+    mongoose.Promise = require("bluebird");
+    var getClientApps = require('../models/client.js');
+    var GetClientApp = mongoose.model('clients', getClientApps);
+    mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+        console.log("spandana");
+       // console.log(req.body);
+        var db = mongoose.connection.db;
+      //  console.log(req.body);
+        // var per = {};
+        // for (var key in req.body) {
+        //     per = JSON.parse(key);
+        // }
+        console.log("database connected to " + db.databaseName);
+        //console.log(ses.sesId);
+        var getClientApp = new GetClientApp();
+        GetClientApp.find({ "email": ses.email}, (err, docs) => {
+            if (!err) {
+                //console.log(docs);
+                res.send(docs);
+                db.close();
+                res.end();
+            } else {
+                //res.json({ error: err });
+                res.send(err);
+                db.close();
+                res.end();
+            };
+        });
+    }, (err) => {
+        //res.json({ error: err });
+        res.send(err);
+        res.end();
+    });
+});
+
+router.get("/getClientApp", (req, res) => {
+    ses = req.session;
+    const mongoose = require("mongoose");
+   // ses.id=1;
+    mongoose.Promise = require("bluebird");
+    var getClientApps = require('../models/client.js');
+    var GetClientApp = mongoose.model('clients', getClientApps);
+    mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+        console.log("spandana");
+       // console.log(req.body);
+        var db = mongoose.connection.db;
+      //  console.log(req.body);
+        // var per = {};
+        // for (var key in req.body) {
+        //     per = JSON.parse(key);
+        // }
+        console.log("database connected to " + db.databaseName);
+        //console.log(ses.sesId);
+        var getClientApp = new GetClientApp();
+        GetClientApp.findOne({ "_id":1}, (err, docs) => {
+            if (!err) {
+                //console.log(docs);
+                res.send(docs);
+                //ses.id=docs._id;
+                db.close();
+                res.end();
+            } else {
+                //res.json({ error: err });
+                res.send(err);
+                db.close();
+                res.end();
+            };
+        });
+    }, (err) => {
+        //res.json({ error: err });
+        res.send(err);
+        res.end();
+    });
+});
 
 router.post("/createClient", (req, res) => {
     ses = req.session;
     //ses.name != ""
+    ses.email="spandanabola@gmail.com";
     if (true) {
         const mongoose = require("mongoose");
         mongoose.Promise = require("bluebird");
         var createClients = require('../models/client.js');
+        var AutoIncrement=require("mongoose-sequence");
+        createClients.plugin(AutoIncrement);
         var CreateClient = mongoose.model('client', createClients);
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
 
@@ -93,8 +175,11 @@ router.post("/createClient", (req, res) => {
             // });
              var createClient = new CreateClient({
                 title: req.body.title,
+                appDesc:req.body.appDesc,
+                appVer:req.body.appVer,
                 clientId: req.body.clientId,
-                clientSecret: req.body.clientSecret
+                clientSecret: req.body.clientSecret,
+                email:ses.email
             });
             createClient.save(function (err) {
                 if (!err) {
@@ -131,6 +216,7 @@ router.post("/createClient", (req, res) => {
 
 router.post("/saveRequest", (req, res) => {
     ses = req.session;
+   // ses.id=parseInt(1);
     if (true) {
         const mongoose = require("mongoose");
         mongoose.Promise = require("bluebird");
@@ -155,6 +241,7 @@ router.post("/saveRequest", (req, res) => {
             //     time: per.time
             // });
             var saveRequest = new SaveRequest({
+                appId:req.body.appId,
                 id: req.body.id,
                 method: req.body.method,
                 url: req.body.url,
@@ -195,6 +282,45 @@ router.post("/saveRequest", (req, res) => {
         res.end();
     }
 });
+router.get("/getRequests", (req, res) => {
+    ses = req.session;
+   // ses.email="spandanabola@gmail.com";
+    const mongoose = require("mongoose");
+    mongoose.Promise = require("bluebird");
+    var getRequests = require('../models/client.js');
+    var GetRequest = mongoose.model('requests', getRequests);
+    mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+        console.log("spandana");
+       // console.log(req.body);
+        var db = mongoose.connection.db;
+      //  console.log(req.body);
+        // var per = {};
+        // for (var key in req.body) {
+        //     per = JSON.parse(key);
+        // }
+        console.log("database connected to " + db.databaseName);
+        //console.log(ses.sesId);
+        var getRequest = new GetRequest();
+        GetRequest.find({ "appId": 2}, (err, docs) => {
+            if (!err) {
+                //console.log(docs);
+                res.send(docs);
+                db.close();
+                res.end();
+            } else {
+                //res.json({ error: err });
+                res.send(err);
+                db.close();
+                res.end();
+            };
+        });
+    }, (err) => {
+        //res.json({ error: err });
+        res.send(err);
+        res.end();
+    });
+});
+
 router.get("/logout", (req, res) => {
     ses = req.session;
     console.log("in logout" + ses.sesId);

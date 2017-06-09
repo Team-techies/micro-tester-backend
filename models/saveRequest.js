@@ -1,12 +1,14 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var clientSchema = new Schema({
+    appId: {
+        type: Number
+    },
     id: {
-        type: Number,
-        unique: true,
+        type: Number
     },
     method:{
-        type: String,
+        type: String
     },
     url: {
         type: String
