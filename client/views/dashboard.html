@@ -1,0 +1,149 @@
+<html>
+
+<head>
+</head>
+
+<body ng-app="myTool">
+    <script src="../script/angular.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
+
+    <div ng-controller="addCard">
+
+        <div class="container">
+
+            <div class="container-fluid">
+                <div class="page-header">
+
+                    <h1>
+                        Tool
+                        <small>User Name</small>
+                    </h1>
+
+                </div>
+
+            </div>
+
+            <div class="row"><br></div>
+            <div class="row" style="margin-left: 1px;">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#dashboard">DASHBOARD</a></li>
+                    <li><a data-toggle="tab" href="#addApplication">ADD APPLICATION</a></li>
+                </ul>
+
+                <br>
+                <div class="tab-content">
+                    <div id="dashboard" class="tab-pane fade in active">
+                        <!-- #############################  CARD  ############################ -->
+                        <div ng-hide='card!=""'>
+
+
+                            <div class="container">
+                                <div class="jumbotron">
+                                    <h1>No Application Found</h1>
+                                    <p>Click on "ADD APPLICATION" to add a new Application in DASHBOARD.</p>
+                                </div>
+                                <p>Micro Testing Tool</p>
+
+                            </div>
+
+                        </div>
+                        <div ng-repeat="data in card track by $index">
+
+
+
+                            <div class="col-sm-3">
+                                <div>
+                                    <div ng-click="show($index)" class="panel panel-default">
+                                        <div class="panel-heading">{{data.appName}}</div>
+                                        <div class="panel-body">{{data.appDesc}}</div>
+                                        <div class="panel-footer">{{data.appVersion}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- ############################################################## -->
+                    </div>
+                    <div id="addApplication" class="tab-pane fade">
+                        <!-- #############################  ADd CARD  ############################ -->
+
+                        <form name="App">
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-heart"></i></span>
+                                <input id="appName" type="text" class="form-control" name="App.appName" ng-model="addData.appName" placeholder="Enter Application Name.">
+                            </div>
+                            <br>
+                            <textarea name="App.description" class="form-control" rows="5" id="comment" ng-model="addData.appDesc" placeholder="Enter Application Description."></textarea>
+                            <br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-superpowers"></i></span>
+                                <input id="appVersion" type="text" class="form-control" name="App.version" ng-model="addData.appVersion" placeholder="Enter Application Version.">
+                            </div>
+                            <br>
+                            <div>
+                                <div class="row">
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                                        <input id="appClinetID" type="text" class="form-control" name="App.clientId" ng-model="addData.clientID" placeholder="Enter Client ID.">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password" ng-model="addData.clientSecret" placeholder="Enter Client Secret Key.">
+                                    </div>
+
+
+                                    
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-cog"></i></span>
+                                        <input id="appGrantType" type="text" class="form-control" name="App.grantType" ng-model="addData.grantType" placeholder="Enter Grant Type.">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                        <input id="appScope" type="text" class="form-control" name="App.scope" ng-model="addData.scope" placeholder="Enter Scope.">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3">
+                                    <input type="button" class="btn btn-primary btn-block btn-primary btn-md" ng-click="add()" value="Add Application">
+                                </div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-3">
+                                    <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
+
+                        </form>
+
+                        <!-- ############################################################## -->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

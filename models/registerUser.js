@@ -6,7 +6,11 @@ var registerUserSchema = new Schema({
         unique: true,
         required:true
     },
-    username:{
+    first:{
+        type: String,
+        required:true
+    },
+    last:{
         type: String,
         required:true
     },

@@ -3,17 +3,28 @@ app.controller('myCtrl', function ($scope,$http) {
     $scope.registerStatus = false;
      $scope.loginStatus = false;
      $scope.alertMsg = false;
-    $scope.usrDetails = {};
+    $scope.newUser = {};
+    $scope.user={};
     $scope.login = function () {
-        //console.log("hello");
-         $scope.registerStatus = false;
-        $scope.loginStatus = true;
+       $http({
+            url: '/checkUser',
+            method: "POST",
+            data: $scope.user,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (response) {
+           console.log(response.data.stat);
+           if(!response.data.stat && response.data.stat!=undefined){
+               alert("user doesn't found");
+           }
+        },function (err) {
+                console.log(err);
+            });
     };
-      $scope.register = function () {
-        //console.log("hello");
-         $scope.loginStatus = false;
-        $scope.registerStatus = true;
-    };
+    //   $scope.register = function () {
+    //     //console.log("hello");
+    //      $scope.loginStatus = false;
+    //     $scope.registerStatus = true;
+    // };
      $scope.emailCheck = function () {
         //console.log("hello");
         var checkEmail={
@@ -38,21 +49,19 @@ app.controller('myCtrl', function ($scope,$http) {
         $http({
             url: '/api/registerUser',
             method: "POST",
-            data: $scope.usrDetails,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            data: $scope.newUser,
+            headers: { 'Content-Type': 'application/json' }
         }).then(function (response) {
            console.log(response.data.stat);
            if(response.data.stat){
-               $scope.registerStatus = false;
-               $scope.loginStatus=true;
-               alert("you registered successfully now login");
+               alert(response.data.msg);
            }
            else{
-                alert("you registration failed pls try again");
+                alert(response.data.msg);
            }
         },function (err) {
                 console.log(err);
-            });
+        });
     };
 
 });

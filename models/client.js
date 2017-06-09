@@ -1,9 +1,9 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var clientSchema = new Schema({
-    _id: {
-        type: Number
-    },
+    // _id: {
+    //     type: Number
+    // },
     title: {
         type: String,
         required:true
@@ -28,9 +28,16 @@ var clientSchema = new Schema({
     email: {
         type: String
     },
+    grantType:{
+        type:String
+    },
+    scope:{
+        type:String
+    },
     date: {
         type: Date,
         default: Date.now
     }
-}, { _id: false });
+});
+// }, { _id: false });
 module.exports = clientSchema;

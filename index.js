@@ -2,7 +2,7 @@
 var express=require("express");
 var bodyParser=require("body-parser");
 var path=require("path");
-var mainRouter=require("./routes/index.js");
+var mainRouter=require("./routes/session.js");
 var apiRouter=require("./routes/api.js");
 // var session=require("express-session");
 var mongoose=require("mongoose");
@@ -35,3 +35,5 @@ app.use(express.static(__dirname+"/client"));
 app.listen(8080,()=>{
     console.log("sever running on port 8080");
 });
+
+module.exports = app; 

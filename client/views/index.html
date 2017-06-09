@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Tool</title>
   <meta charset="utf-8">
@@ -10,64 +11,120 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="./scripts/script.js"></script>
 </head>
+
 <body ng-app="myApp" ng-controller="myCtrl">
 
-<div class="container">
-  <div class="jumbotron text-center">
-    <h1>Test Tool</h1> 
-    <div class="btn-group">  
-    <button class="btn btn-success" ng-click="login()" >Login</button>
-    <button class="btn btn-info" ng-click="register()">Register</button>
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Test Tool</h1>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#login">Login</button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#register">Register</button>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="register" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <br>
+            <h3> <span class="glyphicon glyphicon-user"></span> Register User</h3>
+          </div>
+
+          <div class="modal-body">
+
+            <form name='registerForm'>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="name" ng-model="newUser.first" type="text" class="form-control" name="registerForm.first" placeholder="Enter Your FirstName">
+              </div><br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="name" ng-model="newUser.last" type="text" class="form-control" name="registerForm.last" placeholder="Enter Your LastName">
+              </div>
+              <br>
+
+
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                <input id="email" ng-model="newUser.email" type="email" class="form-control" name="registerForm.email" placeholder="Enter Your Email">
+              </div>
+              <br>
+
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-sort-by-order"></i></span>
+                <input id="empId" ng-model="newUser.empId" type="text" class="form-control" name="registerForm.empId" placeholder="Enter Your Employee Id">
+              </div>
+              <br>
+
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="pwd" type="password" class="form-control" name="loginForm.pwd" placeholder="Enter Your Password">
+              </div>
+              <br>
+
+
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="password" ng-model="newUser.pwd" type="password" class="form-control" name="loginForm.rePassword" placeholder="Re-Enter Password">
+              </div>
+              <br>
+              <div>
+
+                <input type="button" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="registerUser()"
+                  value="Register">
+                <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
+              </div>
+            </form>
+
+
+
+          </div>
+        </div>
+        <!-- end of Modal Content -->
+
+      </div>
+    </div>
+    <div class="modal fade" id="login" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <br>
+            <h3>Login</h3>
+          </div>
+
+          <div class="modal-body">
+
+            <form name='loginForm'>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                  <input id="username" ng-model="user.email" type="text" class="form-control" name="loginForm.username" placeholder="email">
+                </div>
+                <br>
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                  <input id="password" ng-model="user.pwd" type="password" class="form-control" name="loginForm.password" placeholder="Password">
+                </div>
+                <br>
+                <div>
+
+                  <input type="button" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="login()" value="Login">
+
+                </div>
+            </form>
+          </div>
+        </div>
+        <!-- end of Modal Content -->
+      </div>
     </div>
   </div>
-  <div ng-if="registerStatus" class="bg-info">
-       
-             <h3 class="col-sm-offset-3 col-sm-10"><span class="glyphicon glyphicon-user text-info"></span>Register User</h3>
-       <form class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-offset-3 col-sm-2" for="email">Email:</label>
-      <div class="col-sm-4">
-       <input type="email" class="form-control " name="email" ng-keydown="emailCheck()" ng-model="usrDetails.email"/>
-       <span ng-if="alertMsg" class="col-sm-offset-4 col-sm-4 alert alert-warning">already exist</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-offset-3 col-sm-2" for="username">Name:</label>
-      <div class="col-sm-4">          
-        <input type="text" class="form-control" name="username" ng-model="usrDetails.username"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-offset-3 col-sm-2" for="empId">Employee ID:</label>
-      <div class="col-sm-4">          
-       <input type="text" class="form-control" name="empId" ng-model="usrDetails.empId"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-offset-3 col-sm-2" for="pwd">Password:</label>
-      <div class="col-sm-4">          
-       <input type="text" class="form-control" name="pwd" ng-model="usrDetails.pwd"/>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-offset-3 col-sm-2" for="cpwd">Confirm Password:</label>
-      <div class="col-sm-4">          
-       <input type="text" class="form-control" name="cpwd" ng-model="usrDetails.cpwd"/>
-      </div>
-    </div>
-    <div class="form-group">        
-      <div class="col-sm-offset-5 col-sm-10">
-        <button class="btn btn-info" ng-click="registerUser()">Register</button>
-        <input type="reset" class="btn btn-info" value="Reset" />
-      </div>
-    </div>
-  </form>
-
-      </div>  
-      <div ng-if="loginStatus">
-
-          </div>    
-</div>
 
 </body>
+
 </html>

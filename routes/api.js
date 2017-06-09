@@ -14,25 +14,14 @@ router.post("/registerUser", (req, res) => {
     mongoose.Promise = require("bluebird");
     var registerUsers = require('../models/registerUser.js');
     var RegisterUser = mongoose.model('registerusers', registerUsers);
+    console.log(req.body);
     mongoose.connect("mongodb://localhost/SampleDB").then(() => {
 
         var db = mongoose.connection.db;
-        // var per = {};
-        // console.log(req.body);
-        // for (var key in req.body) {
-        //     per = JSON.parse(key);
-        // }
-        // // console.log("database connected to " + db.databaseName);
-        // var registerUser = new RegisterUser({
-        //     email: per.email,
-        //     username: per.username,
-        //     empId: per.empId,
-        //     pwd: per.pwd
-        // });
-        console.log(req.body);
         var registerUser = new RegisterUser({
             email: req.body.email,
-            username: req.body.username,
+            first: req.body.first,
+            last:req.body.last,
             empId: req.body.empId,
             pwd: req.body.pwd
         });
@@ -41,18 +30,22 @@ router.post("/registerUser", (req, res) => {
 
                 db.close();
                 var info = {};
-                //console.log(user);
                 info = {
-                    stat: true
+                    stat: true,
+                    status:200,
+                    msg:"you are successfully registered"
                 }
-                //console.log(user.uname);
-                // ses.sesId = user.uname;
                 res.send(info);
                 res.end();
             }
             else {
+                info = {
+                    stat: false,
+                    status:404,
+                    msg:"you are failed to register "+err
+                }
                 console.log(err);
-                res.send(err);
+                res.send(info);
                 db.close();
                 res.end();
             }
