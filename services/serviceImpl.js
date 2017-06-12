@@ -2,8 +2,8 @@ module.exports = {
     createClient: (req, res) => {
         ses = req.session;
         //ses.name != ""
-        ses.email = "spandanabola@gmail.com";
-        if (true) {
+        // ses.email = "spandanabola@gmail.com";
+        if (ses.email) {
             const mongoose = require("mongoose");
             mongoose.Promise = require("bluebird");
             var createClients = require('../models/client.js');
@@ -45,8 +45,6 @@ module.exports = {
                             status: 200,
                             msg: "Successfully created app"
                         }
-                        res.send(info);
-                        res.end();
                     }
                     else {
                         console.log(err);
@@ -55,20 +53,26 @@ module.exports = {
                             status: 404,
                             msg: "failed to create app " + err
                         }
-                        res.send(info);
-                        db.close();
-                        res.end();
+
                     }
+                    res.send(info);
+                    db.close();
+                    res.end();
                 });
             }, (err) => {
                 console.log(err);
-                res.send(err);
+                info = {
+                    stat: false,
+                    msg: "failed to create app " + err
+                }
+                res.send(info);
                 res.end();
             });
         }
         else {
             info = {
-                stat: false
+                stat: false,
+                msg: "please login to create app "
             }
             res.send(info);
             res.end();
@@ -76,47 +80,55 @@ module.exports = {
     },
     getClientApp: (req, res) => {
         ses = req.session;
-        const mongoose = require("mongoose");
-        console.log(req.params.id)
-        // ses.id=1;
-        mongoose.Promise = require("bluebird");
-        var getClientApps = require('../models/client.js');
-        var GetClientApp = mongoose.model('clients', getClientApps);
-        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-            console.log("spandana");
-            // console.log(req.body);
-            var db = mongoose.connection.db;
-            //  console.log(req.body);
-            // var per = {};
-            // for (var key in req.body) {
-            //     per = JSON.parse(key);
-            // }
-            console.log("database connected to " + db.databaseName);
-            //console.log(ses.sesId);
-            var getClientApp = new GetClientApp();
-            GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
-                if (!err) {
-                    //console.log(docs);
-                    info={
-                        stat:true,
-                        doc:docs
-                    }
-                    res.send(info);
-                    //ses.id=docs._id;
-                    db.close();
-                    res.end();
-                } else {
-                    //res.json({ error: err });
-                    res.send(err);
-                    db.close();
-                    res.end();
-                };
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            console.log(req.params.id)
+            // ses.id=1;
+            mongoose.Promise = require("bluebird");
+            var getClientApps = require('../models/client.js');
+            var GetClientApp = mongoose.model('clients', getClientApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                var getClientApp = new GetClientApp();
+                GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true,
+                            doc: docs
+                        }
+                       
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                    };
+                     res.send(info);
+                        //ses.id=docs._id;
+                        db.close();
+                        res.end();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                            stat: false,
+                            msg: err
+                        }
+                res.send(info);
+                res.end();
             });
-        }, (err) => {
-            //res.json({ error: err });
-            res.send(err);
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
             res.end();
-        });
+        }
+
     },
     getRequests: (req, res) => {
         ses = req.session;
@@ -227,15 +239,17 @@ module.exports = {
     logout: (req, res) => {
         ses = req.session;
         //console.log("in logout" + ses.sesId);
-        if (true) {
+        if (ses.email) {
             ses.destroy();
             info = {
-                stat: true
+                stat: true,
+                msg:"you logged off successfully"
             }
         }
         else {
             info = {
-                stat: false
+                stat: false,
+                msg:"you are not yet logged in"
             }
         }
         res.send(info);
@@ -243,51 +257,63 @@ module.exports = {
     },
     getClientApps: (req, res) => {
         ses = req.session;
-        ses.email = "spandanabola@gmail.com";
-        const mongoose = require("mongoose");
-        mongoose.Promise = require("bluebird");
-        var getClientApps = require('../models/client.js');
-        var GetClientApp = mongoose.model('clients', getClientApps);
-        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-            console.log("spandana");
-            // console.log(req.body);
-            var db = mongoose.connection.db;
-            //  console.log(req.body);
-            // var per = {};
-            // for (var key in req.body) {
-            //     per = JSON.parse(key);
-            // }
-            console.log("database connected to " + db.databaseName);
-            //console.log(ses.sesId);
-            var getClientApp = new GetClientApp();
-            GetClientApp.find({ "email": ses.email }, (err, docs) => {
-                if (!err) {
-                    //console.log(docs);
-                    info = {
-                        stat: true,
-                        name: ses.name,
-                        email: ses.email,
-                        doc: docs
-                    }
+        var info = {};
+        //ses.email = "spandanabola@gmail.com";
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var getClientApps = require('../models/client.js');
+            var GetClientApp = mongoose.model('clients', getClientApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                // console.log(req.body);
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                //console.log(ses.sesId);
+                var getClientApp = new GetClientApp();
+                GetClientApp.find({ "email": ses.email }, (err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true,
+                            name: ses.name,
+                            email: ses.email,
+                            doc: docs
+                        }
+                    } else {
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+
+                    };
                     res.send(info);
                     res.end();
-
                     db.close();
-                    res.end();
-                } else {
-                    //res.json({ error: err });
-                    res.send(err);
-                    db.close();
-                    res.end();
-                };
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
             });
-        }, (err) => {
-            //res.json({ error: err });
-            res.send(err);
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
             res.end();
-        });
+
+        }
+
+
     },
     checkUser: (req, res) => {
+        var info = {};
         ses = req.session;
         const mongoose = require("mongoose");
         mongoose.Promise = require("bluebird");
@@ -298,10 +324,6 @@ module.exports = {
             console.log("spandana");
             console.log(req.body);
             var db = mongoose.connection.db;
-            // var per = {};
-            // for (var key in req.body) {
-            //     per = JSON.parse(key);
-            // }
             console.log("database connected to " + db.databaseName);
             //console.log(ses.sesId);
             var registerUser = new RegisterUser();
@@ -309,14 +331,12 @@ module.exports = {
                 if (!err) {
                     //console.log(docs);
                     if (docs != null) {
-                        // info = {
-                        //     stat: true,
-                        //     name: docs.first+" "+docs.last
-                        // }
 
-                        res.redirect("/dashboard");
-                        // res.sendFile(file);
                         ses.name = docs.first + " " + docs.last;
+                        info = {
+                            stat: true,
+                            name: ses.name
+                        }
                         ses.email = docs.email;
                         console.log(ses.name);
                     }
@@ -326,25 +346,29 @@ module.exports = {
                             stat: false,
                             name: ""
                         }
-                        res.send(info);
-                        res.end();
-
                     }
-
-
-                    db.close();
-
                 } else {
                     //res.json({ error: err });
-                    res.send(err);
-                    db.close();
-                    res.end();
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+
                 };
+                res.send(info);
+                res.end();
+                db.close();
             });
         }, (err) => {
             //res.json({ error: err });
-            res.send(err);
+            info = {
+                stat: false,
+                msg: err
+            }
+            res.send(info);
             res.end();
+
         });
+
     }
 }

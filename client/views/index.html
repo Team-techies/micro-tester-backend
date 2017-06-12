@@ -5,10 +5,14 @@
   <title>Tool</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
+  <script src="../library/angular/angular.min.js"></script>
+  <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../library/jquery/dist/jquery.min.js"></script>
+  <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="../scripts/script.js"></script>
 </head>
 
@@ -102,21 +106,21 @@
           <div class="modal-body">
 
             <form name='loginForm'>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                  <input id="username" ng-model="user.email" type="text" class="form-control" name="loginForm.username" placeholder="email">
-                </div>
-                <br>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                  <input id="password" ng-model="user.pwd" type="password" class="form-control" name="loginForm.password" placeholder="Password">
-                </div>
-                <br>
-                <div>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="username" ng-model="user.email" type="text" class="form-control" name="loginForm.username" placeholder="email">
+              </div>
+              <br>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="password" ng-model="user.pwd" type="password" class="form-control" name="loginForm.password" placeholder="Password">
+              </div>
+              <br>
+              <div>
 
-                  <input type="button" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="login()" value="Login">
+                <input type="button" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="login()" value="Login">
 
-                </div>
+              </div>
             </form>
           </div>
         </div>

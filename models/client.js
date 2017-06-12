@@ -5,14 +5,13 @@ var clientSchema = new Schema({
     //     type: Number
     // },
     title: {
-        type: String,
-        required:true
+        type: String
     },
     appDesc: {
-        type: String,
+        type: String
     },
     appVer: {
-        type: String,
+        type: String
     },
     clientId:{
         type: String
@@ -21,9 +20,7 @@ var clientSchema = new Schema({
         // max: 6
     },
     clientSecret: {
-        type: String,
-        min: 6,
-        max: 10
+        type: String
     },
     email: {
         type: String

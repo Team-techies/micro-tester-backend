@@ -1,5 +1,5 @@
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function ($scope,$http) {
+app.controller('myCtrl', function ($scope,$http,$window) {
     $scope.registerStatus = false;
      $scope.loginStatus = false;
      $scope.alertMsg = false;
@@ -13,7 +13,13 @@ app.controller('myCtrl', function ($scope,$http) {
             headers: { 'Content-Type': 'application/json' }
         }).then(function (response) {
            console.log(response.data.stat);
-           if(!response.data.stat && response.data.stat!=undefined){
+        //    if(!response.data.stat && response.data.stat!=undefined){
+        //        alert("user doesn't found");
+        //    }
+          if(response.data.stat){
+              $window.location.href = '../views/dashboard.html';
+           }
+           else{
                alert("user doesn't found");
            }
         },function (err) {
@@ -34,7 +40,7 @@ app.controller('myCtrl', function ($scope,$http) {
             url: '/api/emailCheck',
             method: "POST",
             data: checkEmail,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            headers: { 'Content-Type': 'application/json' }
         }).then(function (response) {
            console.log(response.data.stat);
            if(response.data.stat){

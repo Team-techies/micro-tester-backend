@@ -1,5 +1,5 @@
 var app = angular.module('myTool', []);
-app.controller('addCard', function ($scope,$http) {
+app.controller('addCard', function ($scope,$http,$window) {
     $scope.apps=[];
     $scope.app={};
     $scope.appData={};
@@ -18,7 +18,7 @@ app.controller('addCard', function ($scope,$http) {
                $scope.apps=response.data.doc;
            }
            else{
-                alert("user not loggedIn");
+                alert(response.data.msg);
            }
         },function (err) {
                 console.log(err);
@@ -39,7 +39,7 @@ app.controller('addCard', function ($scope,$http) {
         console.log($scope.appData);
            }
            else{
-                alert("user not loggedIn");
+                alert(response.data.msg);
            }
         },function (err) {
                 console.log(err);
@@ -64,5 +64,24 @@ app.controller('addCard', function ($scope,$http) {
                 console.log(err);
             });
     };
+
+    $scope.logout=function(){
+        console.log("logout");
+        $http({
+            url: '/logout',
+            method: "GET"
+        }).then(function (response) {
+           console.log(response.data.stat);
+           if(response.data.stat){
+               $window.location.href = '../views/index.html';
+           }
+           else{
+                alert(response.data.msg);
+           }
+        },function (err) {
+                console.log(err);
+            });
+
+    }
     
 });
