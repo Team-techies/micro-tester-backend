@@ -18,6 +18,7 @@
     "express-session": "^1.15.3",
     "mongoose": "^4.10.5",
     "mongoose-sequence": "^3.2.0",
+    "ng-onload": "^0.7.0",
     "nodemon": "^1.11.0"
   }
 }
