@@ -77,6 +77,7 @@ module.exports = {
     getClientApp: (req, res) => {
         ses = req.session;
         const mongoose = require("mongoose");
+        console.log(req.params.id)
         // ses.id=1;
         mongoose.Promise = require("bluebird");
         var getClientApps = require('../models/client.js');
@@ -93,10 +94,14 @@ module.exports = {
             console.log("database connected to " + db.databaseName);
             //console.log(ses.sesId);
             var getClientApp = new GetClientApp();
-            GetClientApp.findOne({ "_id": mongoose.Types.ObjectId("593a7632bd1f9f1fb895abf7") }, (err, docs) => {
+            GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
                 if (!err) {
                     //console.log(docs);
-                    res.send(docs);
+                    info={
+                        stat:true,
+                        doc:docs
+                    }
+                    res.send(info);
                     //ses.id=docs._id;
                     db.close();
                     res.end();

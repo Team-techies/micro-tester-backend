@@ -18,6 +18,7 @@ router.get("/", (req, res) => {
 router.get("/dashboard", (req, res) => {
       var file=path.join(__dirname, '/../client/views/','dashboard.html');
     console.log(file);
+    console.log(__dirname);
     res.sendFile(file);
 });
 
@@ -25,7 +26,7 @@ router.post("/checkUser",service.checkUser);
 
 router.get("/getClientApps", service.getClientApps);
 
-router.get("/getClientApp", service.getClientApp);
+router.get("/getClientApp/:id", service.getClientApp);
 
 router.post("/createClient",service.createClient) 
 

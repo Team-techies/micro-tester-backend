@@ -15,10 +15,10 @@ var clientSchema = new Schema({
         type: String,
     },
     clientId:{
-        type: String,
-        required:true,
-        min: 6,
-        max: 6
+        type: String
+        // required:true,
+        // min: 6,
+        // max: 6
     },
     clientSecret: {
         type: String,
