@@ -97,10 +97,10 @@ module.exports = {
                         info = {
                             stat: true,
                             doc: docs,
-                            name:ses.name,
-                            email:ses.email
+                            name: ses.name,
+                            email: ses.email
                         }
-                       
+
                     } else {
                         //res.json({ error: err });
                         info = {
@@ -108,17 +108,17 @@ module.exports = {
                             msg: err
                         }
                     };
-                     res.send(info);
-                        //ses.id=docs._id;
-                        db.close();
-                        res.end();
+                    res.send(info);
+                    //ses.id=docs._id;
+                    db.close();
+                    res.end();
                 });
             }, (err) => {
                 //res.json({ error: err });
                 info = {
-                            stat: false,
-                            msg: err
-                        }
+                    stat: false,
+                    msg: err
+                }
                 res.send(info);
                 res.end();
             });
@@ -151,8 +151,8 @@ module.exports = {
                         info = {
                             stat: true
                         }
-                        ses.app=req.params.id;
-                       
+                        ses.app = req.params.id;
+
                     } else {
                         //res.json({ error: err });
                         info = {
@@ -160,17 +160,17 @@ module.exports = {
                             msg: err
                         }
                     };
-                     res.send(info);
-                        //ses.id=docs._id;
-                        db.close();
-                        res.end();
+                    res.send(info);
+                    //ses.id=docs._id;
+                    db.close();
+                    res.end();
                 });
             }, (err) => {
                 //res.json({ error: err });
                 info = {
-                            stat: false,
-                            msg: err
-                        }
+                    stat: false,
+                    msg: err
+                }
                 res.send(info);
                 res.end();
             });
@@ -297,13 +297,13 @@ module.exports = {
             ses.destroy();
             info = {
                 stat: true,
-                msg:"you logged off successfully"
+                msg: "you logged off successfully"
             }
         }
         else {
             info = {
                 stat: false,
-                msg:"you are not yet logged in"
+                msg: "you are not yet logged in"
             }
         }
         res.send(info);
@@ -424,5 +424,52 @@ module.exports = {
 
         });
 
-    }
+    },
+    sendEmail: (req, res) => {
+        ses = req.session;
+        //var xoauth2 = require('xoauth2');
+        var nodemailer = require('nodemailer');
+        //var smtpTransport = require('nodemailer-smtp-transport');
+        //process.env.MAIL_URL='smtp://:' + encodeURIComponent("Nodemailer123") + '@smtp.geips.ge.com:25';
+        var transport = nodemailer.createTransport({
+            host: 'smtp.geips.ge.com',
+            port:25        
+        });
+
+                    console.log('SMTP Configured');
+
+                    // Message object
+                    var message = {
+
+                        // sender info
+                        from: 'preetham.salehundam@ge.com',
+
+                        // Comma separated list of recipients
+                        to: 'preetham.salehundam@ge.com',
+
+                        // Subject of the message
+                        subject: 'This is from node js',
+
+                        // plaintext body
+                        text: 'Hello to Lavanya!',
+
+                        // HTML body
+                        html: '<p><b>Hello</b> to Lavanya</p>' +
+                        '<p>Here\'s a nyan cat for you as an embedded attachment:<br/></p>'
+                    };
+
+                    console.log('Sending Mail');
+                    transport.sendMail(message, function (error) {
+                        if (error) {
+                            console.log('Error occured');
+                            console.log(error.message);
+                            return;
+                        }
+                        console.log('Message sent successfully!');
+
+                        // if you don't want to use this transport object anymore, uncomment following line
+                        //transport.close(); // close the connection pool
+                    });
+
+                }
 }

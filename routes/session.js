@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
     res.render("index.html");
 });
 
-
+router.get("/sendEmail",service.sendEmail);
 router.post("/checkUser",service.checkUser);
 
 router.get("/getClientApps", service.getClientApps);

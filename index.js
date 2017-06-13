@@ -21,9 +21,11 @@ app.use("/api",apiRouter);
 //                     proxy: true,
 //                  saveUninitialized:true, 
 //                  resave:true}))
+// var xoauth2 = require('xoauth2');
+//         var nodemailer = require('nodemailer');
+//         var smtpTransport = require('nodemailer-smtp-transport');
 
-
-
+// app.set(process.env.MAIL_URL='smtp://test.nodemailer%40gmail.com:' + encodeURIComponent("Nodemailer123") + '@smtp.gmail.com:465')
 
 app.set("views",__dirname+"/client/views");
 app.set("view engine","ejs");
@@ -32,7 +34,7 @@ app.use(express.static(__dirname+"/client"));
 
 
 
-app.listen(8080,()=>{
+app.listen(3000,()=>{
     console.log("sever running on port 8080");
 });
 
