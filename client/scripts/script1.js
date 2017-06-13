@@ -1,8 +1,8 @@
-var app = angular.module('myTool', []);
+var app = angular.module('myTool',[]);
+
 app.controller('addCard', function ($scope,$http,$window) {
     $scope.apps=[];
     $scope.app={};
-    $scope.appData={};
     $scope.getUser = function () {
         console.log("hell0");
        $http({
@@ -35,7 +35,7 @@ app.controller('addCard', function ($scope,$http,$window) {
         }).then(function (response) {
            console.log(response.data.stat);
            if(response.data.stat){
-               $scope.appData=response.data.doc;
+               $window.location.href = '../views/appDetail.html';
         console.log($scope.appData);
            }
            else{

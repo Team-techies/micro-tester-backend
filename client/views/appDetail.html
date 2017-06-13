@@ -1,0 +1,65 @@
+<html>
+
+<head>
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body ng-app='myRoute' ng-controller="routeController" ng-init="getUser()">
+    <script src="../scripts/angular.js"></script>
+    <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../library/@uirouter/angularjs/release/angular-ui-router.js"></script>
+    <script src="../scripts/routing.js"></script>
+    <script src="../library/jquery/dist/jquery.min.js"></script>
+    <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../library/font-awesome/css/font-awesome.min.css">
+
+    <!-- Base DIV -->
+    <div>
+
+        <div class="container-fluid">
+            <div class="page-header">
+                <h1>
+                    Tool
+                    <small class="pull-right"><div class="dropdown">
+    <span class="dropdown-toggle" data-toggle="dropdown">Logged In as {{name}}
+    <span class="caret"></span></span>
+    <ul class="dropdown-menu">
+      <li ng-click="logout()"><a href="#">Logout</a></li>
+      <li ng-click="gotoHome()"><a href="#">go to home</a></li>
+    </ul>
+  </div></small>
+                </h1>
+            </div>
+        </div>
+
+        <div >
+            <!-- ########################### Vertical NAV BAR ############################# -->
+            <div  style="float:left; height: 100%">
+
+                <ul class="nav nav-pills  nav-stacked">
+
+                    <li role="presentation"><a ui-sref="overview"> Overview</a></li>
+                    <li role="presentation"><a ui-sref="board">Board</a></li>
+                    <li role="presentation"><a ui-sref="documents">Documents</a></li>
+                    <li role="presentation"><a ui-sref="testClient">Test Client</a></li>
+                    <li role="presentation"><a ui-sref="legal">Legal</a></li>
+                </ul>
+            </div>
+
+            <div style="float:left" ui-view></div>
+            <!-- ########################################################################## -->
+
+        </div>
+
+
+
+
+
+
+    </div>
+    <!-- Ending Of Base  DIV -->
+
+</body>
+
+</html>

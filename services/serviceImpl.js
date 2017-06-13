@@ -78,6 +78,60 @@ module.exports = {
             res.end();
         }
     },
+    getApp: (req, res) => {
+        ses = req.session;
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            console.log(req.params.id)
+            // ses.id=1;
+            mongoose.Promise = require("bluebird");
+            var getClientApps = require('../models/client.js');
+            var GetClientApp = mongoose.model('clients', getClientApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                var getClientApp = new GetClientApp();
+                GetClientApp.findOne({ "_id": ses.app }, (err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true,
+                            doc: docs,
+                            name:ses.name,
+                            email:ses.email
+                        }
+                       
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                    };
+                     res.send(info);
+                        //ses.id=docs._id;
+                        db.close();
+                        res.end();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                            stat: false,
+                            msg: err
+                        }
+                res.send(info);
+                res.end();
+            });
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+
+    },
     getClientApp: (req, res) => {
         ses = req.session;
         if (ses.email) {
@@ -95,9 +149,9 @@ module.exports = {
                     if (!err) {
                         //console.log(docs);
                         info = {
-                            stat: true,
-                            doc: docs
+                            stat: true
                         }
+                        ses.app=req.params.id;
                        
                     } else {
                         //res.json({ error: err });

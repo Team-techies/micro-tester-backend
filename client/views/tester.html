@@ -1,0 +1,161 @@
+<!--<html>
+
+<head>
+</head>
+
+<body ng-app="myTool">
+    <script src="../script/angular.js"></script>
+    <script src="../js/app.js"></script>
+
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">-->
+
+    <div class="container">
+        <!-- Main Div Starting -->
+      <!--  <h3>TOOL</h3>-->
+        <div ng-controller="formController as formCtrl">
+            <form name="form">
+                <div class="row">
+
+                    <div class="col-sm-2">
+                        <select name="reqType"  class="form-control" ng-model="reqData.selectedReqType" ng-options="item for item in reqParam">
+                        </select>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="url" ng-model="reqData.url" placeholder="Enter Request URL" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
+                            value="Execute">
+                    </div>
+                </div>
+                <div class="row"><br></div>
+                <div class="row" style="margin-left: 1px;">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#header">HEADER</a></li>
+                        <li><a data-toggle="tab" href="#body">BODY</a></li>
+                    </ul>
+
+
+                    <div class="tab-content">
+                        <div id="header" class="tab-pane fade in active">
+                            <!--<textarea name="header" class="form-control" ng-model="reqData.header" rows="5" id="comment" placeholder="Enter Header Ex - Content-Type:application/x-www-form-urlencoded"></textarea> -->
+
+                            <table class="table table-bordered">
+
+
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Value</th>
+                                    <th></th>
+                                </tr>
+                                <tr ng-repeat="row in rowMaker track by $index">
+                                    <td><input type="text" name="key" ng-keydown="addRow($index)" class="form-control" ng-model="row.key"
+                                            placeholder="key" /> </td>
+                                    <td>
+                                        <input type="text" name="value" class="form-control" ng-model="row.value" placeholder="value" />
+                                    </td>
+                                    <td class="crossButton">
+                                        <input type="button" ng-click="deleteRow($index)" value="&times;" />
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+
+
+
+                        </div>
+                        <div id="body" class="tab-pane fade">
+                            <textarea name="body" class="form-control" ng-model="reqData.body" rows="5" id="comment" placeholder="Enter Body"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row"><br></div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="button" ng-disabled="!form.$dirty" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"
+                            />
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="reset" ng-disabled="!form.$dirty" ng-click="reset()" class="btn btn-warning btn-block">Reset Form</button>
+                        </div>
+
+                        <!--<div ng-controller="MyCtrl"  class="col-sm-2">
+                            <button type="button" ng-disabled="!form.$dirty" ng-click="exportToExcel('#tableToExport')" class="btn btn-warning btn-block">Save</button>
+                        </div>-->
+                    </div>
+
+
+
+                </div>
+
+
+
+
+            </form>
+
+
+
+            <div  id="tableToExport">
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>S.NO</th>
+                        <th>Request Type</th>
+                        <th>Request URL</th>
+                        <th>Header</th>
+                        <th>Body</th>
+                        <th>Status</th>
+                        <th>Operation</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-repeat="data in showData">
+                        <td>{{data.id}}</td>
+                        <td>{{data.selectedReqType}}</td>
+                        <td>{{data.url}}</td>
+                        <td>{{data.header}}</td>
+                        <td>{{data.body}}</td>
+                        <td>
+                            <span ng-show="data.status === 'Waiting'" class="{{statusClassWaiting}}"></span>
+                            <span ng-show="data.status  === 'Processing'" class="{{statusClassProcessing}}"></span>
+                            <span ng-show="data.status === 'Successfull'" class="{{statusClassSuccessfull}}"></span>
+                            <span ng-show="data.status === 'Failed'" class="{{statusClassFailed}}"></span> 
+                            {{data.status}}
+
+
+                        </td>
+                        <td>
+                            <button type="button" ng-click="edit(data)" class="btn btn-success">Edit</button>
+                            <button type="button" ng-click="delete(data)" class="btn btn-danger">Remove</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+</div>
+
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+    <!-- Main Div Ending -->
+<!--</body>
+
+
+</html>-->
