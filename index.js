@@ -34,7 +34,7 @@ app.use(express.static(__dirname+"/client"));
 
 
 
-app.listen(8989,()=>{
+app.listen(3900,()=>{
     console.log("sever running on port 8080");
 });
 

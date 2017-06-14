@@ -1,4 +1,4 @@
-var app = angular.module('myRoute',['ui.router']);
+var app = angular.module('myRoute',['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
   /*  $urlRouterProvider.otherwise("/overview")*/
