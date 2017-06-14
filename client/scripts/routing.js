@@ -247,6 +247,27 @@ app.controller('formController', ['$scope', '$http', '$modal', function ($scope,
 
     };
 
+    $scope.saveRequestSuite=function(){
+
+        $http({
+            method: "POST",
+            headers: {'ContentType':'application/json'},
+            url: "/saveTestSuite",
+            data: $scope.showData || []
+        }).then(function successCallback(response) {
+            if(response.data.stat){
+                alert("successfully saved the testSuite");
+            }
+            else{
+                 alert(response.data.msg);
+            }
+        }, function errorCallback(err) {
+            console.log(response.data.msg);
+             alert(response.data.msg);
+          
+        });
+    }
+
 
 
 }]);

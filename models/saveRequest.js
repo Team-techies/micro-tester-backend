@@ -1,13 +1,13 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var clientSchema = new Schema({
+var testCaseSchema = new Schema({
     appId: {
         type: Number
     },
     id: {
         type: Number
     },
-    method:{
+    selectedReqType:{
         type: String
     },
     url: {
@@ -20,13 +20,17 @@ var clientSchema = new Schema({
         type: String
     },
     status: {
-        type: String,
-        min: 6,
-        max: 10
+        type: String   
     },
-    time: {
-        type: Date,
-        default: Date.now
-    }
+    startTime: {
+        type: String
+       
+    },
+    oauthFilter:{
+        type: Boolean,
+        default:false
+    },
+    responseTime: [Number]
 });
-module.exports = clientSchema;
+
+module.exports = testCaseSchema;

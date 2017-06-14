@@ -7,7 +7,7 @@ var apiRouter=require("./routes/api.js");
 // var session=require("express-session");
 var mongoose=require("mongoose");
 var app=express();
-
+var port     = process.env.PORT || 1933;
 //app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,6 +15,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/",mainRouter);
 app.use("/api",apiRouter);
 
+
+
+// var schedule = require('node-schedule');
+// var rule = new schedule.RecurrenceRule();
+// rule.minute = new schedule.Range(0, 59, 1);
+// var intMail = schedule.scheduleJob(rule, function(){
+//     console.log(rule);
+//       console.log('its run');
+// });
 
 // app.use(session({secret:'hello',
 //                     cookie: { maxAge: 50 * 1000 },
@@ -34,8 +43,8 @@ app.use(express.static(__dirname+"/client"));
 
 
 
-app.listen(3900,()=>{
-    console.log("sever running on port 8080");
+app.listen(port,()=>{
+    console.log("sever running on port "+ port);
 });
 
 module.exports = app; 

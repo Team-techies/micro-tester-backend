@@ -225,11 +225,13 @@ module.exports = {
     saveTestSuite: (req, res) => {
         ses = req.session;
         // ses.id=parseInt(1);
-        if (true) {
+        if (ses.email) {
+
+            console.log(req.body);
             const mongoose = require("mongoose");
             mongoose.Promise = require("bluebird");
-            var saveRequests = require('../models/saveRequest.js');
-            var SaveRequest = mongoose.model('requests', saveRequests);
+            var testSuites = require('../models/testSuites.js');
+            var TestSuite = mongoose.model('testsuites', testSuites);
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
 
                 var db = mongoose.connection.db;
@@ -248,17 +250,11 @@ module.exports = {
                 //     status: per.status,
                 //     time: per.time
                 // });
-                var saveRequest = new SaveRequest({
-                    appId: req.body.appId,
-                    id: req.body.id,
-                    method: req.body.method,
-                    url: req.body.url,
-                    header: req.body.header,
-                    body: req.body.body,
-                    status: req.body.status,
-                    time: req.body.time
+                var testSuite = new TestSuite({
+                    appId: ses.app,
+                    test_suites : req.body
                 });
-                saveRequest.save(function (err) {
+                testSuite.save(function (err) {
                     if (!err) {
 
                         db.close();
@@ -266,19 +262,29 @@ module.exports = {
                         info = {
                             stat: true
                         }
-                        res.send(info);
-                        res.end();
                     }
                     else {
+                        info = {
+                            stat: false,
+                            msg:err
+
+                        }
                         console.log(err);
-                        res.send(err);
+                        
                         db.close();
-                        res.end();
+                        
                     }
+                    res.send(info);
+                        res.end();
                 });
             }, (err) => {
+                info = {
+                            stat: false,
+                            msg:err
+
+                        }
                 console.log(err);
-                res.send(err);
+                res.send(info);
                 res.end();
             });
         }
