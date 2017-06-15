@@ -248,7 +248,7 @@ module.exports = {
         // ses.id=parseInt(1);
         if (ses.email) {
 
-            console.log(req.body);
+            console.log(req.body._id);
             const mongoose = require("mongoose");
             mongoose.Promise = require("bluebird");
             var testSuites = require('../models/testSuites.js');
@@ -256,6 +256,55 @@ module.exports = {
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
 
                 var db = mongoose.connection.db;
+                 if (req.body._id == undefined) {
+                    var testSuite = new TestSuite({
+                        appId: ses.app,
+                        test_suites: req.body.test_suites,
+                        suiteName: req.body.testSuiteName
+
+                    });
+                    testSuite.save(function (err) {
+                        if (!err) {
+
+                            var info = {};
+                            info = {
+                                stat: true
+                            }
+                        }
+                        else {
+                            info = {
+                                stat: false,
+                                msg: err
+
+                            }
+                            console.log(err);
+                        }
+                         res.send(info);
+                        res.end();
+                         db.close();
+
+                    });
+                } else {
+
+                    TestSuite.update({ '_id': req.body._id }, { $set: { 'test_suites': req.body.test_suites } }, function (err, doc) {
+                        if (!err) {
+                            info = {
+                                stat: true
+                            }
+                        } else {
+                            info = {
+                                stat: false,
+                                msg: err
+
+                            }
+                        }
+                         res.send(info);
+                    res.end();
+                    db.close();
+                    })
+                   
+                }
+            
                 // var per = {};
                 // console.log(req.body);
                 // for (var key in req.body) {
@@ -271,33 +320,8 @@ module.exports = {
                 //     status: per.status,
                 //     time: per.time
                 // });
-                var testSuite = new TestSuite({
-                    appId: ses.app,
-                    test_suites: req.body
-                });
-                testSuite.save(function (err) {
-                    if (!err) {
-
-                        db.close();
-                        var info = {};
-                        info = {
-                            stat: true
-                        }
-                    }
-                    else {
-                        info = {
-                            stat: false,
-                            msg: err
-
-                        }
-                        console.log(err);
-
-                        db.close();
-
-                    }
-                    res.send(info);
-                    res.end();
-                });
+                
+                     
             }, (err) => {
                 info = {
                     stat: false,
@@ -307,15 +331,15 @@ module.exports = {
                 console.log(err);
                 res.send(info);
                 res.end();
-            });
-        }
-        else {
-            info = {
-                stat: false
-            }
-            res.send(info);
-            res.end();
-        }
+           });
+         }
+         else {
+           info = {
+              stat: false
+           }
+           res.send(info);
+           res.end();
+         }
     },
     logout: (req, res) => {
         ses = req.session;
@@ -451,6 +475,80 @@ module.exports = {
 
         });
 
+    },
+    updateApp: (req, res) => {
+        var info = {};
+        ses = req.session;
+        console.log(req.body);
+        if(ses.email){
+            const mongoose = require("mongoose");
+        mongoose.Promise = require("bluebird");
+        var path = require("path");
+        var getApps = require('../models/client.js');
+        var GetApp = mongoose.model('clients', getApps);
+        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+            console.log("spandana");
+            console.log(req.body);
+            var db = mongoose.connection.db;
+            console.log("database connected to " + db.databaseName);
+            //console.log(ses.sesId);
+            var getApp = new GetApp();
+            GetApp.findOneAndUpdate({ "_id": req.body._id},{$set:{
+                "title":req.body.title,
+                "appDesc":req.body.appDesc,
+                "appVer":req.body.appVer,
+                "clientId":req.body.clientId,
+                "clientSecret":req.body.clientSecret,
+                "grantType":req.body.grantType,
+                "scope":req.body.scope
+            }}).exec((err, docs) => {
+                if (!err) {
+                    //console.log(docs);
+                    if (docs != null) {
+
+                        info = {
+                            stat: true
+                        }
+                    }
+                    else {
+                        console.log("inside");
+                        info = {
+                            stat: false,
+                           msg:err
+                        }
+                    }
+                } else {
+                    //res.json({ error: err });
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+
+                };
+                res.send(info);
+                res.end();
+                db.close();
+            });
+        }, (err) => {
+            //res.json({ error: err });
+            info = {
+                stat: false,
+                msg: err
+            }
+            res.send(info);
+            res.end();
+
+        });
+
+        }else{
+             info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+        
     },
     sendEmail: (req, res) => {
         ses = req.session;

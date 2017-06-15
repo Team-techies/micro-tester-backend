@@ -21,9 +21,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             url: "/testClient",
             templateUrl: "../views/tester.html"
         })
-        .state('legal', {
-            url: "/legal",
-            templateUrl: "../views/legal.html"
+        .state('settings', {
+            url: "/settings",
+            templateUrl: "../views/appSettings.html"
         })
 
 }]);
@@ -72,6 +72,35 @@ app.controller('routeController', function ($scope,$http,$window) {
      $scope.gotoHome=function(){
 
         $window.location.href = '../views/dashboard.html';
+     }
+     $scope.data=false
+     $scope.read=true;
+     $scope.appEdit=function(){
+         if(!$scope.data){
+              $scope.data=true;
+             $scope.read=false;
+         }
+         else{
+             $http({
+            url: '/updateApp',
+            method: "POST",
+            headers: {'ContentType':'application/json'},
+            data: $scope.appData || {}
+        }).then(function (response) {
+           console.log(response.data.stat);
+           if(response.data.stat){
+               $scope.data=false;
+                $scope.read=true;
+           }
+           else{
+                alert(response.data.msg);
+           }
+        },function (err) {
+                console.log(err);
+            });
+         }
+        
+        
      }
 });
 
@@ -248,14 +277,12 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
         });
 
     };
-
-    $scope.saveRequestSuite=function(){
-
+    $scope.saveData=function(){
         $http({
             method: "POST",
             headers: {'ContentType':'application/json'},
             url: "/saveTestSuite",
-            data: $scope.showData || []
+            data: $scope.testsuite
         }).then(function successCallback(response) {
             if(response.data.stat){
                 alert("successfully saved the testSuite");
@@ -268,6 +295,31 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
              alert(response.data.msg);
           
         });
+    }
+    $scope.testsuite={};
+    $scope.saveRequestSuite=function(){
+
+        if($scope.testsuite.testSuiteName==undefined){
+        var testSuiteName;
+        var tempName = prompt("Please Enter Test Suite Name :", "");
+        if (tempName == null || tempName == "") {
+            testSuiteName = "TestSuite";
+        } else {
+            testSuiteName = tempName;
+        }
+
+        if (testSuiteName != "") {
+
+            var testSuiteData = $scope.showData;
+            $scope.testsuite = {"testSuiteName":testSuiteName,"test_suites":testSuiteData};
+             $scope.saveData();
+         
+        }
+
+		}else{
+            $scope.saveData();
+        }
+       
     };
 
     $scope.getTestSuite=function(){
@@ -292,6 +344,7 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
      $scope.show=function(data){
          $scope.showData=data.test_suites;
          $scope.hello="spandana";
+         
          console.log($scope.showData);
          $location.path("/testClient");
     };
@@ -299,9 +352,35 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
 
 }]);
 
-app.factory("requests",function($rootScope){
-    
+
+// *************************
+
+
+app.factory('Excel', function ($window) {
+    var uri = 'data:application/vnd.ms-excel;base64,',
+        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+        base64 = function (s) { return $window.btoa(unescape(encodeURIComponent(s))); },
+        format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+    return {
+        tableToExcel: function (tableId, worksheetName) {
+            var table = $(tableId),
+                ctx = { worksheet: worksheetName, table: table.html() },
+                href = uri + base64(format(template, ctx));
+            return href;
+        }
+    };
 })
+    .controller('MyCtrl', function (Excel, $timeout, $scope) {
+        $scope.exportToExcel = function (tableId) { // ex: '#my-table'
+            var exportHref = Excel.tableToExcel(tableId, 'WireWorkbenchDataExport');
+            $timeout(function () { location.href = exportHref; }, 100); // trigger download
+        }
+    });
+
+
+
+
+// *************************
 
 var ModalInstanceCtrl = function ($scope, $modalInstance) {
     // $scope.value.push([2, 19]);

@@ -27,6 +27,49 @@
   </table>
        
     </div>
-    <p>Micro Testing Tool</p>
+   <div ng-controller="formController"  ng-init="getTestSuite()">
+<div ng-hide='suites.length!=0'>
+
+
+            <div class="container">
+                <div class="jumbotron">
+                    <h1>No Test Suites Found</h1>
+                </div>
+                <p>Micro Testing Tool</p>
+
+            </div>
+
+        </div>
+        <div ng-repeat="data in suites">
+
+
+
+            <div class="col-sm-3">
+                <div ng-click="show(data)" class="offer offer-radius offer-primary">
+					<div class="shape">
+						<div class="shape-text">
+							{{$index}}								
+						</div>
+					</div>
+					<div class="offer-content">
+						<h3 class="lead">
+							{{data.suiteName}}
+						</h3>						
+						<p ng-bind="data.date |  date:'MM/dd/yyyy'">
+							<br> more..
+						</p>
+					</div>
+				</div>
+                <!--<div>
+                    <div ng-click="show(data)" class="panel panel-default">
+                        <div class="panel-heading">{{data.title}}</div>
+                        <div class="panel-body">{{data.appDesc}}</div>
+                        <div class="panel-footer">{{data.appVer}}</div>
+                    </div>
+                </div>-->
+            </div>
+
+        </div>
+</div>
 
 </div>

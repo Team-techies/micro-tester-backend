@@ -1,0 +1,146 @@
+<!-- <div class="row" style="margin-left: 1px;">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" ui-sref=".testSuiteSettings">Application Settings</a></li>
+                    <li><a data-toggle="tab" ui-sref=".addTestSuiteSettings">Additional Settings</a></li>
+                </ul>
+                 <div class="tab-content">
+        <div  ui-view></div>
+                 </div>
+ </div>-->
+
+<div class="container">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#appSet">Application Settings</a></li>
+        <li><a data-toggle="tab" href="#addSet">Additional Settings</a></li>
+    </ul>
+
+
+
+    <div class="tab-content">
+        <!-- ########## Application Settings ######### -->
+        <div id="appSet" class="tab-pane fade in active">
+
+            <div class="container">
+
+                <div class="row">
+                    <!-- <div class="col-sm-10"></div>-->
+                    <br>
+                    <div class=" col-sm-2 col-sm-offset-10">
+                        <input type="button" ng-click="appEdit()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+
+                <form>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-heart"></i></span>
+                        <input id="appName" type="text" class="form-control" name="App.appName" ng-model="appData.title" ng-readonly="read"/>
+                    </div>
+                    <br>
+                    <textarea name="App.description" class="form-control" rows="5" id="comment" ng-model="appData.appDesc" ng-readonly="read"></textarea>
+                    <br>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-superpowers"></i></span>
+                        <input id="appVersion" type="text" class="form-control" name="App.version" ng-model="appData.appVer" ng-readonly="read">
+                    </div>
+                    <br>
+                    <div>
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                                <input id="appClinetID" type="text" class="form-control" name="App.clientId" ng-model="appData.clientId" ng-readonly="read">
+                            </div>
+
+                            <div class="col-sm-3">
+                                <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                <input id="password" type="password" class="form-control" name="password" ng-model="appData.clientSecret" ng-readonly="read">
+                            </div>
+
+
+
+                            <div class="col-sm-3">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-cog"></i></span>
+                                <input id="appGrantType" type="text" class="form-control" name="App.grantType" ng-model="appData.grantType" ng-readonly="read">
+                            </div>
+
+                            <div class="col-sm-3">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                <input id="appScope" type="text" class="form-control" name="App.scope" ng-model="appData.scope" ng-readonly="read">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ########## Additional Settings ######### -->
+        <div id="addSet" class="tab-pane fade">
+            <br>
+
+
+            <div class="panel panel-default">
+
+
+                <div class="panel-body">
+
+                    <fieldset>
+                        <legend>Email Configuration</legend>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                               <input type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+            <br>
+
+
+            <div class="panel panel-default">
+
+
+                <div class="panel-body">
+
+                    <fieldset>
+                        <legend>Schedule Cron</legend>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="container" ng-controller="formController">
+
+                                    <cron-selection class="select-inline" ng-model="myOutput"></cron-selection>
+                                    {{myOutput}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

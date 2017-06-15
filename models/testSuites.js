@@ -14,8 +14,7 @@ var suiteSchema = new Schema({
         default: Date.now
     },
     suiteName:{
-        type:String,
-        default:"testSuite"
+        type:String
     }
 });
 // }, { _id: false });
