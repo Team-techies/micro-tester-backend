@@ -1,0 +1,190 @@
+<div ng-controller="formController" class="container">
+
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#app">Applicaton</a></li>
+            <li><a data-toggle="tab" href="#testsiute">Test Suite</a></li>
+
+        </ul>
+    </div>
+
+
+    <div class="tab-content">
+
+        <div id="app" class="tab-pane fade in active">
+
+            <br>
+
+            <div>
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Email Configuration</legend>
+                    <div class="control-group">
+
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span class="input-group-addon">To</span>
+                                <input type="email" ng-model="appData.to" class="form-control" >
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span class="input-group-addon">CC</span>
+                                <input type="email"  ng-model="appData.cc" class="form-control" >
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span class="input-group-addon">BCC</span>
+                                <input type="email"  ng-model="appData.bcc" class="form-control" >
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Schedule Cron</legend>
+                    <div class="control-group">
+
+                        <div class="row">
+                            <div class="container" >
+
+                                <cron-selection  ng-model="appData.cron" class="select-inline"></cron-selection>
+                                {{appData.cron}}
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+
+                <div class="col-ms-4  col-sm-offset-8">
+                    <div class="container">
+                        <input type="button" ng-click="saveApplicationData()" value="Save Changes" class="btn btn-primary">
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+
+
+
+        </div>
+
+        <!-- ############################################################ -->
+
+        <div id="testsiute" class="tab-pane fade">
+            <br>
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <label> Test Suites :</label>
+                    <select   ng-model="testSuiteData.testsuiteName" ng-change="hideConfiguration()" ng-options="testsuite for testsuite in testSuiteArray" class="form-control">
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label> <br></label>
+                    <input type="button" ng-click="showConfiguration()" value="Configure Test Suite" class="btn btn-primary btn-block" />
+                </div>
+
+            </div>
+            <br>
+
+            <div class="row" ng-show="showTestSuiteConfiguration">
+
+             <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Email Configuration</legend>
+                <div class="control-group">
+
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-1 input-group">
+                            <span class="input-group-addon">To</span>
+                            <input type="email" ng-model="testSuiteData.to" class="form-control" placeholder="Enter Recipient Mail Address.">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-1 input-group">
+                            <span class="input-group-addon">CC</span>
+                            <input type="email" ng-model="testSuiteData.cc" class="form-control" placeholder="Enter CC.">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-1 input-group">
+                            <span class="input-group-addon">BCC</span>
+                            <input type="email" ng-model="testSuiteData.bcc" class="form-control" placeholder="Enter BCC.">
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Schedule Cron</legend>
+                <div class="control-group">
+
+                    <div class="row">
+                        <div class="container" ng-controller="formController">
+
+                            <cron-selection ng-model="testSuiteData.cron" class="select-inline" ng-model="myOutput"></cron-selection>
+                            {{testSuiteData.cron}}
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+
+
+            <div class="col-ms-4  col-sm-offset-8">
+                <div class="container">
+                    <input type="button"  ng-click="saveTestSuiteData()" value="Save Changes" class="btn btn-primary">
+                </div>
+            </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

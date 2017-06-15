@@ -1,7 +1,7 @@
-var app = angular.module('myRoute',['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives']);
+var app = angular.module('myRoute',['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives', 'angular-cron-jobs']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-  /*  $urlRouterProvider.otherwise("/overview")*/
+    /*  $urlRouterProvider.otherwise("/overview");*/
 
     $stateProvider
         .state('overview', {
@@ -14,18 +14,28 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('documents', {
             url: "/documents",
-            templateUrl: "../views/documents.html",
-            controller:'formController'
+            templateUrl: "../views/documents.html"
         })
         .state('testClient', {
             url: "/testClient",
             templateUrl: "../views/tester.html"
         })
-        .state('settings', {
-            url: "/settings",
+        .state('appSettings', {
+            url: "/appSettings",
             templateUrl: "../views/appSettings.html"
         })
-
+        .state('applicationSettings', {
+            url: "/applicationSettings",
+            templateUrl: "../views/applicationSettings.html"
+        })
+        .state('testSuiteSettings', {
+            url: "/testSuiteSettings",
+            templateUrl: "../views/testSuiteSettings.html"
+        })
+        .state('existingTestSuite', {
+            url: "/existingTestSuite",
+            templateUrl: "../views/existingTestSuite.html"
+        })
 }]);
 
 app.controller('routeController', function ($scope,$http,$window) {
@@ -126,6 +136,28 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
     $scope.suites=[];
     var id = 0;
     var counter = 0;
+
+    $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
+  $scope.applicationData = {};
+  $scope.testSuiteData = {};
+  $scope.showTestSuiteConfiguration = false;
+
+  $scope.showConfiguration = function () {
+    $scope.showTestSuiteConfiguration = true;
+  }
+
+  $scope.hideConfiguration = function () {
+    $scope.showTestSuiteConfiguration = false;
+  }
+
+  $scope.saveApplicationData = function () {
+    console.log($scope.applicationData);
+  }
+
+  $scope.saveTestSuiteData = function () {
+
+    console.log($scope.testSuiteData);
+  }
 
     $scope.reset = function () {
         $scope.rowMaker = [{ "key": "", "value": "" }];
@@ -435,4 +467,8 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
     });
 
 };
+app.controller('settingsController', function ($scope) {
+  
+
+})
 

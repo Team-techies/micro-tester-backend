@@ -3,9 +3,31 @@
 <head>
      <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+    
+
+
+        #container,
+        #sliders {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #container {
+            height: 400px;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
      <script src="../scripts/angular.js"></script>
     <link rel="stylesheet" href="../styles/style.css">
 	<script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+    <script src="../scripts/settings.js"></script>
 	<script src="../scripts/d3.js"></script>
     <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
     <script src="../library/@uirouter/angularjs/release/angular-ui-router.js"></script>
@@ -16,6 +38,10 @@
     <script src="../library/jquery/dist/jquery.min.js"></script>
     <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../library/font-awesome/css/font-awesome.min.css">
+
+    <script src="../scripts/angular-cron-jobs.js"></script>
+    <link rel="stylesheet" href="../styles/angular-cron-jobs.less" />
+    <link rel="stylesheet" href="../styles/angular-cron-jobs.css" />
 </head>
 
 <body ng-app='myRoute' ng-controller="routeController" ng-init="getUser()">
@@ -27,7 +53,7 @@
         <div class="container-fluid">
             <div class="page-header">
                 <h1>
-                    Tool<small>{{appData.title}}</small>
+                    <small>{{appData.title}}</small>
                     <small class="pull-right"><div class="dropdown">
     <span class="dropdown-toggle" data-toggle="dropdown">Logged In as {{name}}
     <span class="caret"></span></span>
@@ -40,25 +66,126 @@
             </div>
         </div>
 
-        <div >
-            <!-- ########################### Vertical NAV BAR ############################# -->
-            <div  style="float:left; height: 100%">
-
-                <ul class="nav nav-pills  nav-stacked">
-
-                    <li role="presentation"><a ui-sref="overview"> Overview</a></li>
-                    <li role="presentation"><a ui-sref="board">Board</a></li>
-                    <li role="presentation"><a ui-sref="documents">Documents</a></li>
-                    <li role="presentation"><a ui-sref="testClient">Test Client</a></li>
-                    <li role="presentation"><a ui-sref="settings">Settings</a></li>
-                </ul>
+        <div>
+            <div style="float:left; width: 10%" >
+                <div >
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a  data-parent="#accordion" ui-sref="overview"><span class="glyphicon glyphicon-folder-close">
+                            </span>Overview</a>
+                                </h4>
+                            </div>
+ 
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">
+                            </span>Test Suite</a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <a ui-sref="testClient">Create New Test Suite</a> <span class="label label-success"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a ui-sref="existingTestSuite">Existing Test</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">
+                            </span>Account</a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <a href="#">Change Password</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#">Notifications</a> <span class="label label-info">5</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a  ui-sref="applicationSettings">Application Settings</a>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <td>
+                                                <a ui-sref="testSuiteSettings">Test Suite Settings</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="glyphicon glyphicon-trash text-danger"></span><a href="#"
+                                                    class="text-danger">
+                                            Delete Account</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                            </span>Reports</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <span class="glyphicon glyphicon-usd"></span><a href="#">Sales</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="glyphicon glyphicon-user"></span><a href="#">Customers</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="glyphicon glyphicon-tasks"></span><a href="#">Products</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="glyphicon glyphicon-shopping-cart"></span><a href="#">Shopping Cart</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+     
             </div>
+                       <div style="float:left; width: 90%"  ui-view >
 
-            <div style="float:left" ui-view></div>
-            <!-- ########################################################################## -->
-
+                </div>
         </div>
-
 
 
 

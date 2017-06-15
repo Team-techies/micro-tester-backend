@@ -41,6 +41,18 @@ var clientSchema = new Schema({
     },
     frequency: {
         type: String
+    },
+    to:{
+        type:String,
+        default:"****@******.com"
+    },
+    cc:{
+        type:String,
+        default:"****@******.com"
+    },
+    bcc:{
+        type:String,
+        default:"****@******.com"
     }
 });
 // }, { _id: false });
