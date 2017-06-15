@@ -30,7 +30,10 @@ var testCaseSchema = new Schema({
         type: Boolean,
         default:false
     },
-    responseTime: [Number]
+    responseTime: [{
+        startTime:Number,
+        endTime:Number
+    }]
 });
 
 module.exports = testCaseSchema;

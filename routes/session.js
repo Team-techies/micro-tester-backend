@@ -27,7 +27,8 @@ router.get("/getClientApp/:id", service.getClientApp);
 router.post("/createClient",service.createClient) 
 
 router.post("/saveTestSuite", service.saveTestSuite);
-router.get("/getRequests", service.getRequests);
+
+router.get("/getTestSuite", service.getTestSuite);
 
 router.get("/logout", service.logout);
 module.exports = router;

@@ -14,7 +14,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('documents', {
             url: "/documents",
-            templateUrl: "../views/documents.html"
+            templateUrl: "../views/documents.html",
+            controller:'formController'
         })
         .state('testClient', {
             url: "/testClient",
@@ -74,11 +75,12 @@ app.controller('routeController', function ($scope,$http,$window) {
      }
 });
 
-app.controller('formController', ['$scope', '$http', '$modal', function ($scope, $http, $modal) {
+app.controller('formController', ['$scope', '$http', '$modal','$location', function ($scope, $http, $modal, $location) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
     $scope.showData = [];
     $scope.startTime = "";
+    $scope.suites=[];
     var id = 0;
     var counter = 0;
 
@@ -266,13 +268,40 @@ app.controller('formController', ['$scope', '$http', '$modal', function ($scope,
              alert(response.data.msg);
           
         });
-    }
+    };
 
+    $scope.getTestSuite=function(){
+
+        $http({
+            method: "GET",
+            url: "/getTestSuite",
+        }).then(function successCallback(response) {
+            if(response.data.stat){
+                $scope.suites=response.data.doc
+            }
+            else{
+                 alert(response.data.msg);
+            }
+        }, function errorCallback(err) {
+            console.log(response.data.msg);
+             alert(response.data.msg);
+          
+        });
+    };
+
+     $scope.show=function(data){
+         $scope.showData=data.test_suites;
+         $scope.hello="spandana";
+         console.log($scope.showData);
+         $location.path("/testClient");
+    };
 
 
 }]);
 
-
+app.factory("requests",function($rootScope){
+    
+})
 
 var ModalInstanceCtrl = function ($scope, $modalInstance) {
     // $scope.value.push([2, 19]);

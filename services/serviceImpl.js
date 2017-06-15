@@ -184,13 +184,13 @@ module.exports = {
         }
 
     },
-    getRequests: (req, res) => {
+    getTestSuite: (req, res) => {
         ses = req.session;
-        // ses.email="spandanabola@gmail.com";
+    if(ses.email){
         const mongoose = require("mongoose");
         mongoose.Promise = require("bluebird");
-        var getRequests = require('../models/client.js');
-        var GetRequest = mongoose.model('requests', getRequests);
+        var getTestSuites = require('../models/testSuites.js');
+        var GetTestSuites = mongoose.model('testsuites', getTestSuites);
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
             console.log("spandana");
             // console.log(req.body);
@@ -202,25 +202,46 @@ module.exports = {
             // }
             console.log("database connected to " + db.databaseName);
             //console.log(ses.sesId);
-            var getRequest = new GetRequest();
-            GetRequest.find({ "appId": 2 }, (err, docs) => {
+            var getTestSuite = new GetTestSuites();
+            GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
                 if (!err) {
                     //console.log(docs);
-                    res.send(docs);
-                    db.close();
-                    res.end();
+                    info = {
+                        stat: true,
+                        doc: docs
+                    }
+
+
                 } else {
                     //res.json({ error: err });
-                    res.send(err);
-                    db.close();
-                    res.end();
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
                 };
+                res.send(info);
+                res.end();
+                db.close();
             });
         }, (err) => {
             //res.json({ error: err });
-            res.send(err);
+            info = {
+                stat: false,
+                msg: err
+            }
+            res.send(info);
             res.end();
         });
+    }else{
+        info = {
+                stat: false,
+                msg: "please login to see testsuites"
+            }
+            res.send(info);
+            res.end();
+    }
+        // ses.email="spandanabola@gmail.com";
+        
     },
     saveTestSuite: (req, res) => {
         ses = req.session;
@@ -252,7 +273,7 @@ module.exports = {
                 // });
                 var testSuite = new TestSuite({
                     appId: ses.app,
-                    test_suites : req.body
+                    test_suites: req.body
                 });
                 testSuite.save(function (err) {
                     if (!err) {
@@ -266,23 +287,23 @@ module.exports = {
                     else {
                         info = {
                             stat: false,
-                            msg:err
+                            msg: err
 
                         }
                         console.log(err);
-                        
+
                         db.close();
-                        
+
                     }
                     res.send(info);
-                        res.end();
+                    res.end();
                 });
             }, (err) => {
                 info = {
-                            stat: false,
-                            msg:err
+                    stat: false,
+                    msg: err
 
-                        }
+                }
                 console.log(err);
                 res.send(info);
                 res.end();
@@ -434,48 +455,55 @@ module.exports = {
     sendEmail: (req, res) => {
         ses = req.session;
         //var xoauth2 = require('xoauth2');
+        const template = './services/email.ejs';
         var nodemailer = require('nodemailer');
+        var ejs=require('ejs');
         //var smtpTransport = require('nodemailer-smtp-transport');
         //process.env.MAIL_URL='smtp://:' + encodeURIComponent("Nodemailer123") + '@smtp.geips.ge.com:25';
         var transport = nodemailer.createTransport({
             host: 'smtp.geips.ge.com',
-            port:25        
+            port: 25
         });
 
-                    console.log('SMTP Configured');
+        console.log('SMTP Configured');
 
-                    // Message object
-                    var message = {
+    ejs.renderFile(template,'utf8', (err, html) => {
+      if (err) console.log(err); // Handle error
 
-                        // sender info
-                        from: 'preetham.salehundam@ge.com',
+      console.log(`HTML: ${html}`);
 
-                        // Comma separated list of recipients
-                        to: 'preetham.salehundam@ge.com',
+        var message = {
 
-                        // Subject of the message
-                        subject: 'This is from node js',
+            // sender info
+            from: 'spanadana.bola@capgemini.com',
 
-                        // plaintext body
-                        text: 'Hello to Lavanya!',
+            // Comma separated list of recipients
+            to: 'spanadana.bola@capgemini.com,preetham.salehundam@ge.com',
 
-                        // HTML body
-                        html: '<p><b>Hello</b> to Lavanya</p>' +
-                        '<p>Here\'s a nyan cat for you as an embedded attachment:<br/></p>'
-                    };
+            // Subject of the message
+            subject: 'This is from node js',
 
-                    console.log('Sending Mail');
-                    transport.sendMail(message, function (error) {
-                        if (error) {
-                            console.log('Error occured');
-                            console.log(error.message);
-                            return;
-                        }
-                        console.log('Message sent successfully!');
+            // plaintext body
 
-                        // if you don't want to use this transport object anymore, uncomment following line
-                        //transport.close(); // close the connection pool
-                    });
+            // HTML body
+            html: `${html}`
+        };
 
-                }
+        console.log('Sending Mail');
+        transport.sendMail(message, function (error) {
+            if (error) {
+                console.log('Error occured');
+                console.log(error.message);
+                return;
+            }
+            console.log('Message sent successfully!');
+
+            // if you don't want to use this transport object anymore, uncomment following line
+            //transport.close(); // close the connection pool
+        });
+     });
+        // Message object
+      
+
+    }
 }
