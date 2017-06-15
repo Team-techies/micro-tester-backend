@@ -135,7 +135,7 @@ app.controller('routeController', function ($scope,$http,$window) {
          }
          else{
              $http({
-            url: '/ConfigApp',
+            url: '/configApp',
             method: "POST",
             headers: {'ContentType':'application/json'},
             data: $scope.appData || {}

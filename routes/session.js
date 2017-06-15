@@ -28,6 +28,7 @@ router.get("/getClientApps", service.getClientApps);
 
 router.get("/getApp", service.getApp);
 router.post("/updateApp", service.updateApp);
+router.post("/configApp", service.configApp);
 
 router.get("/getClientApp/:id", service.getClientApp);
 

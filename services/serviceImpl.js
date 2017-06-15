@@ -604,6 +604,86 @@ module.exports = {
         }
 
     },
+    configApp: (req, res) => {
+        var info = {};
+        ses = req.session;
+        console.log(req.body);
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var path = require("path");
+            var getApps = require('../models/client.js');
+            var GetApp = mongoose.model('clients', getApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                console.log(req.body);
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                var status=false;
+                var freq="";
+                if(req.body.frequency!=undefined || req.body.frequency!="" || req.body.frequency!=null ){
+                    status=true;
+                    
+                }
+                //console.log(ses.sesId);
+                var getApp = new GetApp();
+                GetApp.findOneAndUpdate({ "_id": req.body._id }, {
+                    $set: {
+                        "to": req.body.to,
+                        "cc": req.body.cc,
+                        "bcc": req.body.bcc,
+                        "frequency": req.body.frequency,
+                        "isScheduled": status
+                    }
+                }).exec((err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        if (docs != null) {
+
+                            info = {
+                                stat: true
+                            }
+                        }
+                        else {
+                            console.log("inside");
+                            info = {
+                                stat: false,
+                                msg: err
+                            }
+                        }
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+
+                    };
+                    res.send(info);
+                    res.end();
+                    db.close();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+
+            });
+
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+
+    },
     sendEmail: (req, res) => {
         ses = req.session;
         //var xoauth2 = require('xoauth2');
