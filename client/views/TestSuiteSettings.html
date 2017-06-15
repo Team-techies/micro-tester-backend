@@ -1,4 +1,4 @@
-<div ng-controller="formController" class="container">
+<div class="container">
 
     <div>
         <ul class="nav nav-tabs">
@@ -23,21 +23,21 @@
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-1 input-group">
                                 <span class="input-group-addon">To</span>
-                                <input type="email" ng-model="appData.to" class="form-control" >
+                                <input type="email" ng-model="appData.to" class="form-control" ng-readonly="read">
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-1 input-group">
                                 <span class="input-group-addon">CC</span>
-                                <input type="email"  ng-model="appData.cc" class="form-control" >
+                                <input type="email"  ng-model="appData.cc" class="form-control" ng-readonly="read">
                             </div>
                         </div>
                         <br>
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-1 input-group">
                                 <span class="input-group-addon">BCC</span>
-                                <input type="email"  ng-model="appData.bcc" class="form-control" >
+                                <input type="email"  ng-model="appData.bcc" class="form-control" ng-readonly="read">
                             </div>
                         </div>
 
@@ -52,8 +52,8 @@
                         <div class="row">
                             <div class="container" >
 
-                                <cron-selection  ng-model="appData.cron" class="select-inline"></cron-selection>
-                                {{appData.cron}}
+                                <cron-selection  ng-model="appData.frequency" class="select-inline" ng-readonly="read"></cron-selection>
+                                {{appData.frequency}}
                             </div>
                         </div>
 
@@ -64,7 +64,7 @@
 
                 <div class="col-ms-4  col-sm-offset-8">
                     <div class="container">
-                        <input type="button" ng-click="saveApplicationData()" value="Save Changes" class="btn btn-primary">
+                        <input type="button" ng-click="appConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary">
                     </div>
                 </div>
 

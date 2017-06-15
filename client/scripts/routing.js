@@ -99,6 +99,7 @@ app.controller('routeController', function ($scope,$http,$window) {
      }
      $scope.data=false
      $scope.read=true;
+
      $scope.appEdit=function(){
          if(!$scope.data){
               $scope.data=true;
@@ -107,6 +108,34 @@ app.controller('routeController', function ($scope,$http,$window) {
          else{
              $http({
             url: '/updateApp',
+            method: "POST",
+            headers: {'ContentType':'application/json'},
+            data: $scope.appData || {}
+        }).then(function (response) {
+           console.log(response.data.stat);
+           if(response.data.stat){
+               $scope.data=false;
+                $scope.read=true;
+           }
+           else{
+                alert(response.data.msg);
+           }
+        },function (err) {
+                console.log(err);
+            });
+         }
+        
+        
+     }
+
+     $scope.appConfig=function(){
+         if(!$scope.data){
+              $scope.data=true;
+             $scope.read=false;
+         }
+         else{
+             $http({
+            url: '/ConfigApp',
             method: "POST",
             headers: {'ContentType':'application/json'},
             data: $scope.appData || {}
