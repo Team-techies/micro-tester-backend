@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+var schedule = require('node-schedule');
+var schedulerArr = [];
 
 // router.use(session({
 //     secret: 'hello',
@@ -7,6 +9,22 @@ var router = express.Router();
 //     resave: true
 // }))
 // var ses;
+router.get("/hello", (req, res) => {
+
+
+})
+router.get("/call/:id", (req, res) => {
+
+    var rule = new schedule.RecurrenceRule();
+    rule.minute = new schedule.Range(0, 59, 1);
+    schedule.scheduleJob(req.params.id, "*/1 * * * *", function () {
+        console.log(schedule.scheduledJobs[req.params.id]);
+
+    });
+    //console.log(schedule.scheduledJobs)
+    res.send(schedule.scheduledJobs[req.params.id]);
+
+})
 router.post("/registerUser", (req, res) => {
     ses = req.session;
     console.log("hello");
@@ -21,7 +39,7 @@ router.post("/registerUser", (req, res) => {
         var registerUser = new RegisterUser({
             email: req.body.email,
             first: req.body.first,
-            last:req.body.last,
+            last: req.body.last,
             empId: req.body.empId,
             pwd: req.body.pwd
         });
@@ -32,8 +50,8 @@ router.post("/registerUser", (req, res) => {
                 var info = {};
                 info = {
                     stat: true,
-                    status:200,
-                    msg:"you are successfully registered"
+                    status: 200,
+                    msg: "you are successfully registered"
                 }
                 res.send(info);
                 res.end();
@@ -41,8 +59,8 @@ router.post("/registerUser", (req, res) => {
             else {
                 info = {
                     stat: false,
-                    status:404,
-                    msg:"you are failed to register "+err
+                    status: 404,
+                    msg: "you are failed to register " + err
                 }
                 console.log(err);
                 res.send(info);

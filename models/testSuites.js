@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var testCaseSchema = require("./saveRequest");
-var Schema = mongoose.Schema,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
 var suiteSchema = new Schema({
     // _id: {
     //     type: Number
@@ -13,8 +13,16 @@ var suiteSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    suiteName:{
-        type:String
+    suiteName: {
+        type: String
+    },
+    isScheduled: {
+        type: Boolean,
+        default: false
+    },
+    frequency: {
+        type: String,
+        validate: [(val) => this.isScheduled, '{PATH} is required']
     }
 });
 // }, { _id: false });

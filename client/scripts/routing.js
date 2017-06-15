@@ -30,6 +30,20 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 
 app.controller('routeController', function ($scope,$http,$window) {
     $scope.appData={};
+   
+    // $scope.getData=function(data){
+    //      $http({
+    //         url: '/api/call/'+data,
+    //         method: "GET",
+    //         // data: $scope.user,
+    //         // headers: { 'Content-Type': 'application/json' }
+    //     }).then(function (response) {
+    //        console.log(response.data);
+    //     },function (err) {
+    //             console.log(err);
+    //         });
+    // };
+    //  $scope.getData("hello");
     $scope.getUser = function () {
         console.log("hell0");
        $http({
@@ -311,7 +325,7 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
         if (testSuiteName != "") {
 
             var testSuiteData = $scope.showData;
-            $scope.testsuite = {"testSuiteName":testSuiteName,"test_suites":testSuiteData};
+            $scope.testsuite = {"testSuiteName":testSuiteName,"test_suites":testSuiteData,"isScheduled":false,"frequency":"*****"};
              $scope.saveData();
          
         }

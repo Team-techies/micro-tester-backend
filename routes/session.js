@@ -3,6 +3,10 @@ var path = require("path");
 var session = require("express-session");
 var router = express.Router();
 var service = require('../services/serviceImpl')
+var fetch=require('node-fetch');
+var nodemailer = require('nodemailer');
+var schedule = require('node-schedule');
+var ejs = require('ejs');
 
 router.use(session({
     secret: 'hello',
@@ -15,8 +19,10 @@ router.get("/", (req, res) => {
     res.render("index.html");
 });
 
-router.get("/sendEmail",service.sendEmail);
-router.post("/checkUser",service.checkUser);
+router.get("/sendEmail", service.sendEmail);
+router.post("/checkUser", service.checkUser);
+
+router.get("/scheduler", service.scheduler);
 
 router.get("/getClientApps", service.getClientApps);
 
@@ -25,7 +31,7 @@ router.post("/updateApp", service.updateApp);
 
 router.get("/getClientApp/:id", service.getClientApp);
 
-router.post("/createClient",service.createClient) 
+router.post("/createClient", service.createClient)
 
 router.post("/saveTestSuite", service.saveTestSuite);
 

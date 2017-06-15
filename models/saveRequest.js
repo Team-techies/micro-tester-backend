@@ -33,7 +33,8 @@ var testCaseSchema = new Schema({
     responseTime: [{
         startTime:Number,
         endTime:Number
-    }]
+    }],
+    error:String
 });
 
 module.exports = testCaseSchema;

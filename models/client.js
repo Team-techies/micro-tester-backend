@@ -35,6 +35,12 @@ var clientSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
+    },isScheduled: {
+        type: Boolean,
+        default: false
+    },
+    frequency: {
+        type: String
     }
 });
 // }, { _id: false });

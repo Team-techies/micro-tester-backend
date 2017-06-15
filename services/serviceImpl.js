@@ -1,3 +1,4 @@
+var local = require('./localfunc');
 module.exports = {
     createClient: (req, res) => {
         ses = req.session;
@@ -100,6 +101,8 @@ module.exports = {
                             name: ses.name,
                             email: ses.email
                         }
+                        ses.appSchedule = docs.isScheduled;
+                        ses.appFreq = docs.frequency;
 
                     } else {
                         //res.json({ error: err });
@@ -130,6 +133,53 @@ module.exports = {
             res.send(info);
             res.end();
         }
+
+    },
+    scheduler: (req, res) => {
+        ses = req.session;
+        const mongoose = require("mongoose");
+        console.log(req.params.id)
+        // ses.id=1;
+        mongoose.Promise = require("bluebird");
+        var getTestSuites = require('../models/testSuites.js');
+        var GetTestSuite = mongoose.model('testsuites', getTestSuites);
+        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+            var db = mongoose.connection.db;
+            console.log("database connected to " + db.databaseName);
+            var getTestSuite = new GetTestSuite();
+            GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
+                if (!err) {
+                    //console.log(docs);
+                    for (var i = 0; i < docs.length; i++) {
+                        local.scheduler(docs[i]);
+                    }
+                    info = {
+                        stat: true
+                    }
+                    console.log(docs);
+                } else {
+                    //res.json({ error: err });
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    console.log(err);
+                };
+                res.send(info);
+                //ses.id=docs._id;
+                db.close();
+                res.end();
+            });
+        }, (err) => {
+            //res.json({ error: err });
+            info = {
+                stat: false,
+                msg: err
+            }
+            console.log(err);
+            res.send(info);
+            res.end();
+        });
 
     },
     getClientApp: (req, res) => {
@@ -186,62 +236,62 @@ module.exports = {
     },
     getTestSuite: (req, res) => {
         ses = req.session;
-    if(ses.email){
-        const mongoose = require("mongoose");
-        mongoose.Promise = require("bluebird");
-        var getTestSuites = require('../models/testSuites.js');
-        var GetTestSuites = mongoose.model('testsuites', getTestSuites);
-        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-            console.log("spandana");
-            // console.log(req.body);
-            var db = mongoose.connection.db;
-            //  console.log(req.body);
-            // var per = {};
-            // for (var key in req.body) {
-            //     per = JSON.parse(key);
-            // }
-            console.log("database connected to " + db.databaseName);
-            //console.log(ses.sesId);
-            var getTestSuite = new GetTestSuites();
-            GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
-                if (!err) {
-                    //console.log(docs);
-                    info = {
-                        stat: true,
-                        doc: docs
-                    }
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var getTestSuites = require('../models/testSuites.js');
+            var GetTestSuites = mongoose.model('testsuites', getTestSuites);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                // console.log(req.body);
+                var db = mongoose.connection.db;
+                //  console.log(req.body);
+                // var per = {};
+                // for (var key in req.body) {
+                //     per = JSON.parse(key);
+                // }
+                console.log("database connected to " + db.databaseName);
+                //console.log(ses.sesId);
+                var getTestSuite = new GetTestSuites();
+                GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true,
+                            doc: docs
+                        }
 
 
-                } else {
-                    //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
-                };
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                    };
+                    res.send(info);
+                    res.end();
+                    db.close();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
                 res.send(info);
                 res.end();
-                db.close();
             });
-        }, (err) => {
-            //res.json({ error: err });
+        } else {
             info = {
-                stat: false,
-                msg: err
-            }
-            res.send(info);
-            res.end();
-        });
-    }else{
-        info = {
                 stat: false,
                 msg: "please login to see testsuites"
             }
             res.send(info);
             res.end();
-    }
+        }
         // ses.email="spandanabola@gmail.com";
-        
+
     },
     saveTestSuite: (req, res) => {
         ses = req.session;
@@ -256,11 +306,13 @@ module.exports = {
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
 
                 var db = mongoose.connection.db;
-                 if (req.body._id == undefined) {
+                if (req.body._id == undefined) {
                     var testSuite = new TestSuite({
                         appId: ses.app,
                         test_suites: req.body.test_suites,
-                        suiteName: req.body.testSuiteName
+                        suiteName: req.body.testSuiteName,
+                        isScheduled: true
+
 
                     });
                     testSuite.save(function (err) {
@@ -279,9 +331,9 @@ module.exports = {
                             }
                             console.log(err);
                         }
-                         res.send(info);
+                        res.send(info);
                         res.end();
-                         db.close();
+                        db.close();
 
                     });
                 } else {
@@ -298,13 +350,13 @@ module.exports = {
 
                             }
                         }
-                         res.send(info);
-                    res.end();
-                    db.close();
+                        res.send(info);
+                        res.end();
+                        db.close();
                     })
-                   
+
                 }
-            
+
                 // var per = {};
                 // console.log(req.body);
                 // for (var key in req.body) {
@@ -320,8 +372,8 @@ module.exports = {
                 //     status: per.status,
                 //     time: per.time
                 // });
-                
-                     
+
+
             }, (err) => {
                 info = {
                     stat: false,
@@ -331,15 +383,15 @@ module.exports = {
                 console.log(err);
                 res.send(info);
                 res.end();
-           });
-         }
-         else {
-           info = {
-              stat: false
-           }
-           res.send(info);
-           res.end();
-         }
+            });
+        }
+        else {
+            info = {
+                stat: false
+            }
+            res.send(info);
+            res.end();
+        }
     },
     logout: (req, res) => {
         ses = req.session;
@@ -480,82 +532,97 @@ module.exports = {
         var info = {};
         ses = req.session;
         console.log(req.body);
-        if(ses.email){
+        if (ses.email) {
             const mongoose = require("mongoose");
-        mongoose.Promise = require("bluebird");
-        var path = require("path");
-        var getApps = require('../models/client.js');
-        var GetApp = mongoose.model('clients', getApps);
-        mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-            console.log("spandana");
-            console.log(req.body);
-            var db = mongoose.connection.db;
-            console.log("database connected to " + db.databaseName);
-            //console.log(ses.sesId);
-            var getApp = new GetApp();
-            GetApp.findOneAndUpdate({ "_id": req.body._id},{$set:{
-                "title":req.body.title,
-                "appDesc":req.body.appDesc,
-                "appVer":req.body.appVer,
-                "clientId":req.body.clientId,
-                "clientSecret":req.body.clientSecret,
-                "grantType":req.body.grantType,
-                "scope":req.body.scope
-            }}).exec((err, docs) => {
-                if (!err) {
-                    //console.log(docs);
-                    if (docs != null) {
-
-                        info = {
-                            stat: true
-                        }
+            mongoose.Promise = require("bluebird");
+            var path = require("path");
+            var getApps = require('../models/client.js');
+            var GetApp = mongoose.model('clients', getApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                console.log(req.body);
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                //console.log(ses.sesId);
+                var getApp = new GetApp();
+                GetApp.findOneAndUpdate({ "_id": req.body._id }, {
+                    $set: {
+                        "title": req.body.title,
+                        "appDesc": req.body.appDesc,
+                        "appVer": req.body.appVer,
+                        "clientId": req.body.clientId,
+                        "clientSecret": req.body.clientSecret,
+                        "grantType": req.body.grantType,
+                        "scope": req.body.scope
                     }
-                    else {
-                        console.log("inside");
+                }).exec((err, docs) => {
+                    if (!err) {
+                        //console.log(docs);
+                        if (docs != null) {
+
+                            info = {
+                                stat: true
+                            }
+                        }
+                        else {
+                            console.log("inside");
+                            info = {
+                                stat: false,
+                                msg: err
+                            }
+                        }
+                    } else {
+                        //res.json({ error: err });
                         info = {
                             stat: false,
-                           msg:err
+                            msg: err
                         }
-                    }
-                } else {
-                    //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
 
-                };
+                    };
+                    res.send(info);
+                    res.end();
+                    db.close();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
                 res.send(info);
                 res.end();
-                db.close();
+
             });
-        }, (err) => {
-            //res.json({ error: err });
+
+        } else {
             info = {
-                stat: false,
-                msg: err
-            }
-            res.send(info);
-            res.end();
-
-        });
-
-        }else{
-             info = {
                 stat: false,
                 msg: "please login to create app "
             }
             res.send(info);
             res.end();
         }
-        
+
     },
     sendEmail: (req, res) => {
         ses = req.session;
         //var xoauth2 = require('xoauth2');
-        const template = './services/email.ejs';
+        const template = './services/email.html';
         var nodemailer = require('nodemailer');
-        var ejs=require('ejs');
+        var handlebars = require('handlebars');
+        var fs = require('fs');
+
+        var readHTMLFile = function (template, callback) {
+            fs.readFile(template, { encoding: 'utf-8' }, function (err, html) {
+                if (err) {
+                    throw err;
+                    callback(err);
+                }
+                else {
+                    callback(null, html);
+                }
+            });
+        };
         //var smtpTransport = require('nodemailer-smtp-transport');
         //process.env.MAIL_URL='smtp://:' + encodeURIComponent("Nodemailer123") + '@smtp.geips.ge.com:25';
         var transport = nodemailer.createTransport({
@@ -564,44 +631,50 @@ module.exports = {
         });
 
         console.log('SMTP Configured');
+        readHTMLFile(template, function(err, html) {
+    var template = handlebars.compile(html);
+    var replacements = {
+         username: "Chaithanya Bola"
+    };
+    var htmlToSend = template(replacements);
+     var message = {
 
-    ejs.renderFile(template,'utf8', (err, html) => {
-      if (err) console.log(err); // Handle error
+                // sender info
+                from: 'spanadana.bola@capgemini.com',
 
-      console.log(`HTML: ${html}`);
+                // Comma separated list of recipients
+                to: 'spanadana.bola@capgemini.com',
 
-        var message = {
+                // Subject of the message
+                subject: 'Info regarding Test suite failure',
 
-            // sender info
-            from: 'spanadana.bola@capgemini.com',
+                // plaintext body
 
-            // Comma separated list of recipients
-            to: 'spanadana.bola@capgemini.com,preetham.salehundam@ge.com',
+                // HTML body
+                html: `${htmlToSend}`
+            };
+        // ejs.renderFile(template, 'utf8', (err, html) => {
+        //     if (err) console.log(err); // Handle error
 
-            // Subject of the message
-            subject: 'This is from node js',
+        //     console.log(`HTML: ${html}`);
 
-            // plaintext body
+           
 
-            // HTML body
-            html: `${html}`
-        };
+            console.log('Sending Mail');
+            transport.sendMail(message, function (error) {
+                if (error) {
+                    console.log('Error occured');
+                    console.log(error.message);
+                    return;
+                }
+                console.log('Message sent successfully!');
 
-        console.log('Sending Mail');
-        transport.sendMail(message, function (error) {
-            if (error) {
-                console.log('Error occured');
-                console.log(error.message);
-                return;
-            }
-            console.log('Message sent successfully!');
-
-            // if you don't want to use this transport object anymore, uncomment following line
-            //transport.close(); // close the connection pool
+                // if you don't want to use this transport object anymore, uncomment following line
+                //transport.close(); // close the connection pool
+            });
         });
-     });
         // Message object
-      
+
 
     }
 }
