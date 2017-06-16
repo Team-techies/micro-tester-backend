@@ -17,6 +17,9 @@ app.controller('addCard', function ($scope,$http,$window) {
                $scope.email=response.data.email;
                $scope.apps=response.data.doc;
            }
+           else if(response.data.msg==="please login to create app "){
+               $window.location.href = '../views/index.html';
+           }
            else{
                 alert(response.data.msg);
            }
@@ -37,6 +40,8 @@ app.controller('addCard', function ($scope,$http,$window) {
            if(response.data.stat){
                $window.location.href = '../views/appDetail.html';
         console.log($scope.appData);
+           }else if(response.data.msg==="please login to create app "){
+               $window.location.href = '../views/index.html';
            }
            else{
                 alert(response.data.msg);
@@ -56,6 +61,8 @@ app.controller('addCard', function ($scope,$http,$window) {
            console.log(response.data.stat);
            if(response.data.stat){
                alert(response.data.msg);
+           }else if(response.data.msg==="please login to create app "){
+               $window.location.href = '../views/index.html';
            }
            else{
                 alert(response.data.msg);
@@ -73,6 +80,8 @@ app.controller('addCard', function ($scope,$http,$window) {
         }).then(function (response) {
            console.log(response.data.stat);
            if(response.data.stat){
+               $window.location.href = '../views/index.html';
+           }else if(response.data.msg==="please login to create app "){
                $window.location.href = '../views/index.html';
            }
            else{

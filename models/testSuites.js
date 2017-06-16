@@ -21,8 +21,19 @@ var suiteSchema = new Schema({
         default: false
     },
     frequency: {
-        type: String,
-        validate: [(val) => this.isScheduled, '{PATH} is required']
+        type: String
+    },
+     to:{
+        type:String,
+        default:"****@******.com"
+    },
+    cc:{
+        type:String,
+        default:"****@******.com"
+    },
+    bcc:{
+        type:String,
+        default:"****@******.com"
     }
 });
 // }, { _id: false });

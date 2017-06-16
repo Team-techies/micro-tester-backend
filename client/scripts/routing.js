@@ -1,4 +1,4 @@
-var app = angular.module('myRoute',['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives', 'angular-cron-jobs']);
+var app = angular.module('myRoute', ['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives', 'angular-cron-jobs']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     /*  $urlRouterProvider.otherwise("/overview");*/
@@ -38,9 +38,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
 }]);
 
-app.controller('routeController', function ($scope,$http,$window) {
-    $scope.appData={};
-   
+app.controller('routeController', function ($scope, $http, $window) {
+    $scope.appData = {};
+    $scope.user={};
     // $scope.getData=function(data){
     //      $http({
     //         url: '/api/call/'+data,
@@ -54,139 +54,222 @@ app.controller('routeController', function ($scope,$http,$window) {
     //         });
     // };
     //  $scope.getData("hello");
+   $scope.changePwd = function () {
+        console.log("hell0");
+        $http({
+            url: '/api/changePwd',
+            method: "POST",
+            data: $scope.user,
+            headers: { 'Content-Type': 'application/json' }
+        }).then(function (response) {
+            console.log(response.data.stat);
+            if (response.data.stat) {
+                alert(response.data.msg);
+                $window.location.href = '../views/index.html';
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
+            }
+            else {
+                alert(response.data.msg);
+            }
+        }, function (err) {
+            console.log(err);
+        });
+    };
     $scope.getUser = function () {
         console.log("hell0");
-       $http({
+        $http({
             url: '/getApp',
             method: "GET",
             // data: $scope.user,
             // headers: { 'Content-Type': 'application/json' }
         }).then(function (response) {
-           console.log(response.data.stat);
-           if(response.data.stat){
-              $scope.name=response.data.name;
-               $scope.email=response.data.email;
-               $scope.appData=response.data.doc;
-           }
-           else{
+            console.log(response.data.stat);
+            if (response.data.stat) {
+                $scope.name = response.data.name;
+                $scope.email = response.data.email;
+                $scope.appData = response.data.doc;
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
+            }
+            else {
                 alert(response.data.msg);
-           }
-        },function (err) {
-                console.log(err);
-            });
+            }
+        }, function (err) {
+            console.log(err);
+        });
     };
-     $scope.logout=function(){
+     $scope.deleteApp = function () {
+        console.log("hell0");
+        var confm = confirm("You want to delete the application "+$scope.appData.title);
+        if (confm == true) {
+            $http({
+            url: '/deleteApp',
+            method: "GET",
+            // data: $scope.user,
+            // headers: { 'Content-Type': 'application/json' }
+        }).then(function (response) {
+            console.log(response.data.stat);
+            if (response.data.stat) {
+                $scope.appData = {};
+                $window.location.href = '../views/dashboard.html';
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
+            }
+            else {
+                alert(response.data.msg);
+            }
+        }, function (err) {
+            console.log(err);
+        });
+        }
+        
+    };
+    $scope.logout = function () {
         console.log("logout");
         $http({
             url: '/logout',
             method: "GET"
         }).then(function (response) {
-           console.log(response.data.stat);
-           if(response.data.stat){
-               $window.location.href = '../views/index.html';
-           }
-           else{
+            console.log(response.data.stat);
+            if (response.data.stat) {
+                $window.location.href = '../views/index.html';
+            }
+            else {
                 alert(response.data.msg);
-           }
-        },function (err) {
-                console.log(err);
-            });
+            }
+        }, function (err) {
+            console.log(err);
+        });
 
     };
-     $scope.gotoHome=function(){
+    $scope.gotoHome = function () {
 
         $window.location.href = '../views/dashboard.html';
-     }
-     $scope.data=false
-     $scope.read=true;
+    }
+    $scope.data = false
+    $scope.read = true;
 
-     $scope.appEdit=function(){
-         if(!$scope.data){
-              $scope.data=true;
-             $scope.read=false;
-         }
-         else{
-             $http({
-            url: '/updateApp',
-            method: "POST",
-            headers: {'ContentType':'application/json'},
-            data: $scope.appData || {}
-        }).then(function (response) {
-           console.log(response.data.stat);
-           if(response.data.stat){
-               $scope.data=false;
-                $scope.read=true;
-           }
-           else{
-                alert(response.data.msg);
-           }
-        },function (err) {
+    $scope.appEdit = function () {
+        if (!$scope.data) {
+            $scope.data = true;
+            $scope.read = false;
+        }
+        else {
+            $http({
+                url: '/updateApp',
+                method: "POST",
+                headers: { 'ContentType': 'application/json' },
+                data: $scope.appData || {}
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.data = false;
+                    $scope.read = true;
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
                 console.log(err);
             });
-         }
-        
-        
-     }
+        }
 
-     $scope.appConfig=function(){
-         if(!$scope.data){
-              $scope.data=true;
-             $scope.read=false;
-         }
-         else{
-             $http({
-            url: '/configApp',
-            method: "POST",
-            headers: {'ContentType':'application/json'},
-            data: $scope.appData || {}
-        }).then(function (response) {
-           console.log(response.data.stat);
-           if(response.data.stat){
-               $scope.data=false;
-                $scope.read=true;
-           }
-           else{
-                alert(response.data.msg);
-           }
-        },function (err) {
+
+    }
+
+    $scope.appConfig = function () {
+        if (!$scope.data) {
+            $scope.data = true;
+            $scope.read = false;
+        }
+        else {
+            $http({
+                url: '/configApp',
+                method: "POST",
+                headers: { 'ContentType': 'application/json' },
+                data: $scope.appData || {}
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.data = false;
+                    $scope.read = true;
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
                 console.log(err);
             });
-         }
-        
-        
-     }
+        }
+
+
+    }
 });
 
-app.controller('formController', ['$scope', '$http', '$modal','$location', function ($scope, $http, $modal, $location) {
+app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', function ($scope, $http, $modal, $location, $window) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
     $scope.showData = [];
     $scope.startTime = "";
-    $scope.suites=[];
+    $scope.suites = [];
+    $scope.testsuite = {};
     var id = 0;
     var counter = 0;
-
+    $scope.data = false
+    $scope.read = true;
     $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
-  $scope.applicationData = {};
-  $scope.testSuiteData = {};
-  $scope.showTestSuiteConfiguration = false;
-
-  $scope.showConfiguration = function () {
-    $scope.showTestSuiteConfiguration = true;
-  }
-
-  $scope.hideConfiguration = function () {
     $scope.showTestSuiteConfiguration = false;
-  }
 
-  $scope.saveApplicationData = function () {
-    console.log($scope.applicationData);
-  }
+    $scope.showConfiguration = function () {
 
-  $scope.saveTestSuiteData = function () {
+        for (var i = 0; i < $scope.suites.length; i++) {
+            if ($scope.suites[i]._id === $scope.suite._id) {
+                $scope.testsuite = $scope.suites[i];
+            }
+            $scope.showTestSuiteConfiguration = true;
+            console.log($scope.testsuite);
+        }
+    }
 
-    console.log($scope.testSuiteData);
-  }
+    $scope.hideConfiguration = function () {
+        $scope.showTestSuiteConfiguration = false;
+    }
+
+    $scope.suiteConfig = function () {
+        console.log($scope.testsuite);
+        if (!$scope.data) {
+            $scope.data = true;
+            $scope.read = false;
+        }
+        else {
+            $http({
+                url: '/configSuite',
+                method: "POST",
+                headers: { 'ContentType': 'application/json' },
+                data: $scope.testsuite || {}
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.data = false;
+                    $scope.read = true;
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
+                console.log(err);
+            });
+        }
+
+
+    }
 
     $scope.reset = function () {
         $scope.rowMaker = [{ "key": "", "value": "" }];
@@ -352,76 +435,80 @@ app.controller('formController', ['$scope', '$http', '$modal','$location', funct
         });
 
     };
-    $scope.saveData=function(){
+    $scope.saveData = function () {
         $http({
             method: "POST",
-            headers: {'ContentType':'application/json'},
+            headers: { 'ContentType': 'application/json' },
             url: "/saveTestSuite",
             data: $scope.testsuite
         }).then(function successCallback(response) {
-            if(response.data.stat){
+            if (response.data.stat) {
                 alert("successfully saved the testSuite");
+                $scope.showData=[];
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
             }
-            else{
-                 alert(response.data.msg);
+            else {
+                alert(response.data.msg);
             }
         }, function errorCallback(err) {
             console.log(response.data.msg);
-             alert(response.data.msg);
-          
+            alert(response.data.msg);
+
         });
     }
-    $scope.testsuite={};
-    $scope.saveRequestSuite=function(){
+    $scope.saveRequestSuite = function () {
 
-        if($scope.testsuite.testSuiteName==undefined){
-        var testSuiteName;
-        var tempName = prompt("Please Enter Test Suite Name :", "");
-        if (tempName == null || tempName == "") {
-            testSuiteName = "TestSuite";
+        if ($scope.testsuite.testSuiteName == undefined) {
+            var testSuiteName;
+            var tempName = prompt("Please Enter Test Suite Name :", "");
+            if (tempName == null || tempName == "") {
+                testSuiteName = "TestSuite";
+            } else {
+                testSuiteName = tempName;
+            }
+
+            if (testSuiteName != "") {
+
+                var testSuiteData = $scope.showData;
+                $scope.testsuite = { "suiteName": testSuiteName, "test_suites": testSuiteData, "isScheduled": false, "frequency": "*****" };
+                $scope.saveData();
+
+            }
+
         } else {
-            testSuiteName = tempName;
-        }
-
-        if (testSuiteName != "") {
-
-            var testSuiteData = $scope.showData;
-            $scope.testsuite = {"testSuiteName":testSuiteName,"test_suites":testSuiteData,"isScheduled":false,"frequency":"*****"};
-             $scope.saveData();
-         
-        }
-
-		}else{
             $scope.saveData();
         }
-       
+
     };
 
-    $scope.getTestSuite=function(){
+    $scope.getTestSuite = function () {
 
         $http({
             method: "GET",
             url: "/getTestSuite",
         }).then(function successCallback(response) {
-            if(response.data.stat){
-                $scope.suites=response.data.doc
+            if (response.data.stat) {
+                $scope.suites = response.data.doc
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
             }
-            else{
-                 alert(response.data.msg);
+            else {
+                alert(response.data.msg);
             }
         }, function errorCallback(err) {
             console.log(response.data.msg);
-             alert(response.data.msg);
-          
+            alert(response.data.msg);
+
         });
     };
 
-     $scope.show=function(data){
-         $scope.showData=data.test_suites;
-         $scope.hello="spandana";
-         
-         console.log($scope.showData);
-         $location.path("/testClient");
+    $scope.show = function (data) {
+        $scope.showData = data.test_suites;
+        $scope.hello = "spandana";
+
+        console.log($scope.showData);
+        $location.path("/testClient");
     };
 
 
@@ -496,8 +583,4 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
     });
 
 };
-app.controller('settingsController', function ($scope) {
-  
-
-})
 

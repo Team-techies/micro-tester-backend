@@ -25,7 +25,7 @@ app.controller('myCtrl', function ($scope,$http,$window) {
                 console.log(err);
             });
     }
-    $scope.schedule();
+    // $scope.schedule();
     $scope.login = function () {
        $http({
             url: '/checkUser',

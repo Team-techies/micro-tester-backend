@@ -81,14 +81,14 @@
 
         <!-- ############################################################ -->
 
-        <div id="testsiute" class="tab-pane fade">
+        <div id="testsiute" ng-controller="formController" class="tab-pane fade" ng-init="getTestSuite()">
             <br>
 
             <div class="row">
 
                 <div class="col-md-2">
                     <label> Test Suites :</label>
-                    <select   ng-model="testSuiteData.testsuiteName" ng-change="hideConfiguration()" ng-options="testsuite for testsuite in testSuiteArray" class="form-control">
+                    <select   ng-model="suite" ng-change="hideConfiguration()" ng-options="x.suiteName for x in suites" class="form-control">
                     </select>
                 </div>
 
@@ -109,21 +109,21 @@
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-1 input-group">
                             <span class="input-group-addon">To</span>
-                            <input type="email" ng-model="testSuiteData.to" class="form-control" placeholder="Enter Recipient Mail Address.">
+                            <input type="email" ng-model="testsuite.to" class="form-control" ng-readonly="read">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-1 input-group">
                             <span class="input-group-addon">CC</span>
-                            <input type="email" ng-model="testSuiteData.cc" class="form-control" placeholder="Enter CC.">
+                            <input type="email" ng-model="testsuite.cc" class="form-control" ng-readonly="read">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-1 input-group">
                             <span class="input-group-addon">BCC</span>
-                            <input type="email" ng-model="testSuiteData.bcc" class="form-control" placeholder="Enter BCC.">
+                            <input type="email" ng-model="testsuite.bcc" class="form-control" ng-readonly="read">
                         </div>
                     </div>
 
@@ -136,10 +136,10 @@
                 <div class="control-group">
 
                     <div class="row">
-                        <div class="container" ng-controller="formController">
+                        <div class="container">
 
-                            <cron-selection ng-model="testSuiteData.cron" class="select-inline" ng-model="myOutput"></cron-selection>
-                            {{testSuiteData.cron}}
+                            <cron-selection ng-model="testsuite.frequency" class="select-inline" ng-readonly="read"></cron-selection>
+                            {{testsuite.frequency}}
                         </div>
                     </div>
 
@@ -150,7 +150,7 @@
 
             <div class="col-ms-4  col-sm-offset-8">
                 <div class="container">
-                    <input type="button"  ng-click="saveTestSuiteData()" value="Save Changes" class="btn btn-primary">
+                    <input type="button" ng-click="suiteConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary">
                 </div>
             </div>
 

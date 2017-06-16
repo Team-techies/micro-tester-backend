@@ -101,8 +101,11 @@ module.exports = {
                             name: ses.name,
                             email: ses.email
                         }
-                        ses.appSchedule = docs.isScheduled;
-                        ses.appFreq = docs.frequency;
+                        ses.schedule = docs.isScheduled;
+                        ses.frequency = docs.frequency;
+                        ses.to = docs.to;
+                        ses.cc = docs.cc;
+                        ses.bcc = docs.bcc;
 
                     } else {
                         //res.json({ error: err });
@@ -115,6 +118,66 @@ module.exports = {
                     //ses.id=docs._id;
                     db.close();
                     res.end();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+            });
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+
+    },
+    deleteApp: (req, res) => {
+        ses = req.session;
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var getClientApps = require('../models/client.js');
+            var GetClientApp = mongoose.model('clients', getClientApps);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                var db = mongoose.connection.db;
+                console.log("database connected to " + db.databaseName);
+                var getClientApp = new GetClientApp();
+                GetClientApp.findByIdAndRemove(ses.app , (err, docs) => {
+                    if (!err) {
+                        db.close();
+                        res.redirect("/delSuites");
+                        //console.log(docs);
+                        // info = {
+                        //     stat: true,
+                        //     doc: docs,
+                        //     name: ses.name,
+                        //     email: ses.email
+                        // }
+                        // ses.schedule = false;
+                        // ses.frequency = null;
+                        // ses.to = null;
+                        // ses.cc = null;
+                        // ses.bcc = null;
+
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                         res.send(info);
+                    //ses.id=docs._id;
+                    db.close();
+                    res.end();
+                    };
+                   
                 });
             }, (err) => {
                 //res.json({ error: err });
@@ -293,6 +356,65 @@ module.exports = {
         // ses.email="spandanabola@gmail.com";
 
     },
+     delSuites: (req, res) => {
+        ses = req.session;
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var getTestSuites = require('../models/testSuites.js');
+            var GetTestSuites = mongoose.model('testsuites', getTestSuites);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                // console.log(req.body);
+                var db = mongoose.connection.db;
+                //  console.log(req.body);
+                // var per = {};
+                // for (var key in req.body) {
+                //     per = JSON.parse(key);
+                // }
+                console.log("database connected to " + db.databaseName);
+                //console.log(ses.sesId);
+                console.log("inside remove test suites");
+                var getTestSuite = new GetTestSuites();
+                GetTestSuites.remove({ "appId": ses.app }, (err) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true
+                        }
+
+
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                    };
+                    res.send(info);
+                    res.end();
+                    db.close();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+            });
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to see testsuites"
+            }
+            res.send(info);
+            res.end();
+        }
+        // ses.email="spandanabola@gmail.com";
+
+    },
     saveTestSuite: (req, res) => {
         ses = req.session;
         // ses.id=parseInt(1);
@@ -310,8 +432,12 @@ module.exports = {
                     var testSuite = new TestSuite({
                         appId: ses.app,
                         test_suites: req.body.test_suites,
-                        suiteName: req.body.testSuiteName,
-                        isScheduled: true
+                        suiteName: req.body.suiteName,
+                        isScheduled: ses.schedule,
+                        frequency: ses.frequency,
+                        to: ses.to,
+                        cc: ses.cc,
+                        bcc: ses.bcc
 
 
                     });
@@ -388,6 +514,147 @@ module.exports = {
         else {
             info = {
                 stat: false
+            }
+            res.send(info);
+            res.end();
+        }
+    },
+    configSuite: (req, res) => {
+        ses = req.session;
+        // ses.id=parseInt(1);
+        if (ses.email) {
+
+            console.log(req.body);
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var testSuites = require('../models/testSuites.js');
+            var TestSuite = mongoose.model('testsuites', testSuites);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                var status = false;
+                if (req.body.frequency != null) {
+                    status = true;
+                }
+
+                var db = mongoose.connection.db;
+                TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': req.body.frequency } }, function (err, doc) {
+                    if (!err) {
+                        info = {
+                            stat: true
+                        }
+                    } else {
+                        info = {
+                            stat: false,
+                            msg: err
+
+                        }
+                    }
+                    res.send(info);
+                    res.end();
+                    db.close();
+                })
+
+            }
+
+                // var per = {};
+                // console.log(req.body);
+                // for (var key in req.body) {
+                //     per = JSON.parse(key);
+                // }
+                // // console.log("database connected to " + db.databaseName);
+                // var saveRequest = new SaveRequest({
+                //     id: per.id,
+                //     method: per.method,
+                //     url: per.url,
+                //     header: per.header,
+                //     body: per.body,
+                //     status: per.status,
+                //     time: per.time
+                // });
+
+
+                , (err) => {
+                    info = {
+                        stat: false,
+                        msg: err
+
+                    }
+                    console.log(err);
+                    res.send(info);
+                    res.end();
+                });
+        }
+        else {
+            info = {
+                stat: false
+            }
+            res.send(info);
+            res.end();
+        }
+    },
+    testAppChange: (req, res) => {
+        ses = req.session;
+        // ses.id=parseInt(1);
+        if (ses.email) {
+
+            console.log(ses.frequency);
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var testSuites = require('../models/testSuites.js');
+            var TestSuite = mongoose.model('testsuites', testSuites);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+
+                var db = mongoose.connection.db;
+                TestSuite.update({ 'isScheduled': false }, { $set: { 'isScheduled': ses.isScheduled, 'frequency': ses.frequency, 'to': ses.to, 'cc': ses.cc, 'bcc': ses.bcc } }, function (err, doc) {
+                    if (!err) {
+                        console.log("success changing testsuites");
+                        info = {
+                            stat: true
+                        }
+                    } else {
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                        console.log("err");
+                    }
+                    res.send(info);
+                    res.end();
+                    db.close();
+                })
+
+            }
+
+                // var per = {};
+                // console.log(req.body);
+                // for (var key in req.body) {
+                //     per = JSON.parse(key);
+                // }
+                // // console.log("database connected to " + db.databaseName);
+                // var saveRequest = new SaveRequest({
+                //     id: per.id,
+                //     method: per.method,
+                //     url: per.url,
+                //     header: per.header,
+                //     body: per.body,
+                //     status: per.status,
+                //     time: per.time
+                // });
+
+
+                , (err) => {
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    res.send(info);
+                    res.end();
+                    console.log(err);
+                });
+        }
+        else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
             }
             res.send(info);
             res.end();
@@ -619,11 +886,11 @@ module.exports = {
                 console.log(req.body);
                 var db = mongoose.connection.db;
                 console.log("database connected to " + db.databaseName);
-                var status=false;
-                var freq="";
-                if(req.body.frequency!=undefined || req.body.frequency!="" || req.body.frequency!=null ){
-                    status=true;
-                    
+                var status = false;
+                var freq = "";
+                if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
+                    status = true;
+
                 }
                 //console.log(ses.sesId);
                 var getApp = new GetApp();
@@ -640,8 +907,23 @@ module.exports = {
                         //console.log(docs);
                         if (docs != null) {
 
-                            info = {
-                                stat: true
+                            if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
+                                db.close();
+                                ses.to = req.body.to;
+                                ses.cc = req.body.cc;
+                                ses.bcc = req.body.bcc;
+                                ses.frequency = docs.frequency;
+                                ses.isScheduled = docs.isScheduled;
+
+                                res.redirect("/testAppChange");
+                            }
+                            else {
+                                info = {
+                                    stat: true
+                                }
+                                res.send(info);
+                                res.end();
+                                db.close();
                             }
                         }
                         else {
@@ -650,6 +932,9 @@ module.exports = {
                                 stat: false,
                                 msg: err
                             }
+                            db.close();
+                            res.send(info);
+                            res.end();
                         }
                     } else {
                         //res.json({ error: err });
@@ -657,10 +942,12 @@ module.exports = {
                             stat: false,
                             msg: err
                         }
+                        db.close();
+                        res.send(info);
+                        res.end();
 
                     };
-                    res.send(info);
-                    res.end();
+
                     db.close();
                 });
             }, (err) => {
@@ -711,13 +998,13 @@ module.exports = {
         });
 
         console.log('SMTP Configured');
-        readHTMLFile(template, function(err, html) {
-    var template = handlebars.compile(html);
-    var replacements = {
-         username: "Chaithanya Bola"
-    };
-    var htmlToSend = template(replacements);
-     var message = {
+        readHTMLFile(template, function (err, html) {
+            var template = handlebars.compile(html);
+            var replacements = {
+                username: "Chaithanya Bola"
+            };
+            var htmlToSend = template(replacements);
+            var message = {
 
                 // sender info
                 from: 'spanadana.bola@capgemini.com',
@@ -733,12 +1020,12 @@ module.exports = {
                 // HTML body
                 html: `${htmlToSend}`
             };
-        // ejs.renderFile(template, 'utf8', (err, html) => {
-        //     if (err) console.log(err); // Handle error
+            // ejs.renderFile(template, 'utf8', (err, html) => {
+            //     if (err) console.log(err); // Handle error
 
-        //     console.log(`HTML: ${html}`);
+            //     console.log(`HTML: ${html}`);
 
-           
+
 
             console.log('Sending Mail');
             transport.sendMail(message, function (error) {

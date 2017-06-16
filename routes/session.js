@@ -27,16 +27,20 @@ router.get("/scheduler", service.scheduler);
 router.get("/getClientApps", service.getClientApps);
 
 router.get("/getApp", service.getApp);
+router.get("/deleteApp", service.deleteApp);
 router.post("/updateApp", service.updateApp);
 router.post("/configApp", service.configApp);
+router.post("/configSuite", service.configSuite);
 
 router.get("/getClientApp/:id", service.getClientApp);
 
 router.post("/createClient", service.createClient)
 
 router.post("/saveTestSuite", service.saveTestSuite);
+router.get("/testAppChange", service.testAppChange);
 
 router.get("/getTestSuite", service.getTestSuite);
+router.get("/delSuites", service.delSuites);
 
 router.get("/logout", service.logout);
 module.exports = router;
