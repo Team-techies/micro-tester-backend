@@ -16,7 +16,7 @@
 
 
             <div class="col-sm-3">
-                <div ng-click="show(data)" class="offer offer-radius offer-primary">
+                <div class="offer offer-radius offer-primary">
 					<div class="shape">
 						<div class="shape-text">
 							{{$index}}								
@@ -27,7 +27,8 @@
 							{{data.suiteName}}
 						</h3>						
 						<p ng-bind="data.date |  date:'MM/dd/yyyy'">
-							<br> more..
+                             <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
+                            <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>
 						</p>
 					</div>
 				</div>

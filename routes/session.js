@@ -41,6 +41,7 @@ router.get("/testAppChange", service.testAppChange);
 
 router.get("/getTestSuite", service.getTestSuite);
 router.get("/delSuites", service.delSuites);
+router.get("/delSuite/:id", service.delSuite);
 
 router.get("/logout", service.logout);
 module.exports = router;

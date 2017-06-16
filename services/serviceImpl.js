@@ -415,12 +415,71 @@ module.exports = {
         // ses.email="spandanabola@gmail.com";
 
     },
+    delSuite: (req, res) => {
+        ses = req.session;
+        if (ses.email) {
+            const mongoose = require("mongoose");
+            mongoose.Promise = require("bluebird");
+            var getTestSuites = require('../models/testSuites.js');
+            var GetTestSuites = mongoose.model('testsuites', getTestSuites);
+            mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+                console.log("spandana");
+                // console.log(req.body);
+                var db = mongoose.connection.db;
+                //  console.log(req.body);
+                // var per = {};
+                // for (var key in req.body) {
+                //     per = JSON.parse(key);
+                // }
+                console.log("database connected to " + db.databaseName);
+                //console.log(ses.sesId);
+                console.log("inside remove test suites");
+                var getTestSuite = new GetTestSuites();
+                GetTestSuites.remove({ "_id": req.params.id }, (err) => {
+                    if (!err) {
+                        //console.log(docs);
+                        info = {
+                            stat: true
+                        }
+
+
+                    } else {
+                        //res.json({ error: err });
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+                    };
+                    res.send(info);
+                    res.end();
+                    db.close();
+                });
+            }, (err) => {
+                //res.json({ error: err });
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+            });
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to see testsuites"
+            }
+            res.send(info);
+            res.end();
+        }
+        // ses.email="spandanabola@gmail.com";
+
+    },
     saveTestSuite: (req, res) => {
         ses = req.session;
         // ses.id=parseInt(1);
         if (ses.email) {
 
-            console.log(req.body._id);
+            console.log(req.body);
             const mongoose = require("mongoose");
             mongoose.Promise = require("bluebird");
             var testSuites = require('../models/testSuites.js');

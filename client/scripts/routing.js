@@ -18,7 +18,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
         .state('testClient', {
             url: "/testClient",
-            templateUrl: "../views/tester.html"
+            templateUrl: "../views/tester.html",
+            controller: "formController",
+            controllerAs:"formCtrl",
+            params:{
+                suite:{},
+                requests:[]
+            }
         })
         .state('appSettings', {
             url: "/appSettings",
@@ -40,7 +46,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
 
 app.controller('routeController', function ($scope, $http, $window) {
     $scope.appData = {};
-    $scope.user={};
+    $scope.user = {};
     // $scope.getData=function(data){
     //      $http({
     //         url: '/api/call/'+data,
@@ -54,7 +60,7 @@ app.controller('routeController', function ($scope, $http, $window) {
     //         });
     // };
     //  $scope.getData("hello");
-   $scope.changePwd = function () {
+    $scope.changePwd = function () {
         console.log("hell0");
         $http({
             url: '/api/changePwd',
@@ -99,31 +105,31 @@ app.controller('routeController', function ($scope, $http, $window) {
             console.log(err);
         });
     };
-     $scope.deleteApp = function () {
+    $scope.deleteApp = function () {
         console.log("hell0");
-        var confm = confirm("You want to delete the application "+$scope.appData.title);
+        var confm = confirm("You want to delete the application " + $scope.appData.title);
         if (confm == true) {
             $http({
-            url: '/deleteApp',
-            method: "GET",
-            // data: $scope.user,
-            // headers: { 'Content-Type': 'application/json' }
-        }).then(function (response) {
-            console.log(response.data.stat);
-            if (response.data.stat) {
-                $scope.appData = {};
-                $window.location.href = '../views/dashboard.html';
-            } else if (response.data.msg === "please login to create app ") {
-                $window.location.href = '../views/index.html';
-            }
-            else {
-                alert(response.data.msg);
-            }
-        }, function (err) {
-            console.log(err);
-        });
+                url: '/deleteApp',
+                method: "GET",
+                // data: $scope.user,
+                // headers: { 'Content-Type': 'application/json' }
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.appData = {};
+                    $window.location.href = '../views/dashboard.html';
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
+                console.log(err);
+            });
         }
-        
+
     };
     $scope.logout = function () {
         console.log("logout");
@@ -211,13 +217,18 @@ app.controller('routeController', function ($scope, $http, $window) {
     }
 });
 
-app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', function ($scope, $http, $modal, $location, $window) {
+app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams','$state', function ($scope, $http, $modal, $location, $window,$stateParams,$state) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
     $scope.showData = [];
     $scope.startTime = "";
     $scope.suites = [];
     $scope.testsuite = {};
+
+    $scope.testsuite = $stateParams.suite;
+    $scope.showData = $stateParams.requests;
+
+
     var id = 0;
     var counter = 0;
     $scope.data = false
@@ -444,7 +455,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
         }).then(function successCallback(response) {
             if (response.data.stat) {
                 alert("successfully saved the testSuite");
-                $scope.showData=[];
+                $scope.showData = [];
             } else if (response.data.msg === "please login to create app ") {
                 $window.location.href = '../views/index.html';
             }
@@ -459,9 +470,8 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     }
     $scope.saveRequestSuite = function () {
 
-        if ($scope.testsuite.testSuiteName == undefined) {
             var testSuiteName;
-            var tempName = prompt("Please Enter Test Suite Name :", "");
+            var tempName = prompt("Please Enter Test Suite Name :", $scope.testsuite.suiteName);
             if (tempName == null || tempName == "") {
                 testSuiteName = "TestSuite";
             } else {
@@ -470,15 +480,10 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
             if (testSuiteName != "") {
 
-                var testSuiteData = $scope.showData;
-                $scope.testsuite = { "suiteName": testSuiteName, "test_suites": testSuiteData, "isScheduled": false, "frequency": "*****" };
+               $scope.testsuite.test_suites = $scope.showData;
                 $scope.saveData();
 
             }
-
-        } else {
-            $scope.saveData();
-        }
 
     };
 
@@ -504,11 +509,14 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     };
 
     $scope.show = function (data) {
-        $scope.showData = data.test_suites;
-        $scope.hello = "spandana";
-
+        //$scope.showData = data.test_suites;
+        //$scope.hello = "spandana";
+        $state.go("testClient", {
+            suite:data,
+            requests: data.test_suites
+        });
         console.log($scope.showData);
-        $location.path("/testClient");
+        //$location.path("/testClient");
     };
 
 

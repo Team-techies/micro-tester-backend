@@ -128,7 +128,7 @@ saveTest:function(data,app){
             });
 },
 hitApi :function (data,app) {
-
+         counter = 0;
         var jsonHeader = JSON.parse(data.header);
 
         fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader })
@@ -146,7 +146,7 @@ hitApi :function (data,app) {
             counter = counter + 1;
             if (counter < data.length) {
                 data[counter].startTime = new Date().getTime();
-                this.hitApi(data[counter]);
+                this.hitApi(data[counter],app);
             }else{
                 //server store
                 this.saveTest(data,app);
@@ -163,7 +163,7 @@ hitApi :function (data,app) {
             counter = counter + 1;
             if (counter < data.length) {
                 data[counter].startTime = new Date().getTime();
-                hitApi(data[counter]);
+                this.hitApi(data[counter],app);
             }else{
                 
                 this.saveTest(data,app);
@@ -173,12 +173,12 @@ hitApi :function (data,app) {
     },
 
 testApi :function (data,app) {
-        counter = 0;
+       
 
-        for (let i = 0; i < data.length; i++) {
-            data[i].status = "Processing";
+        // for (let i = 0; i < data.length; i++) {
+        //     data[i].status = "Processing";
 
-        }
+        // }
         //  $scope.showData[0].responseTime.push({"startTime":new Date().getTime(), "endTime":""});
        data[0].startTime = new Date().getTime();
         this.hitApi(data[0],app);
@@ -186,6 +186,7 @@ testApi :function (data,app) {
     },
 
 scheduler:function(data) {
+    console.log(data.suiteName+ "started");
     schedule.scheduleJob(data.suiteName, data.frequency, function () {
         console.log(schedule.scheduledJobs[docs[i].suiteName]);
         this.testApi(data.test_suites,data);
