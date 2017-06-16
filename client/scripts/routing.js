@@ -235,7 +235,32 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     $scope.read = true;
     $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
     $scope.showTestSuiteConfiguration = false;
+     $scope.deleteSuite = function (data) {
+        console.log("hell0");
+        var confm = confirm("You want to delete the application " + $scope.appData.title);
+        if (confm == true) {
+            $http({
+                url: '/delSuite'+data._id,
+                method: "GET",
+                // data: $scope.user,
+                // headers: { 'Content-Type': 'application/json' }
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.appData = {};
+                    $window.location.href = '../views/dashboard.html';
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
+                console.log(err);
+            });
+        }
 
+    };
     $scope.showConfiguration = function () {
 
         for (var i = 0; i < $scope.suites.length; i++) {
