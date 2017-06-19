@@ -1,0 +1,1 @@
+var app = angular.module('microTester', ['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives', 'angular-cron-jobs']);

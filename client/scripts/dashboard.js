@@ -1,7 +1,8 @@
-var app = angular.module('myTool',[]);
+var app = angular.module('microTester');
 
-app.controller('addCard', function ($scope,$http,$window) {
-    $scope.apps=[];
+app.controller('DashboardController', ['$scope','$http','$window', function($scope, $http, $window){
+
+     $scope.apps=[];
     $scope.app={};
     $scope.getUser = function () {
         console.log("hell0");
@@ -93,4 +94,5 @@ app.controller('addCard', function ($scope,$http,$window) {
 
     }
     
-});
+
+}]);

@@ -25,10 +25,11 @@
 					<div class="offer-content">
 						<h3 class="lead">
 							{{data.suiteName}}
-						</h3>						
+						</h3>					
+                         <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
+                            <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>	
 						<p ng-bind="data.date |  date:'MM/dd/yyyy'">
-                             <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
-                            <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>
+                            
 						</p>
 					</div>
 				</div>

@@ -5,18 +5,32 @@
   <title>Tool</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../library/angular/angular.min.js"></script>
+   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+  <script src="../scripts/app.js"></script>
+  <script src="../scripts/login-Register.js"></script>
+ 
+  <script src="../library/@uirouter/angularjs/release/angular-ui-router.js"></script>
+  <script src="../scripts/d3.js"></script>
+  <script src="../scripts/angularjs-nvd3-directives.js"></script>
+  <script src="../scripts/nv.d3.js"></script>
+  <link rel="stylesheet" href="../styles/nv.d3.css" />
+  <script src="../scripts/angular-cron-jobs.js"></script>
+  <link rel="stylesheet" href="../styles/angular-cron-jobs.less" />
+  <link rel="stylesheet" href="../styles/angular-cron-jobs.css" />
   <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
-  <script src="../library/angular/angular.min.js"></script>
+
   <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
   <script src="../library/jquery/dist/jquery.min.js"></script>
   <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="../scripts/script.js"></script>
+
 </head>
 
-<body ng-app="myApp" ng-controller="myCtrl">
+<body ng-app="microTester">
+  
 
   <div class="container">
     <div class="jumbotron text-center">
@@ -38,17 +52,25 @@
             <h3> <span class="glyphicon glyphicon-user"></span> Register User</h3>
           </div>
 
-          <div class="modal-body">
+          <div ng-controller="RegisterController" class="modal-body">
 
             <form name='registerForm'>
+
+
+
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="name" ng-model="newUser.first" type="text" class="form-control" name="registerForm.first" placeholder="Enter Your FirstName">
-              </div><br>
-              <div class="input-group">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input id="name" ng-model="newUser.last" type="text" class="form-control" name="registerForm.last" placeholder="Enter Your LastName">
+
+                <input id="fname" style="width: 50%" ng-model="newUser.first" type="text" class="form-control" name="registerForm.first"
+                  placeholder="Enter Your First Name" required>
+                <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+
+                <input id="lname" style="width: 50%" ng-model="newUser.last" type="text" class="form-control" name="registerForm.last" placeholder="Enter Your Last Name"
+                  required>
+
               </div>
+
+
               <br>
 
 
@@ -76,12 +98,24 @@
                 <input id="password" ng-model="newUser.pwd" type="password" class="form-control" name="loginForm.rePassword" placeholder="Re-Enter Password">
               </div>
               <br>
-              <div>
+              <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                  <input type="submit" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="registerUser()"
+                    value="Register">
+                </div>
+
+                <div class="col-sm-3">
+                  <input type="reset" class="btn btn-primary btn-block btn-primary btn-md"  value="Reset">
+                </div>
+                <div class="col-sm-3"></div>
+              </div>
+              <!--   <div>
 
                 <input type="button" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="registerUser()"
                   value="Register">
                 <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
-              </div>
+              </div>-->
             </form>
 
 
@@ -103,7 +137,7 @@
             <h3>Login</h3>
           </div>
 
-          <div class="modal-body">
+          <div ng-controller="LoginController" class="modal-body">
 
             <form name='loginForm'>
               <div class="input-group">
