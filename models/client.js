@@ -35,7 +35,8 @@ var clientSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    },isScheduled: {
+    },
+    isScheduled: {
         type: Boolean,
         default: false
     },

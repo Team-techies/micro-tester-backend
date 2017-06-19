@@ -34,7 +34,20 @@ var testCaseSchema = new Schema({
         startTime:Number,
         endTime:Number
     }],
-    error:String
+    error:{
+        time:{
+            type:Date,
+            default:Date.now
+        },
+        message:String
+    },
+    success:{
+        time:{
+            type:Date,
+            default:Date.now
+        },
+        message:String
+    }
 });
 
 module.exports = testCaseSchema;
