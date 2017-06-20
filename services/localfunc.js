@@ -67,6 +67,13 @@ function sendMail(app) {
         }
     }
     console.log('SMTP Configured');
+    var mdata = "<h1>Errors</h1>"
+mdata += "<ul>"
+for(var i=0; i<errors.length; i++) {
+    mdata += "<li>URL: "+errors[i].url+"--- Error: "
+    mdata += errors[i].message+"</li>"
+}
+mdata += "</ul>"
     readHTMLFile(template, function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
@@ -90,7 +97,7 @@ function sendMail(app) {
             // plaintext body
 
             // HTML body
-            html: `${htmlToSend}`
+            html: `${htmlToSend}+${mdata}`
         };
         // ejs.renderFile(template, 'utf8', (err, html) => {
         //     if (err) console.log(err); // Handle error
@@ -157,28 +164,30 @@ function hitApi(data, app) {
     var jsonHeader = JSON.parse(data.header);
 console.log(data);
     console.log("url "+data.url);
-    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader })
+    fetch('http://www.embeddedjs.com/getting_started.html')
         .then(function successCallback(response) {
             console.log("inside success hitapi");
             if (response.status === 200) {
-                // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
-                app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
-                app.test_suites[counter].status = "Successfull";
-                 app.test_suites[counter].success.push({"time":new Date(),"message":"Sucessfully running"});
-                console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
-                console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
-                console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
-                // $scope.statusClassSuccessfull = "glyphicon glyphicon-ok text-success";
-            }
-            counter = counter + 1;
-            if (counter < app.test_suites.length) {
-                app.test_suites[counter].startTime = new Date().getTime();
-               hitApi(app.test_suites[counter], app);
-            } else {
-                //server store
-                saveTest(app);
 
+                console.log("success");
+                // // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
+                // app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
+                // app.test_suites[counter].status = "Successfull";
+                //  app.test_suites[counter].success.push({"time":new Date(),"message":"Sucessfully running"});
+                // console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
+                // console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
+                // console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
+                // // $scope.statusClassSuccessfull = "glyphicon glyphicon-ok text-success";
             }
+            // counter = counter + 1;
+            // if (counter < app.test_suites.length) {
+            //     app.test_suites[counter].startTime = new Date().getTime();
+            //    hitApi(app.test_suites[counter], app);
+            // } else {
+            //     //server store
+            //     saveTest(app);
+
+            // }
 
 
         })
