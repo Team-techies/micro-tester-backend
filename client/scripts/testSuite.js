@@ -19,7 +19,11 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
    // $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
     $scope.showTestSuiteConfiguration = false;
      $scope.deleteSuite = function (data) {
+
         console.log("hell0");
+
+        console.log("hell0 delete");
+
         var confm = confirm("You want to delete the testsuite " + data.suiteName);
         if (confm == true) {
             $http({
@@ -287,6 +291,9 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             }
 
             if (testSuiteName != "") {
+
+
+
                 $scope.testsuite.suiteName=testSuiteName;
                $scope.testsuite.test_suites = $scope.showData;
                 $scope.saveData();

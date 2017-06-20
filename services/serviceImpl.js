@@ -209,11 +209,12 @@ module.exports = {
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
             var db = mongoose.connection.db;
             console.log("database connected to " + db.databaseName);
-            var getTestSuite = new GetTestSuite();
+          //  var getTestSuite = new GetTestSuite();
             GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
                 if (!err) {
                     //console.log(docs);
                     for (var i = 0; i < docs.length; i++) {
+                        console.log("inside docs");
                         local.scheduler(docs[i]);
                     }
                     info = {
