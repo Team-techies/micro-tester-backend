@@ -1,9 +1,17 @@
+<div class="row">
+   <div class="col-sm-5"></div>
+        <div class="col-sm-4">
+                        <h3><i>Configure Test Suite</i></h3>
+                    </div>
+</div>
+
+
 <div class="container">
 
     <div>
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#app">Applicaton</a></li>
-            <li><a data-toggle="tab" href="#testsiute">Test Suite</a></li>
+            <li class="active"><a ui-sref=".testAppsettings">Applicaton</a></li>
+            <li><a ui-sref=".testTSuiteSettings">Test Suite</a></li>
 
         </ul>
     </div>
@@ -11,7 +19,9 @@
 
     <div class="tab-content">
 
-        <div id="app" class="tab-pane fade in active">
+        <div ui-view></div>
+
+        <!--<div id="app" class="tab-pane fade in active">
 
             <br>
 
@@ -77,11 +87,11 @@
 
 
 
-        </div>
+        </div>-->
 
         <!-- ############################################################ -->
 
-        <div id="testsiute" ng-controller="formController" class="tab-pane fade" ng-init="getTestSuite()">
+       <!-- <div id="testsiute" ng-controller="formController" class="tab-pane fade" ng-init="getTestSuite()">
             <br>
 
             <div ng-show="suites == undefined" class="container">
@@ -167,7 +177,7 @@
 
 
 
-        </div>
+        </div>-->
 
     </div>
 

@@ -1,6 +1,6 @@
 var app = angular.module('microTester');
 
-app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams','$state', function ($scope, $http, $modal, $location, $window,$stateParams,$state) {
+app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
     $scope.showData = [];
@@ -11,43 +11,18 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     $scope.testsuite = $stateParams.suite;
     $scope.showData = $stateParams.requests;
 
+    function onload() {
+        $state.go('testClient.testerHeader');
+       
+    } onload();
 
     var id = 0;
     var counter = 0;
     $scope.data = false
     $scope.read = true;
-   // $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
-    $scope.showTestSuiteConfiguration = false;
-     $scope.deleteSuite = function (data) {
-
-        console.log("hell0");
-
-        console.log("hell0 delete");
-
-        var confm = confirm("You want to delete the testsuite " + data.suiteName);
-        if (confm == true) {
-            $http({
-                url: '/delSuite/'+data._id,
-                method: "GET",
-                // data: $scope.user,
-                // headers: { 'Content-Type': 'application/json' }
-            }).then(function (response) {
-                console.log(response.data.stat);
-                if (response.data.stat) {
-                    $scope.appData = {};
-                  location.reload();
-                } else if (response.data.msg === "please login to create app ") {
-                    $window.location.href = '../views/index.html';
-                }
-                else {
-                    alert(response.data.msg);
-                }
-            }, function (err) {
-                console.log(err);
-            });
-        }
-
-    };
+    // $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
+   /* $scope.showTestSuiteConfiguration = false;
+ 
     $scope.showConfiguration = function () {
 
         for (var i = 0; i < $scope.suites.length; i++) {
@@ -57,7 +32,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             $scope.showTestSuiteConfiguration = true;
             console.log($scope.testsuite);
         }
-    }
+    }*/
 
     $scope.hideConfiguration = function () {
         $scope.showTestSuiteConfiguration = false;
@@ -284,23 +259,101 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     }
     $scope.saveRequestSuite = function () {
 
-            var testSuiteName;
-            var tempName = prompt("Please Enter Test Suite Name :", $scope.testsuite.suiteName);
-            if (tempName == null || tempName == "") {
-                testSuiteName = "TestSuite";
-            } else {
-                testSuiteName = tempName;
+        var testSuiteName;
+        var tempName = prompt("Please Enter Test Suite Name :", $scope.testsuite.suiteName);
+        if (tempName == null || tempName == "") {
+            testSuiteName = "TestSuite";
+        } else {
+            testSuiteName = tempName;
+        }
+
+        if (testSuiteName != "") {
+
+
+
+            $scope.testsuite.suiteName = testSuiteName;
+            $scope.testsuite.test_suites = $scope.showData;
+            $scope.saveData();
+
+        }
+
+    };
+
+   /* $scope.getTestSuite = function () {
+
+        $http({
+            method: "GET",
+            url: "/getTestSuite",
+        }).then(function successCallback(response) {
+            if (response.data.stat) {
+                if (response.data.doc.length != 0) {
+                    $scope.suites = response.data.doc;
+                }
+                else {
+                    $scope.suites = undefined;
+                }
+
+            } else if (response.data.msg === "please login to create app ") {
+                $window.location.href = '../views/index.html';
             }
-
-            if (testSuiteName != "") {
-
-
-
-                $scope.testsuite.suiteName=testSuiteName;
-               $scope.testsuite.test_suites = $scope.showData;
-                $scope.saveData();
-
+            else {
+                alert(response.data.msg);
             }
+        }, function errorCallback(err) {
+            console.log(response.data.msg);
+            alert(response.data.msg);
+
+        });
+    };*/
+
+
+
+
+}]);
+
+
+app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state){
+
+
+    $scope.show = function (data) {
+        //$scope.showData = data.test_suites;
+        //$scope.hello = "spandana";
+        $state.go("testClient", {
+            suite: data,
+            requests: data.test_suites
+        });
+        console.log($scope.showData);
+        //$location.path("/testClient");
+    };
+
+       $scope.deleteSuite = function (data) {
+
+        console.log("hell0");
+
+        console.log("hell0 delete");
+
+        var confm = confirm("You want to delete the testsuite " + data.suiteName);
+        if (confm == true) {
+            $http({
+                url: '/delSuite/' + data._id,
+                method: "GET",
+                // data: $scope.user,
+                // headers: { 'Content-Type': 'application/json' }
+            }).then(function (response) {
+                console.log(response.data.stat);
+                if (response.data.stat) {
+                    $scope.appData = {};
+                    location.reload();
+                } else if (response.data.msg === "please login to create app ") {
+                    $window.location.href = '../views/index.html';
+                }
+                else {
+                    alert(response.data.msg);
+                }
+            }, function (err) {
+                console.log(err);
+            });
+        }
 
     };
 
@@ -312,12 +365,12 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
         }).then(function successCallback(response) {
             if (response.data.stat) {
                 if (response.data.doc.length != 0) {
-                     $scope.suites = response.data.doc;
+                    $scope.suites = response.data.doc;
                 }
                 else {
-                     $scope.suites = undefined;
+                    $scope.suites = undefined;
                 }
-               
+
             } else if (response.data.msg === "please login to create app ") {
                 $window.location.href = '../views/index.html';
             }
@@ -330,18 +383,6 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
         });
     };
-
-    $scope.show = function (data) {
-        //$scope.showData = data.test_suites;
-        //$scope.hello = "spandana";
-        $state.go("testClient", {
-            suite:data,
-            requests: data.test_suites
-        });
-        console.log($scope.showData);
-        //$location.path("/testClient");
-    };
-
 
 }]);
 

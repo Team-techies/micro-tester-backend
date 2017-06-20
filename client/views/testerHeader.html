@@ -1,0 +1,29 @@
+     <div  class="tab-pane fade in active">
+                        <!--<textarea name="header" class="form-control" ng-model="reqData.header" rows="5" id="comment" placeholder="Enter Header Ex - Content-Type:application/x-www-form-urlencoded"></textarea> -->
+
+                        <table class="table table-bordered">
+
+
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="row in rowMaker track by $index">
+                                <td><input type="text" name="key" ng-keydown="addRow($index)" class="form-control" ng-model="row.key"
+                                        placeholder="key" /> </td>
+                                <td>
+                                    <input type="text" name="value" class="form-control" ng-model="row.value" placeholder="value" />
+                                </td>
+                                <td class="crossButton">
+                                    <input type="button" ng-click="deleteRow($index)" value="&times;" />
+                                </td>
+
+                            </tr>
+
+
+                        </table>
+
+
+
+                    </div>
