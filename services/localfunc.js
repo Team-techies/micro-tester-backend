@@ -154,7 +154,7 @@ function hitApi(data, app) {
     var jsonHeader = JSON.parse(data.header);
 console.log(data);
     console.log("url "+data.url);
-    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: data.header })
+    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader })
         .then(function successCallback(response) {
             console.log("inside success hitapi");
             if (response.status === 200) {
