@@ -20,7 +20,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     $scope.showTestSuiteConfiguration = false;
      $scope.deleteSuite = function (data) {
         console.log("hell0");
-        var confm = confirm("You want to delete the testsuite " + $scope.testsuite.suiteName);
+        var confm = confirm("You want to delete the testsuite " + data.suiteName);
         if (confm == true) {
             $http({
                 url: '/delSuite/'+data._id,
@@ -31,7 +31,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
                 console.log(response.data.stat);
                 if (response.data.stat) {
                     $scope.appData = {};
-                    $window.location.href = '../views/dashboard.html';
+                  location.reload();
                 } else if (response.data.msg === "please login to create app ") {
                     $window.location.href = '../views/index.html';
                 }
@@ -287,7 +287,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             }
 
             if (testSuiteName != "") {
-
+                $scope.testsuite.suiteName=testSuiteName;
                $scope.testsuite.test_suites = $scope.showData;
                 $scope.saveData();
 
@@ -302,7 +302,13 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             url: "/getTestSuite",
         }).then(function successCallback(response) {
             if (response.data.stat) {
-                $scope.suites = response.data.doc
+                if (response.data.doc.length != 0) {
+                     $scope.suites = response.data.doc;
+                }
+                else {
+                     $scope.suites = undefined;
+                }
+               
             } else if (response.data.msg === "please login to create app ") {
                 $window.location.href = '../views/index.html';
             }

@@ -1,5 +1,5 @@
 <div ng-controller="formController"  ng-init="getTestSuite()">
-<div ng-hide='suites.length!=0'>
+<div ng-hide='suites != undefined'>
 
 
             <div class="container">
@@ -11,7 +11,7 @@
             </div>
 
         </div>
-        <div ng-repeat="data in suites">
+        <div ng-show="suites != undefined" ng-repeat="data in suites">
 
 
 
