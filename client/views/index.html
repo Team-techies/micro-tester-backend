@@ -2,14 +2,31 @@
 <html lang="en">
 
 <head>
+
+  <style>
+    body {
+    background-image: url("../images/apiBack1.jpg");
+    height: 100%;
+    width: 100%;
+
+    /* Center and scale the image nicely */
+
+    background-repeat: no-repeat;
+    background-size: cover;
+  
+} 
+
+  </style>
+
+
   <title>Tool</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../library/angular/angular.min.js"></script>
-   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+  <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
   <script src="../scripts/app.js"></script>
   <script src="../scripts/login-Register.js"></script>
- 
+
   <script src="../library/@uirouter/angularjs/release/angular-ui-router.js"></script>
   <script src="../scripts/d3.js"></script>
   <script src="../scripts/angularjs-nvd3-directives.js"></script>
@@ -24,20 +41,35 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
 
   <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
+      <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap-theme-yeti.min.css">
   <script src="../library/jquery/dist/jquery.min.js"></script>
   <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </head>
 
-<body ng-app="microTester">
-  
+<body  ng-app="microTester">
 
-  <div class="container">
-    <div class="jumbotron text-center">
-      <h1>Test Tool</h1>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  <div  class="container">
+
+    <div class="row">
+
+      <div class="col-sm-4 col-sm-offset-4 ">
+       <b> <h1 style = " color: #0f2e39;font-family:'Times New Roman', Georgia, Serif;">
+          &nbsp Micro Tester Tool</h1></b>
+        <p>!!! Tool which help to test your API performance !!!</p>
+      </div>
+
+    </div>
+
+    <div  >
+    </div>
+
+    <div class="col-sm-4 col-sm-offset-5">
       <div class="btn-group">
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#login">Login</button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#register">Register</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#register">Register</button>
       </div>
     </div>
     <!-- Modal -->
@@ -63,8 +95,7 @@
 
                 <input id="fname" style="width: 50%" ng-model="newUser.first" type="text" class="form-control" name="registerForm.first"
                   placeholder="Enter Your First Name" required>
-                <span class="glyphicon glyphicon-ok form-control-feedback"></span>
-
+             
                 <input id="lname" style="width: 50%" ng-model="newUser.last" type="text" class="form-control" name="registerForm.last" placeholder="Enter Your Last Name"
                   required>
 
@@ -106,7 +137,7 @@
                 </div>
 
                 <div class="col-sm-3">
-                  <input type="reset" class="btn btn-primary btn-block btn-primary btn-md"  value="Reset">
+                  <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
                 </div>
                 <div class="col-sm-3"></div>
               </div>
