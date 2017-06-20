@@ -591,12 +591,19 @@ module.exports = {
             var TestSuite = mongoose.model('testsuites', testSuites);
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
                 var status = false;
-                if (req.body.frequency != null) {
+                var frequency="";
+                if(req.body.unScheduled){
+                    status=false;
+                }
+                else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
                     status = true;
+                    frequency=req.body.frequency;
+                }else{
+                    status=false;
                 }
 
                 var db = mongoose.connection.db;
-                TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': req.body.frequency } }, function (err, doc) {
+                TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': frequency } }, function (err, doc) {
                     if (!err) {
                         info = {
                             stat: true
@@ -947,10 +954,17 @@ module.exports = {
                 var db = mongoose.connection.db;
                 console.log("database connected to " + db.databaseName);
                 var status = false;
-                var freq = "";
-                if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
+                var frequency = "";
+                if(req.body.unScheduled){
+                    status=false;
+                }
+                else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
                     status = true;
+                    frequency=req.body.frequency;
 
+                }
+                else{
+                    status=false;
                 }
                 //console.log(ses.sesId);
                 var getApp = new GetApp();
@@ -959,7 +973,7 @@ module.exports = {
                         "to": req.body.to,
                         "cc": req.body.cc,
                         "bcc": req.body.bcc,
-                        "frequency": req.body.frequency,
+                        "frequency": frequency,
                         "isScheduled": status
                     }
                 }).exec((err, docs) => {

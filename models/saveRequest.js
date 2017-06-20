@@ -36,11 +36,15 @@ var testCaseSchema = new Schema({
     }],
     error:[{
         time:Date,
-        message:String
+        message:{
+            type:String,
+            default:""}
     }],
     success:[{
         time:Date,
-        message:String
+        message:{
+            type:String,
+            default:""}
     }]
 });
 

@@ -2,6 +2,10 @@ var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 var fetch = require('node-fetch');
 var handlebars = require('handlebars');
+
+const httpProxyAgent = require('http-proxy-agent');
+const agent = new httpProxyAgent("http://cis-india-pitc-bangalorez.proxy.corporate.ge.com:80"); 
+
 var fs = require('fs');
 
 var ejs = require('ejs');
@@ -12,10 +16,11 @@ function sendMail(app) {
     const mongoose = require("mongoose");
     //console.log(req.params.id)
     // ses.id=1;
-    var appName = "";
+    var appName ="";
     mongoose.Promise = require("bluebird");
     var getClientApps = require('../models/client.js');
     var GetClientApp = mongoose.model('clients', getClientApps);
+    console.log("connection open in sendMail");
     mongoose.connect("mongodb://localhost/SampleDB").then(() => {
         var db = mongoose.connection.db;
         console.log("database connected to " + db.databaseName);
@@ -27,6 +32,7 @@ function sendMail(app) {
                 console.log(docs.title);
                 appName = docs.title;
                  db.close();
+                 console.log("connection closed in sendMail");
 
             } else {
                 db.close();
@@ -57,29 +63,12 @@ function sendMail(app) {
         host: 'smtp.geips.ge.com',
         port: 25
     });
-    var errors = [];
-    for (var i = 0; i < app.test_suites.length; i++) {
-        if (app.test_suites[i].status == "Failed") {
-            errors.push({"url":app.test_suites[i].url,"message":app.test_suites[i].error[(app.test_suites[i].error.length)-1].message});
-            //errors = errors + "****" + app.test_suites[i].url + "----" + app.test_suites[i].error
-        }else{
-            continue;
-        }
-    }
-    console.log('SMTP Configured');
-    var mdata = "<h1>Errors</h1>"
-mdata += "<ul>"
-for(var i=0; i<errors.length; i++) {
-    mdata += "<li>URL: "+errors[i].url+"--- Error: "
-    mdata += errors[i].message+"</li>"
-}
-mdata += "</ul>"
+    
     readHTMLFile(template, function (err, html) {
         var template = handlebars.compile(html);
         var replacements = {
             appname: appName,
-            suitename: app.suiteName,
-            error: errors
+            suitename: app.suiteName
         };
         var htmlToSend = template(replacements);
         var message = {
@@ -103,8 +92,26 @@ mdata += "</ul>"
         //     if (err) console.log(err); // Handle error
 
         //     console.log(`HTML: ${html}`);
+        var errors = [];
                 console.log('Sending Mail');
         if(appName!=""){
+            
+    for (var i = 0; i < app.test_suites.length; i++) {
+        if (app.test_suites[i].status == "Failed") {
+            errors.push({"url":app.test_suites[i].url,"message":app.test_suites[i].error[(app.test_suites[i].error.length)-1].message});
+            //errors = errors + "****" + app.test_suites[i].url + "----" + app.test_suites[i].error
+        }else{
+            continue;
+        }
+    }
+    console.log('SMTP Configured');
+    var mdata = "<h1>Errors</h1>"
+mdata += "<ul>"
+for(var i=0; i<errors.length; i++) {
+    mdata += "<li>URL: "+errors[i].url+"--- Error: "
+    mdata += errors[i].message+"</li>"
+}
+mdata += "</ul>"
                  transport.sendMail(message, function (error) {
             if (error) {
                 console.log('Error occured');
@@ -130,22 +137,28 @@ function saveTest(app) {
     var testSuites = require('../models/testSuites.js');
     var TestSuite = mongoose.model('testsuites', testSuites);
     mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+        console.log("connection open in saveTest");
         console.log("inside saveTest");
         console.log(app.test_suites);
         var db = mongoose.connection.db;
         TestSuite.update({ '_id': app._id }, { $set: { 'test_suites': app.test_suites } }, function (err, doc) {
             if (!err) {
                  db.close();
-                for(var i=0;i<app.test_suites.length;i++){
+                 console.log("connection closed in saveTest");
+            if(doc!=null || doc.length!=0){
+                 for(var i=0;i<app.test_suites.length;i++){
                     if(app.test_suites[i].status==="Failed"){
                        
                         console.log("inside for loop");
+                         console.log("stored successfully");
                         sendMail(app);
                         break;
                     }
                }
+            }
+               
                 
-                console.log("stored successfully");
+               
             } else {
                 db.close();
                 console.log("error occured" + err);
@@ -158,36 +171,37 @@ function saveTest(app) {
 
     });
 }
-
+//data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader }
 function hitApi(data, app) {
 
     var jsonHeader = JSON.parse(data.header);
 console.log(data);
     console.log("url "+data.url);
-    fetch('http://www.embeddedjs.com/getting_started.html')
+    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader, agent:agent })
         .then(function successCallback(response) {
             console.log("inside success hitapi");
+            console.log(response.status);
             if (response.status === 200) {
 
-                console.log("success");
-                // // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
-                // app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
-                // app.test_suites[counter].status = "Successfull";
-                //  app.test_suites[counter].success.push({"time":new Date(),"message":"Sucessfully running"});
-                // console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
-                // console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
-                // console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
-                // // $scope.statusClassSuccessfull = "glyphicon glyphicon-ok text-success";
+                console.log(success);
+                // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
+                app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
+                app.test_suites[counter].status = "Successfull";
+                 app.test_suites[counter].success.push({"time":new Date(),"message":"Sucessfully running"});
+                console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
+                console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
+                console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
+                // $scope.statusClassSuccessfull = "glyphicon glyphicon-ok text-success";
             }
-            // counter = counter + 1;
-            // if (counter < app.test_suites.length) {
-            //     app.test_suites[counter].startTime = new Date().getTime();
-            //    hitApi(app.test_suites[counter], app);
-            // } else {
-            //     //server store
-            //     saveTest(app);
+            counter = counter + 1;
+            if (counter < app.test_suites.length) {
+                app.test_suites[counter].startTime = new Date().getTime();
+               hitApi(app.test_suites[counter], app);
+            } else {
+                //server store
+                saveTest(app);
 
-            // }
+            }
 
 
         })

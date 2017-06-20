@@ -215,6 +215,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
                 // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
                 $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
                 $scope.showData[counter].status = "Successfull";
+                $scope.showData[counter].success.push({"time":new Date(),"message":"successfully running"});
                 console.log("Start Time - ", $scope.showData[counter].responseTime[0].startTime);
                 console.log("End Time - ", $scope.showData[counter].responseTime[0].endTime);
                 console.log("Response Time - ", $scope.showData[counter].responseTime[0].endTime - $scope.showData[counter].responseTime[0].startTime);
@@ -231,6 +232,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
             $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
             $scope.showData[counter].status = "Failed";
+            $scope.showData[counter].error.push({"time":new Date(),"message":err});
             $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
             counter = counter + 1;
             if (counter < $scope.showData.length) {
