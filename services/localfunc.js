@@ -203,7 +203,7 @@ function testApi(data, app) {
 
     // }
     //  $scope.showData[0].responseTime.push({"startTime":new Date().getTime(), "endTime":""});
-    data.startTime = new Date().getTime();
+    data[0].startTime = new Date().getTime();
     hitApi(data[0], app);
 
 }
@@ -213,9 +213,9 @@ module.exports = {
 
     scheduler: function (data) {
         console.log(data);
-        console.log(data._doc.suiteName + "started");
-        schedule.scheduleJob(data.suiteName, data._doc.frequency, function () {
-            console.log(schedule.scheduledJobs[data._doc.suiteName]);
+        console.log(data.suiteName + "started");
+        schedule.scheduleJob(data.suiteName, data.frequency, function () {
+            console.log(schedule.scheduledJobs[data.suiteName]);
             testApi(data.test_suites, data);
 
         });
