@@ -38,7 +38,7 @@ function sendMail(app) {
         //res.json({ error: err });
         console.log(err);
     });
-    const template = './services/email.html';
+    const template = './services/email.ejs';
 
     var readHTMLFile = function (template, callback) {
         fs.readFile(template, { encoding: 'utf-8' }, function (err, html) {
@@ -57,10 +57,10 @@ function sendMail(app) {
         host: 'smtp.geips.ge.com',
         port: 25
     });
-    var errors = "";
+    var errors = [];
     for (var i = 0; i < app.test_suites.length; i++) {
         if (app.test_suites[i].status == "Failed") {
-            errors.push({"url":app.test_suites[i].url,"message":app.test_suites[i].error[app.test_suites[i].error.length-1].message});
+            errors.push({"url":app.test_suites[i].url,"message":app.test_suites[i].error[(app.test_suites[i].error.length)-1].message});
             //errors = errors + "****" + app.test_suites[i].url + "----" + app.test_suites[i].error
         }else{
             continue;
@@ -97,7 +97,8 @@ function sendMail(app) {
 
         //     console.log(`HTML: ${html}`);
                 console.log('Sending Mail');
-                transport.sendMail(message, function (error) {
+        if(appName!=""){
+                 transport.sendMail(message, function (error) {
             if (error) {
                 console.log('Error occured');
                 console.log(error.message);
@@ -108,6 +109,8 @@ function sendMail(app) {
             // if you don't want to use this transport object anymore, uncomment following line
             //transport.close(); // close the connection pool
         });
+        }
+               
        
     });
     // Message object
@@ -161,7 +164,7 @@ console.log(data);
                 // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
                 app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
                 app.test_suites[counter].status = "Successfull";
-                 app.test_suites[counter].success.push({"message":"Sucessfully running"});
+                 app.test_suites[counter].success.push({"time":new Date(),"message":"Sucessfully running"});
                 console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
                 console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
                 console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
@@ -183,8 +186,7 @@ console.log(data);
              console.log("inside failure hitapi");
             app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
             app.test_suites[counter].status = "Failed";
-            app.test_suites[counter].error.push({"message":err});
-            // $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
+            app.test_suites[counter].error.push({"time":new Date(),"message":err});
             counter = counter + 1;
             if (counter < app.test_suites.length) {
                 app.test_suites[counter].startTime = new Date().getTime();
@@ -193,6 +195,8 @@ console.log(data);
 
                 saveTest(app);
             }
+            // $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
+            //app.test_suites[counter].error=err;
         });
 }
 function testApi(data, app) {
