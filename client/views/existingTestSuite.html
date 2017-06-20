@@ -1,39 +1,40 @@
-<div ng-controller="formController"  ng-init="getTestSuite()">
-<div ng-hide='suites != undefined'>
+<div ng-controller="formController" ng-init="getTestSuite()">
+    <div ng-hide='suites != undefined'>
 
 
-            <div class="container">
-                <div class="jumbotron">
-                    <h1>No Test Suites Found</h1>
+        <div class="container">
+            <div class="jumbotron">
+                <h1>No Test Suites Found</h1>
+            </div>
+            <p>Micro Testing Tool</p>
+
+        </div>
+
+    </div>
+    <div ng-show="suites != undefined" ng-repeat="data in suites">
+
+
+
+        <div class="col-sm-3">
+            <div class="offer offer-radius offer-primary">
+                <div class="shape">
+                    <div class="shape-text">
+                        {{$index}}
+                    </div>
                 </div>
-                <p>Micro Testing Tool</p>
+                <div class="offer-content">
+                    <h3 class="lead">
+                        {{data.suiteName}}
+                    </h3>
+                    <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
+                    <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>
+                    <br>
+                    <p ng-bind="data.date |  date:'MM/dd/yyyy'">
 
+                    </p>
+                </div>
             </div>
-
         </div>
-        <div ng-show="suites != undefined" ng-repeat="data in suites">
 
-
-
-            <div class="col-sm-3">
-                <div class="offer offer-radius offer-primary">
-					<div class="shape">
-						<div class="shape-text">
-							{{$index}}								
-						</div>
-					</div>
-					<div class="offer-content">
-						<h3 class="lead">
-							{{data.suiteName}}
-						</h3>					
-                         <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
-                            <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>	
-						<p ng-bind="data.date |  date:'MM/dd/yyyy'">
-                            
-						</p>
-					</div>
-				</div>
-            </div>
-
-        </div>
+    </div>
 </div>
