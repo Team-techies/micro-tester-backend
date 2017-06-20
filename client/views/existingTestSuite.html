@@ -1,4 +1,11 @@
-<div ng-controller="formController" ng-init="getTestSuite()">
+<div ng-controller="ViewTestSuiteController" ng-init="getTestSuite()">
+
+    <div ng-hide='suites == undefined' class="row">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-4">
+            <h3><i>Test Suites</i></h3>
+        </div>
+    </div>
     <div ng-hide='suites != undefined'>
 
 

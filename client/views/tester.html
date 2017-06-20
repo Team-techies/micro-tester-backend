@@ -38,15 +38,16 @@
             <div class="row"><br></div>
             <div class="row" style="margin-left: 1px;">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#header">HEADER</a></li>
-                    <li><a data-toggle="tab" href="#body">BODY</a></li>
+                    <li class="active"><a ui-sref=".testerHeader">HEADER</a></li>
+                    <li><a  ui-sref=".testerBody">BODY</a></li>
                 </ul>
 
 
                 <div class="tab-content">
-                    <div id="header" class="tab-pane fade in active">
-                        <!--<textarea name="header" class="form-control" ng-model="reqData.header" rows="5" id="comment" placeholder="Enter Header Ex - Content-Type:application/x-www-form-urlencoded"></textarea> -->
 
+                  <div ui-view></div>
+                   <!-- <div id="header" class="tab-pane fade in active">
+                       
                         <table class="table table-bordered">
 
 
@@ -75,7 +76,7 @@
                     </div>
                     <div id="body" class="tab-pane fade">
                         <textarea name="body" class="form-control" ng-model="reqData.body" rows="5" id="comment" placeholder="Enter Body"></textarea>
-                    </div>
+                    </div>-->
                 </div>
 
                 <div class="row"><br></div>

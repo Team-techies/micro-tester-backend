@@ -1,0 +1,84 @@
+<div ng-controller="TestSuiteSettingsController"  ng-init="getTestSuite()">
+            <br>
+
+            <div ng-show="suites == undefined" class="container">
+                <div class="jumbotron">
+                    <h1>No Test Suites Found</h1>
+                </div>
+                <p>Micro Testing Tool</p>
+
+            </div>
+
+            <div ng-show="suites != undefined" class="row">
+
+                <div class="col-md-2">
+                    <label> Test Suites :</label>
+                    <select ng-model="suite"  ng-change="showConfiguration()" ng-options="x.suiteName for x in suites" class="form-control">
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label> <br></label>
+             <!--       <input type="button" ng-click="showConfiguration()" value="Configure Test Suite" class="btn btn-primary btn-block" />-->
+                     <input type="button" ng-disabled="!showTestSuiteConfiguration"  ng-click="suiteConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary btn-block">
+                </div>
+
+            </div>
+            <br>
+
+            <div class="row" ng-show="showTestSuiteConfiguration">
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Email Configuration</legend>
+                    <div class="control-group">
+
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span style="width: 60px" class="input-group-addon">To</span>
+                                <input type="email" ng-model="testsuite.to" class="form-control" ng-readonly="read">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span style="width: 60px" class="input-group-addon">CC</span>
+                                <input type="email" ng-model="testsuite.cc" class="form-control" ng-readonly="read">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-1 input-group">
+                                <span style="width: 60px" class="input-group-addon">BCC</span>
+                                <input type="email" ng-model="testsuite.bcc" class="form-control" ng-readonly="read">
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Schedule Cron</legend>
+                    <div class="control-group">
+
+                        <div class="row">
+                            <div class="container">
+
+                                <cron-selection ng-model="testsuite.frequency" class="select-inline" ng-readonly="read"></cron-selection>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+
+
+
+
+            </div>
+
+
+
+
+        </div>
