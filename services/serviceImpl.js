@@ -10,10 +10,11 @@ module.exports = {
             var createClients = require('../models/client.js');
             // var AutoIncrement = require("mongoose-sequence");
             // createClients.plugin(AutoIncrement);
+            
             var CreateClient = mongoose.model('clients', createClients);
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-
-                var db = mongoose.connection.db;
+                 var db = mongoose.connection.db;
+               
                 console.log(req.body);
                 // var per = {};
                 // console.log(req.body);
@@ -106,6 +107,8 @@ module.exports = {
                         ses.to = docs.to;
                         ses.cc = docs.cc;
                         ses.bcc = docs.bcc;
+                        console.log("my app");
+                        console.log(docs);
 
                     } else {
                         //res.json({ error: err });
@@ -201,8 +204,11 @@ module.exports = {
     scheduler: (req, res) => {
         ses = req.session;
         const mongoose = require("mongoose");
-        console.log(req.params.id)
+        //console.log(req.params.id)
         // ses.id=1;
+        // var db = mongoose.connection.db;
+        //  console.log("db show");
+        //  console.log(db.databaseName);
         mongoose.Promise = require("bluebird");
         var getTestSuites = require('../models/testSuites.js');
         var GetTestSuite = mongoose.model('testsuites', getTestSuites);
@@ -481,6 +487,7 @@ module.exports = {
         if (ses.email) {
 
             console.log(req.body);
+            console.log(ses.to);
             const mongoose = require("mongoose");
             mongoose.Promise = require("bluebird");
             var testSuites = require('../models/testSuites.js');
@@ -810,6 +817,7 @@ module.exports = {
         mongoose.Promise = require("bluebird");
         var path = require("path");
         var registerUsers = require('../models/registerUser.js');
+       //  var db = mongoose.connection.db;
         var RegisterUser = mongoose.model('registerUsers', registerUsers);
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
             console.log("spandana");

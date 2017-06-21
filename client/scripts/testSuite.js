@@ -2,7 +2,7 @@ var app = angular.module('microTester');
 
 app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
+    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": []};
     $scope.showData = [];
     $scope.startTime = "";
     $scope.suites = [];
@@ -126,7 +126,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
                 if ($scope.reqData.id === $scope.showData[i].id) {
                     $scope.showData[i] = $scope.reqData;
-                    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [] };
+                    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": []};
                 }
             }
             $scope.rowMaker = [{ "key": "", "value": "" }];
@@ -190,7 +190,8 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
                 // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
                 $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
                 $scope.showData[counter].status = "Successfull";
-                $scope.showData[counter].success.push({"time":new Date(),"message":"successfully running"});
+                //$scope.showData[counter].success.push({"time":new Date(),"message":"successfully running"});
+                 // $scope.showData[counter].error.push({"time":new Date(),"message":"no error"});
                 console.log("Start Time - ", $scope.showData[counter].responseTime[0].startTime);
                 console.log("End Time - ", $scope.showData[counter].responseTime[0].endTime);
                 console.log("Response Time - ", $scope.showData[counter].responseTime[0].endTime - $scope.showData[counter].responseTime[0].startTime);
@@ -207,7 +208,8 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
             $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
             $scope.showData[counter].status = "Failed";
-            $scope.showData[counter].error.push({"time":new Date(),"message":err});
+           // $scope.showData[counter].error.push({"time":new Date(),"message":err});
+            // $scope.showData[counter].success.push({"time":new Date(),"message":"Failed"});
             $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
             counter = counter + 1;
             if (counter < $scope.showData.length) {

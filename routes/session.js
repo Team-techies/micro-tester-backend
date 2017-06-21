@@ -57,13 +57,23 @@ router.get("/delSuites", service.delSuites);
 router.get("/delSuite/:id", service.delSuite);
 
 router.get("/logout", service.logout);
-router.all("/test",(req,res)=>{
-    fetch(req.body.url,options).then((response)=>{
-        console.log(response); 
-        res.send(response);
-    }).catch((error)=>{
-        console.error(error)
-          res.send(error);
-    })
+// router.all("/test",(req,res)=>{
+//     fetch(req.body.url,options).then((response)=>{
+//         console.log(response); 
+//         res.send(response);
+//     }).catch((error)=>{
+//         console.error(error)
+//           res.send(error);
+//     })
+// })
+router.get("/success",(req,res)=>{
+    res.send({
+        status:200
+        });
+})
+router.get("/fail",(req,res)=>{
+    res.send({
+        status:500
+        });
 })
 module.exports = router;
