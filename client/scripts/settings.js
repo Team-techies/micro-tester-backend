@@ -25,6 +25,7 @@ app.controller('SettingsController',['$state','$scope', '$http',     function($s
                 $scope.name = response.data.name;
                 $scope.email = response.data.email;
                 $scope.appData = response.data.doc;
+                $scope.appData.unScheduled=!$scope.appData.isScheduled;
             } else if (response.data.msg === "please login to create app ") {
                 $window.location.href = '../views/index.html';
             }
@@ -111,6 +112,7 @@ $scope.showTestSuiteConfiguration = false;
         for (var i = 0; i < $scope.suites.length; i++) {
             if ($scope.suites[i]._id === $scope.suite._id) {
                 $scope.testsuite = $scope.suites[i];
+                $scope.testsuite.unScheduled=!$scope.testsuite.isScheduled;
             }
             $scope.showTestSuiteConfiguration = true;
             console.log($scope.testsuite);

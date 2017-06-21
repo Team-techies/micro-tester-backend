@@ -599,8 +599,15 @@ module.exports = {
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
                 var status = false;
                 var frequency="";
+                console.log("scheduler");
+                console.log(req.body.unScheduled);
                 if(req.body.unScheduled){
                     status=false;
+                    console.log("cancelling scheduler");
+                    if(schedule.scheduledJobs[req.body.suiteName]){
+                            schedule.scheduledJobs[req.body.suiteName].cancel();
+                    }
+                    
                 }
                 else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
                     status = true;

@@ -217,7 +217,6 @@ function hitApi(data, app) {
             console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
             console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
             console.log("Response Time - ", app.test_suites[counter].responseTime[0].endTime - app.test_suites[counter].responseTime[0].startTime);
-            // $scope.statusClassSuccessfull = "glyphicon glyphicon-ok text-success";
             counter = counter + 1;
             if (counter < app.test_suites.length) {
                 app.test_suites[counter].startTime = new Date().getTime();
@@ -235,7 +234,6 @@ function hitApi(data, app) {
             app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
             app.test_suites[counter].status = "Failed";
             app.test_suites[counter].statusMsg.push({"time":new Date(),"message":err});
-            // app.test_suites[counter].error.push({ "time": new Date(), "message": err });
             counter = counter + 1;
             if (counter < app.test_suites.length) {
                 app.test_suites[counter].startTime = new Date().getTime();
@@ -244,18 +242,11 @@ function hitApi(data, app) {
 
                 saveTest(app);
             }
-            // $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
-            //app.test_suites[counter].error=err;
         });
 }
 function testApi(data, app) {
     counter = 0;
     console.log("inside testApi");
-    // for (let i = 0; i < data.length; i++) {
-    //     data[i].status = "Processing";
-
-    // }
-    //  $scope.showData[0].responseTime.push({"startTime":new Date().getTime(), "endTime":""});
     data[0].startTime = new Date().getTime();
     hitApi(data[0], app);
 
