@@ -1,67 +1,72 @@
- <div  class="tab-pane fade in active" ng-init="getUser()">
+<div class="tab-pane fade in active" ng-init="getUser()">
 
-            <br>
+    <br>
 
-            <div>
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">Email Configuration</legend>
-                    <div class="control-group">
+    <div>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Email Configuration</legend>
+            <div class="control-group">
 
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-1 input-group">
-                                <span style="width: 60px" class="input-group-addon">To</span>
-                                <input type="email" ng-model="appData.to" class="form-control" ng-readonly="read">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-1 input-group">
-                                <span style="width: 60px" class="input-group-addon">CC</span>
-                                <input type="email" ng-model="appData.cc" class="form-control" ng-readonly="read">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-1 input-group">
-                                <span style="width: 60px" class="input-group-addon">BCC</span>
-                                <input type="email" ng-model="appData.bcc" class="form-control" ng-readonly="read">
-                            </div>
-                        </div>
-
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-1 input-group">
+                        <span style="width: 60px" class="input-group-addon">To</span>
+                        <input type="email" ng-model="appData.to" class="form-control" ng-readonly="read">
                     </div>
-                </fieldset>
-
-
-                <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">Schedule Cron</legend>
-                    <div class="control-group">
-
-                        <div class="row">
-                            <div class="container">
-
-                                <cron-selection ng-model="appData.frequency" class="select-inline" ng-readonly="read"></cron-selection>
-                              
-                            </div>
-                        </div>
-
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-1 input-group">
+                        <span style="width: 60px" class="input-group-addon">CC</span>
+                        <input type="email" ng-model="appData.cc" class="form-control" ng-readonly="read">
                     </div>
-                </fieldset>
-
-
-
-                <div class="col-ms-4  col-sm-offset-8">
-                    <div class="container">
-                        <input type="button" ng-click="appConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary">
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-1 input-group">
+                        <span style="width: 60px" class="input-group-addon">BCC</span>
+                        <input type="email" ng-model="appData.bcc" class="form-control" ng-readonly="read">
                     </div>
                 </div>
 
+            </div>
+        </fieldset>
 
 
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Schedule Cron</legend>
+            <div class="control-group">
 
+                <div class="row">
+                    <div class="container">
+
+                        <cron-selection ng-model="appData.frequency" class="select-inline" ng-readonly="read"></cron-selection>
+
+                    </div>
+                    <div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" ng-model="appData.isTerminate" value="true">Terminate Scheduler</label>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+        </fieldset>
 
 
 
-
+        <div class="col-ms-4  col-sm-offset-8">
+            <div class="container">
+                <input type="button" ng-click="appConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary">
+            </div>
         </div>
+
+
+
+
+
+    </div>
+
+
+
+
+</div>

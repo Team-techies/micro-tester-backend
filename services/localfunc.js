@@ -37,7 +37,7 @@ function sendMail(name,app) {
     var errors = [];
     for (var i = 0; i < app.test_suites.length; i++) {
         if (app.test_suites[i].status === "Failed") {
-            errors.push({ "url": app.test_suites[i].url, "message": app.test_suites[i].error });
+            errors.push({ "url": app.test_suites[i].url, "message": app.test_suites[i].statusMsg[(app.test_suites[i].statusMsg.length)-1].message });
             //errors = errors + "****" + app.test_suites[i].url + "----" + app.test_suites[i].error
             //app.test_suites[i].error[(app.test_suites[i].error.length) - 1].message 
         } else {
@@ -212,7 +212,7 @@ function hitApi(data, app) {
             // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
             app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
             app.test_suites[counter].status = "Successfull";
-            app.test_suites[counter].error = "";
+            app.test_suites[counter].statusMsg.push({"time":new Date(),"message":"Successfull"});
             //app.test_suites[counter].success.push({ "time": new Date(), "message": "Sucessfully running" });
             console.log("Start Time - ", app.test_suites[counter].responseTime[0].startTime);
             console.log("End Time - ", app.test_suites[counter].responseTime[0].endTime);
@@ -234,7 +234,7 @@ function hitApi(data, app) {
             console.log("inside failure hitapi");
             app.test_suites[counter].responseTime.push({ "startTime": app.test_suites[counter].startTime, "endTime": new Date().getTime() });
             app.test_suites[counter].status = "Failed";
-            app.test_suites[counter].error = err;
+            app.test_suites[counter].statusMsg.push({"time":new Date(),"message":err});
             // app.test_suites[counter].error.push({ "time": new Date(), "message": err });
             counter = counter + 1;
             if (counter < app.test_suites.length) {

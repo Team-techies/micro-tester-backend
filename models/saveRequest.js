@@ -34,13 +34,11 @@ var testCaseSchema = new Schema({
         startTime:Number,
         endTime:Number
     }],
-    error:String
-    // error:[{
-    //     time:Date,
-    //     message:{
-    //         type:String,
-    //         default:""}
-    // }],
+    //error:String
+    statusMsg:[{
+        time:Date,
+        message:String
+    }],
     // success:[{
     //     time:Date,
     //     message:{

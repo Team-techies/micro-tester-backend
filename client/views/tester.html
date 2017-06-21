@@ -83,21 +83,24 @@
 
                 <div class="row">
                     <div class="col-sm-2">
-                        <input type="button" ng-disabled="!form.$dirty" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>
+                       <!-- <input type="button" ng-disabled="!form.$dirty" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>-->
+                        <input type="button"  ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>
                     </div>
                     <div class="col-sm-2">
-                        <button type="reset" ng-disabled="!form.$dirty" ng-click="reset()" class="btn btn-warning btn-block">Reset Form</button>
+                        <button type="reset"  ng-click="reset()" class="btn btn-warning btn-block">Reset Form</button>
                     </div>
 
                     <div class="col-sm-2">
-                        <button type="button" ng-disabled="!form.$dirty" ng-click="saveRequestSuite()" class="btn btn-warning btn-block">Save</button>
+                        <button type="button"  ng-click="saveRequestSuite()" class="btn btn-warning btn-block">Save</button>
                     </div>
                     <div ng-controller="MyCtrl" class="col-sm-2">
-                        <button type="button" ng-disabled="!form.$dirty" ng-click="exportToExcel('#tableToExport')" class="btn btn-warning btn-block">Export</button>
+                        <button type="button"  ng-click="exportToExcel('#tableToExport')" class="btn btn-warning btn-block">Export</button>
                     </div>
 
                     <div class="col-sm-2">
-                        <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
+                      <!--  <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
+                            value="Execute">-->
+                              <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" 
                             value="Execute">
                     </div>
 
