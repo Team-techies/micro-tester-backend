@@ -13,7 +13,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
     function onload() {
         $state.go('testClient.testerHeader');
-       
+
     } onload();
 
     var id = 0;
@@ -21,18 +21,18 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     $scope.data = false
     $scope.read = true;
     // $scope.testSuiteArray = ["a", "b", "c", "d", "e", "f"];
-   /* $scope.showTestSuiteConfiguration = false;
+    /* $scope.showTestSuiteConfiguration = false;
+  
+     $scope.showConfiguration = function () {
  
-    $scope.showConfiguration = function () {
-
-        for (var i = 0; i < $scope.suites.length; i++) {
-            if ($scope.suites[i]._id === $scope.suite._id) {
-                $scope.testsuite = $scope.suites[i];
-            }
-            $scope.showTestSuiteConfiguration = true;
-            console.log($scope.testsuite);
-        }
-    }*/
+         for (var i = 0; i < $scope.suites.length; i++) {
+             if ($scope.suites[i]._id === $scope.suite._id) {
+                 $scope.testsuite = $scope.suites[i];
+             }
+             $scope.showTestSuiteConfiguration = true;
+             console.log($scope.testsuite);
+         }
+     }*/
 
     $scope.hideConfiguration = function () {
         $scope.showTestSuiteConfiguration = false;
@@ -224,7 +224,6 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
         var modalInstance = $modal.open({
             templateUrl: 'modal.html',
-            controller: ModalInstanceCtrl,
             scope: $scope
         }).result.then(function () {
 
@@ -277,32 +276,32 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
     };
 
-   /* $scope.getTestSuite = function () {
-
-        $http({
-            method: "GET",
-            url: "/getTestSuite",
-        }).then(function successCallback(response) {
-            if (response.data.stat) {
-                if (response.data.doc.length != 0) {
-                    $scope.suites = response.data.doc;
-                }
-                else {
-                    $scope.suites = undefined;
-                }
-
-            } else if (response.data.msg === "please login to create app ") {
-                $window.location.href = '../views/index.html';
-            }
-            else {
-                alert(response.data.msg);
-            }
-        }, function errorCallback(err) {
-            console.log(response.data.msg);
-            alert(response.data.msg);
-
-        });
-    };*/
+    /* $scope.getTestSuite = function () {
+ 
+         $http({
+             method: "GET",
+             url: "/getTestSuite",
+         }).then(function successCallback(response) {
+             if (response.data.stat) {
+                 if (response.data.doc.length != 0) {
+                     $scope.suites = response.data.doc;
+                 }
+                 else {
+                     $scope.suites = undefined;
+                 }
+ 
+             } else if (response.data.msg === "please login to create app ") {
+                 $window.location.href = '../views/index.html';
+             }
+             else {
+                 alert(response.data.msg);
+             }
+         }, function errorCallback(err) {
+             console.log(response.data.msg);
+             alert(response.data.msg);
+ 
+         });
+     };*/
 
 
 
@@ -310,7 +309,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 }]);
 
 
-app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state){
+app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state) {
 
 
     $scope.show = function (data) {
@@ -324,7 +323,7 @@ app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$locati
         //$location.path("/testClient");
     };
 
-       $scope.deleteSuite = function (data) {
+    $scope.deleteSuite = function (data) {
 
         console.log("hell0");
 
@@ -410,7 +409,66 @@ app.factory('Excel', function ($window) {
     });
 
 
+app.directive("modalmatric", function () {
+    return {
+        /* template : "<h1>Made by a directive!</h1>"*/
 
+        controller: function ($scope) {
+
+            var responseMetricsDataSet = [];
+            angular.forEach($scope.APImetrics.responseMetrics, function (responseTimeData) {
+                
+                responseMetricsDataSet.push([ responseTimeData.endTime - responseTimeData.startTime])
+                console.log(responseMetricsDataSet);
+            })
+
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'column',
+                    options3d: {
+                        enabled: true,
+                        alpha: 15,
+                        beta: 15,
+                        depth: 50,
+                        viewDistance: 25
+                    }
+                },
+                 title: {
+                    text: 'Micro Testing Tool'
+                },
+                subtitle: {
+                    text: 'API Performance Matrics'
+                },
+                plotOptions: {
+                    column: {
+                        depth: 25
+                    }
+                },
+                series: [{
+                    /*  data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]*/
+                    data: responseMetricsDataSet
+                }]
+            });
+
+
+            function showValues() {
+                $('#alpha-value').html(chart.options.chart.options3d.alpha);
+                $('#beta-value').html(chart.options.chart.options3d.beta);
+                $('#depth-value').html(chart.options.chart.options3d.depth);
+            }
+
+            // Activate the sliders
+            $('#sliders input').on('input change', function () {
+                chart.options.chart.options3d[this.id] = parseFloat(this.value);
+                showValues();
+                chart.redraw(false);
+            });
+
+            showValues();
+        }
+    };
+});
 
 // *************************
 

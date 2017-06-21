@@ -1,6 +1,6 @@
 var app = angular.module('microTester', ['ui.bootstrap', 'ui.router', 'nvd3ChartDirectives', 'angular-cron-jobs']);
 
-/*app.controller('scheduleController',function($scope,$http){
+app.controller('scheduleController',function($scope,$http){
     $scope.schedule=function(){
          $http({
             url: '/scheduler',
@@ -21,4 +21,4 @@ var app = angular.module('microTester', ['ui.bootstrap', 'ui.router', 'nvd3Chart
             });
     }
    // $scope.schedule();
-})*/
+})
