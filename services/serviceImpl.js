@@ -1,4 +1,8 @@
 var local = require('./localfunc');
+// const mongoose = require("mongoose");
+// mongoose.Promise = require("bluebird");
+// mongoose.connect("mongodb://localhost/SampleDB");
+// var db = mongoose.connection.db;
 module.exports = {
     createClient: (req, res) => {
         ses = req.session;
@@ -10,11 +14,11 @@ module.exports = {
             var createClients = require('../models/client.js');
             // var AutoIncrement = require("mongoose-sequence");
             // createClients.plugin(AutoIncrement);
-            
+
             var CreateClient = mongoose.model('clients', createClients);
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-                 var db = mongoose.connection.db;
-               
+                var db = mongoose.connection.db;
+
                 console.log(req.body);
                 // var per = {};
                 // console.log(req.body);
@@ -152,7 +156,7 @@ module.exports = {
                 var db = mongoose.connection.db;
                 console.log("database connected to " + db.databaseName);
                 var getClientApp = new GetClientApp();
-                GetClientApp.findByIdAndRemove(ses.app , (err, docs) => {
+                GetClientApp.findByIdAndRemove(ses.app, (err, docs) => {
                     if (!err) {
                         db.close();
                         res.redirect("/delSuites");
@@ -175,12 +179,12 @@ module.exports = {
                             stat: false,
                             msg: err
                         }
-                         res.send(info);
-                    //ses.id=docs._id;
-                    db.close();
-                    res.end();
+                        res.send(info);
+                        //ses.id=docs._id;
+                        db.close();
+                        res.end();
                     };
-                   
+
                 });
             }, (err) => {
                 //res.json({ error: err });
@@ -215,7 +219,7 @@ module.exports = {
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
             var db = mongoose.connection.db;
             console.log("database connected to " + db.databaseName);
-          //  var getTestSuite = new GetTestSuite();
+            //  var getTestSuite = new GetTestSuite();
             GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
                 if (!err) {
                     //console.log(docs);
@@ -363,7 +367,7 @@ module.exports = {
         // ses.email="spandanabola@gmail.com";
 
     },
-     delSuites: (req, res) => {
+    delSuites: (req, res) => {
         ses = req.session;
         if (ses.email) {
             const mongoose = require("mongoose");
@@ -598,32 +602,33 @@ module.exports = {
             var TestSuite = mongoose.model('testsuites', testSuites);
             mongoose.connect("mongodb://localhost/SampleDB").then(() => {
                 var status = false;
-                var frequency="";
+                var frequency = "";
                 console.log("scheduler");
                 console.log(req.body.unScheduled);
-                if(req.body.unScheduled){
-                    status=false;
-                    frequency="";
+                if (req.body.unScheduled) {
+                    status = false;
+                    frequency = "";
                     console.log("cancelling scheduler");
                     // if(schedule.scheduledJobs[req.body.suiteName]){
                     //         schedule.scheduledJobs[req.body.suiteName].cancel();
                     // }
-                    
+
                 }
                 else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
                     console.log("no");
                     status = true;
-                    frequency=req.body.frequency;
-                }else{
+                    frequency = req.body.frequency;
+                } else {
                     console.log("yes");
-                    status=false;
+                    status = false;
                 }
 
                 var db = mongoose.connection.db;
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': frequency } }, function (err, doc) {
                     if (!err) {
                         info = {
-                            stat: true
+                            stat: true,
+                            Data:doc
                         }
                     } else {
                         info = {
@@ -827,7 +832,7 @@ module.exports = {
         mongoose.Promise = require("bluebird");
         var path = require("path");
         var registerUsers = require('../models/registerUser.js');
-       //  var db = mongoose.connection.db;
+        //  var db = mongoose.connection.db;
         var RegisterUser = mongoose.model('registerUsers', registerUsers);
         mongoose.connect("mongodb://localhost/SampleDB").then(() => {
             console.log("spandana");
@@ -973,16 +978,16 @@ module.exports = {
                 console.log("database connected to " + db.databaseName);
                 var status = false;
                 var frequency = "";
-                if(req.body.unScheduled){
-                    status=false;
+                if (req.body.unScheduled) {
+                    status = false;
                 }
                 else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
                     status = true;
-                    frequency=req.body.frequency;
+                    frequency = req.body.frequency;
 
                 }
-                else{
-                    status=false;
+                else {
+                    status = false;
                 }
                 //console.log(ses.sesId);
                 var getApp = new GetApp();

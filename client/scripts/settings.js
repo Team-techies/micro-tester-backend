@@ -90,6 +90,7 @@ app.controller('TestSuiteSettingsController', ['$state','$scope', '$http',     f
                 if (response.data.stat) {
                     $scope.data = false;
                     $scope.read = true;
+                    $scope.testsuite=response.data.Data;
                 } else if (response.data.msg === "please login to create app ") {
                     $window.location.href = '../views/index.html';
                 }
@@ -108,7 +109,8 @@ app.controller('TestSuiteSettingsController', ['$state','$scope', '$http',     f
 $scope.showTestSuiteConfiguration = false;
  
     $scope.showConfiguration = function () {
-
+            $scope.data = false;
+            $scope.read = true;
         for (var i = 0; i < $scope.suites.length; i++) {
             if ($scope.suites[i]._id === $scope.suite._id) {
                 $scope.testsuite = $scope.suites[i];
