@@ -603,16 +603,19 @@ module.exports = {
                 console.log(req.body.unScheduled);
                 if(req.body.unScheduled){
                     status=false;
+                    frequency="";
                     console.log("cancelling scheduler");
-                    if(schedule.scheduledJobs[req.body.suiteName]){
-                            schedule.scheduledJobs[req.body.suiteName].cancel();
-                    }
+                    // if(schedule.scheduledJobs[req.body.suiteName]){
+                    //         schedule.scheduledJobs[req.body.suiteName].cancel();
+                    // }
                     
                 }
                 else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
+                    console.log("no");
                     status = true;
                     frequency=req.body.frequency;
                 }else{
+                    console.log("yes");
                     status=false;
                 }
 
