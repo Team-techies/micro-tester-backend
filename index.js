@@ -2,7 +2,7 @@
 var express=require("express");
 var bodyParser=require("body-parser");
 var path=require("path");
-var mainRouter=require("./routes/session.js");
+var mainRouter=require("./routes/route.js");
 var apiRouter=require("./routes/api.js");
 // var session=require("express-session");
 var mongoose=require("mongoose");
