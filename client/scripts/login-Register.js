@@ -21,7 +21,7 @@ app.controller('LoginController', ['$scope', '$http', '$window', function ($scop
                 $window.location.href = '../views/dashboard.html';
             }
             else {
-                alert("user doesn't found");
+                alert(response.data.msg);
             }
         }, function (err) {
             console.log(err);

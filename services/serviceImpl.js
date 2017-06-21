@@ -621,14 +621,17 @@ module.exports = {
                 } else {
                     console.log("yes");
                     status = false;
+                    frequency = "";
                 }
 
                 var db = mongoose.connection.db;
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': frequency } }, function (err, doc) {
                     if (!err) {
+                        req.body.isScheduled=status;
+                        req.body.frequency=frequency;
                         info = {
                             stat: true,
-                            Data:doc
+                            Data: req.body
                         }
                     } else {
                         info = {
@@ -841,25 +844,65 @@ module.exports = {
             console.log("database connected to " + db.databaseName);
             //console.log(ses.sesId);
             var registerUser = new RegisterUser();
-            RegisterUser.findOne({ "email": req.body.email, "pwd": req.body.pwd }, (err, docs) => {
+            RegisterUser.findOne({ "email": req.body.email}, (err, docs) => {
                 if (!err) {
                     //console.log(docs);
                     if (docs != null) {
+                        RegisterUser.findOne({ "email": req.body.email, "pwd": req.body.pwd }, (err, docs) => {
+                            if (!err) {
+                                //console.log(docs);
+                                if (docs != null) {
 
-                        ses.name = docs.first + " " + docs.last;
-                        info = {
-                            stat: true,
-                            name: ses.name
-                        }
-                        ses.email = docs.email;
-                        console.log(ses.name);
+                                    ses.name = docs.first + " " + docs.last;
+                                    info = {
+                                        stat: true,
+                                        name: ses.name
+                                    }
+                                    ses.email = docs.email;
+                                    console.log(ses.name);
+                                }
+                                else {
+                                    console.log("inside");
+                                    info = {
+                                        stat: false,
+                                        msg: "Wrong Password!"
+                                    }
+                                }
+                                res.send(info);
+                                res.end();
+                                db.close();
+                            } else {
+                                //res.json({ error: err });
+                                info = {
+                                    stat: false,
+                                    msg: err
+                                }
+                                 res.send(info);
+                                res.end();
+                                db.close();
+
+                            };
+                            // res.send(info);
+                            // res.end();
+                            // db.close();
+                        });
+                        // ses.name = docs.first + " " + docs.last;
+                        // info = {
+                        //     stat: true,
+                        //     name: ses.name
+                        // }
+                        // ses.email = docs.email;
+                        // console.log(ses.name);
                     }
                     else {
                         console.log("inside");
                         info = {
                             stat: false,
-                            name: ""
+                            msg: "user doesn't found"
                         }
+                         res.send(info);
+                        res.end();
+                        db.close();
                     }
                 } else {
                     //res.json({ error: err });
@@ -867,11 +910,11 @@ module.exports = {
                         stat: false,
                         msg: err
                     }
-
+                    res.send(info);
+                    res.end();
+                    db.close();
                 };
-                res.send(info);
-                res.end();
-                db.close();
+
             });
         }, (err) => {
             //res.json({ error: err });
