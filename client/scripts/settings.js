@@ -25,7 +25,7 @@ app.controller('SettingsController', ['$state', '$scope', '$http', function ($st
                 $scope.name = response.data.name;
                 $scope.email = response.data.email;
                 $scope.appData = response.data.doc;
-                 $scope.appData.unScheduled=!$scope.appData.isScheduled;
+                $scope.appData.unScheduled = !$scope.appData.isScheduled;
             } else if (response.data.msg === "please login to create app ") {
                 $window.location.href = '../views/index.html';
             }
@@ -92,7 +92,7 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
                     $scope.read = true;
                     for (var i = 0; i < $scope.suites.length; i++) {
                         if ($scope.suites[i]._id === $scope.testsuite._id) {
-                            $scope.suites[i]=response.data.Data;
+                            $scope.suites[i] = response.data.Data;
                             $scope.testsuite.unScheduled = !$scope.testsuite.isScheduled;
                         }
                         //console.log($scope.testsuite);
@@ -118,14 +118,17 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
     $scope.showConfiguration = function () {
         $scope.data = false;
         $scope.read = true;
-        for (var i = 0; i < $scope.suites.length; i++) {
-            if ($scope.suites[i]._id == $scope.suite._id) {
-                $scope.testsuite = $scope.suites[i];
-                $scope.testsuite.unScheduled = !$scope.testsuite.isScheduled;
+        if ($scope.suite != null) {
+            for (var i = 0; i < $scope.suites.length; i++) {
+                if ($scope.suites[i]._id == $scope.suite._id) {
+                    $scope.testsuite = $scope.suites[i];
+                    $scope.testsuite.unScheduled = !$scope.testsuite.isScheduled;
+                }
+                $scope.showTestSuiteConfiguration = true;
+                //console.log($scope.testsuite);
             }
-            $scope.showTestSuiteConfiguration = true;
-            //console.log($scope.testsuite);
         }
+
     }
 
     $scope.getTestSuite = function () {

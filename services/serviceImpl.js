@@ -28,16 +28,8 @@ module.exports = {
                 email: ses.email
             });
             createClient.save(function (err) {
-                if (!err) {
+                if (err) {
 
-
-                    info = {
-                        stat: true,
-                        status: 200,
-                        msg: "Successfully created app"
-                    }
-                }
-                else {
                     console.log(err);
                     info = {
                         stat: false,
@@ -45,6 +37,14 @@ module.exports = {
                         msg: "failed to create app " + err
                     }
 
+                }
+                else {
+
+                    info = {
+                        stat: true,
+                        status: 200,
+                        msg: "Successfully created app"
+                    }
                 }
                 res.send(info);
 
@@ -67,8 +67,14 @@ module.exports = {
             var getClientApps = require('../models/client.js');
             var GetClientApp = mongoose.model('clients', getClientApps);
             GetClientApp.findOne({ "_id": ses.app }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+
+                } else {
                     info = {
                         stat: true,
                         doc: docs,
@@ -81,13 +87,8 @@ module.exports = {
                     ses.cc = docs.cc;
                     ses.bcc = docs.bcc;
                     console.log(docs);
-
-                } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
+
                 };
                 res.send(info);
                 //ses.id=docs._id;
@@ -111,12 +112,7 @@ module.exports = {
             var getClientApps = require('../models/client.js');
             var GetClientApp = mongoose.model('clients', getClientApps);
             GetClientApp.findByIdAndRemove(ses.app, (err, docs) => {
-                if (!err) {
-
-                    res.redirect("/delSuites");
-
-                } else {
-                    //res.json({ error: err });
+                if (err) {
                     info = {
                         stat: false,
                         msg: err
@@ -125,6 +121,11 @@ module.exports = {
                     //ses.id=docs._id;
 
                     res.end();
+                   
+
+                } else {
+                    //res.json({ error: err });
+                     res.redirect("/delSuites");
                 };
 
             });
@@ -144,8 +145,15 @@ module.exports = {
         var getTestSuites = require('../models/testSuites.js');
         var GetTestSuite = mongoose.model('testsuites', getTestSuites);
         GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
-            if (!err) {
+            if (err) {
                 //console.log(docs);
+                  info = {
+                    stat: false,
+                    msg: err
+                }
+                console.log(err);
+            } else {
+
                 for (var i = 0; i < docs.length; i++) {
                     console.log("inside docs");
                     schedule.scheduler(docs[i]);
@@ -154,13 +162,8 @@ module.exports = {
                     stat: true
                 }
                 console.log(docs);
-            } else {
                 //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                console.log(err);
+              
             };
             res.send(info);
             //ses.id=docs._id;
@@ -178,19 +181,21 @@ module.exports = {
             var GetClientApp = mongoose.model('clients', getClientApps);
 
             GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
+                     info = {
+                        stat: false,
+                        msg: err
+                    }
+
+                } else {
+
                     info = {
                         stat: true
                     }
                     ses.app = req.params.id;
-
-                } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
+                   
                 };
                 res.send(info);
                 //ses.id=docs._id;
@@ -215,20 +220,22 @@ module.exports = {
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
 
             GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    info = {
-                        stat: true,
-                        doc: docs
-                    }
-
-
-                } else {
-                    //res.json({ error: err });
-                    info = {
+                   
+                     info = {
                         stat: false,
                         msg: err
                     }
+
+                } else {
+
+                     info = {
+                        stat: true,
+                        doc: docs
+                    }
+                    //res.json({ error: err });
+                   
                 };
                 res.send(info);
                 res.end();
@@ -249,19 +256,21 @@ module.exports = {
     delSuites: (req, res) => {
         ses = req.session;
         if (ses.email) {
-            var suites=[];
+            var suites = [];
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
-            GetTestSuites.find({'appId':ses.app,"isScheduled":true}, (err, docs) => {
-                if (!err) {
+            GetTestSuites.find({ 'appId': ses.app, "isScheduled": true }, (err, docs) => {
+                if (err) {
                     //console.log(docs);
-                    suites=docs;
+                      console.log(err);
                 } else {
+
+                    suites = docs;
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                  
 
                 };
                 // res.send(info);
@@ -269,22 +278,24 @@ module.exports = {
 
             });
             GetTestSuites.remove({ "appId": ses.app }, (err) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    info = {
-                        stat: true
-                    }
-                    for(var i=0;i<suites.length;i++){
-                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
-                    }
-
-
-                } else {
-                    //res.json({ error: err });
                     info = {
                         stat: false,
                         msg: err
                     }
+
+
+                } else {
+
+                     info = {
+                        stat: true
+                    }
+                    for (var i = 0; i < suites.length; i++) {
+                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
+                    }
+                    //res.json({ error: err });
+                   
                 };
                 res.send(info);
                 res.end();
@@ -306,20 +317,41 @@ module.exports = {
 
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
-            GetTestSuites.remove({ "_id": req.params.id }, (err) => {
-                if (!err) {
+            GetTestSuites.findOne({ '_id': req.params.id }, (err, docs) => {
+                if (err) {
                     //console.log(docs);
-                    info = {
-                        stat: true
-                    }
-
-
+                     console.log(err);
                 } else {
-                    //res.json({ error: err });
+                    // info = {
+                    //     stat: false,
+                    //     msg: err
+                    // }
+                     if (docs != null) {
+                        scheduled.scheduledJobs[docs.suiteName].cancel();
+                    }
+                  
+
+                };
+                // res.send(info);
+                // res.end();
+
+            });
+            GetTestSuites.remove({ "_id": req.params.id }, (err) => {
+                if (err) {
+                    //console.log(docs);
                     info = {
                         stat: false,
                         msg: err
                     }
+
+
+                } else {
+
+                     info = {
+                        stat: true
+                    }
+                    //res.json({ error: err });
+                   
                 };
                 res.send(info);
                 res.end();
@@ -359,7 +391,16 @@ module.exports = {
 
                 });
                 testSuite.save(function (err) {
-                    if (!err) {
+                    if (err) {
+
+                         info = {
+                            stat: false,
+                            msg: err
+
+                        }
+                        console.log(err);
+                    }
+                    else {
 
                         var info = {};
                         info = {
@@ -374,14 +415,7 @@ module.exports = {
                         if (ses.isScheduled) {
                             schedule.scheduler(req.body);
                         }
-                    }
-                    else {
-                        info = {
-                            stat: false,
-                            msg: err
-
-                        }
-                        console.log(err);
+                       
                     }
                     res.send(info);
                     res.end();
@@ -390,7 +424,14 @@ module.exports = {
             } else {
 
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'test_suites': req.body.test_suites } }, function (err, doc) {
-                    if (!err) {
+                    if (err) {
+                         info = {
+                            stat: false,
+                            msg: err
+
+                        }
+                    } else {
+
                         info = {
                             stat: true
                         }
@@ -398,12 +439,7 @@ module.exports = {
                             scheduled.scheduledJobs[req.body.suiteName].cancel();
                             schedule.scheduler(req.body);
                         }
-                    } else {
-                        info = {
-                            stat: false,
-                            msg: err
-
-                        }
+                       
                     }
                     res.send(info);
                     res.end();
@@ -434,17 +470,18 @@ module.exports = {
             var frequency = "";
             console.log("scheduler");
             console.log(req.body.unScheduled);
-            TestSuite.findOne({'_id':req.body._id}, (err, docs) => {
-                if (!err) {
+            TestSuite.findOne({ '_id': req.body._id }, (err, docs) => {
+                if (err) {
                     //console.log(docs);
-                    ses.pastScheduled = docs.isScheduled;
-                    ses.pastFrequency = docs.frequency;
+                     console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                    ses.pastScheduled = docs.isScheduled;
+                    ses.pastFrequency = docs.frequency;
+                   
 
                 };
                 // res.send(info);
@@ -479,6 +516,8 @@ module.exports = {
                         Data: req.body
                     }
                     if (ses.pastScheduled == true && req.body.isScheduled == false) {
+                        console.log("cancelled");
+                        console.log(scheduled.scheduledJobs[req.body.suiteName].name);
                         scheduled.scheduledJobs[req.body.suiteName].cancel();
                     }
                     else if (ses.pastScheduled == false && req.body.isScheduled == true) {
@@ -543,7 +582,7 @@ module.exports = {
                         stat: true
                     }
                     for (var i = 0; i < suites.length; i++) {
-                        TestSuite.findOne({'_id':suites[i]._id}, (err, docs) => {
+                        TestSuite.findOne({ '_id': suites[i]._id }, (err, docs) => {
                             if (!err) {
                                 //console.log(docs);
                                 schedule.scheduler(docs);
