@@ -440,7 +440,7 @@ module.exports = {
                         info = {
                             stat: true
                         }
-                        if (ses.isScheduled) {
+                        if (req.body.isScheduled) {
                             scheduled.scheduledJobs[req.body.suiteName].cancel();
                             schedule.scheduler(req.body);
                         }
@@ -496,10 +496,6 @@ module.exports = {
             if (req.body.unScheduled) {
                 status = false;
                 frequency = "";
-                console.log("cancelling scheduler");
-                // if(schedule.scheduledJobs[req.body.suiteName]){
-                //         schedule.scheduledJobs[req.body.suiteName].cancel();
-                // }
 
             }
             else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
