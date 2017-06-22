@@ -945,28 +945,26 @@ module.exports = {
                     res.end();
                 } else {
                     if (doc != null) {
-                        var url = 'http://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
+                        var url = 'https://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
                         console.log(url);
-                        fetch(url, { method: "POST", agent: agent })
+                        fetch(url, { method: "POST" })
                             .then(function successCallback(response) {
-                                console.log("inside success");
-                                console.log(response);
-                                info = {
+                                
+                             
+                                return response.json();
+
+                            }).then(function(response){
+                                 let info = {
                                     stat: true,
-                                    response: response
+                                    token: response.access_token
                                 }
-
-
+                                res.send(info);
+                                res.end();
                             })
-                            .catch(function errorCallback(err) {
-                                console.log(err);
-                                info = {
-                                    stat: false,
-                                    msg: err
-                                }
+                            .catch(function errorCallback(err) {   
+                                next(err)
                             });
-                        res.send(info);
-                        res.end();
+                        
                     }
                     //res.json({ error: err });
 
