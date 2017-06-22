@@ -119,7 +119,7 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
         $scope.data = false;
         $scope.read = true;
         for (var i = 0; i < $scope.suites.length; i++) {
-            if ($scope.suites[i]._id === $scope.suite._id) {
+            if ($scope.suites[i]._id == $scope.suite._id) {
                 $scope.testsuite = $scope.suites[i];
                 $scope.testsuite.unScheduled = !$scope.testsuite.isScheduled;
             }

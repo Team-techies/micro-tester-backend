@@ -1,12 +1,28 @@
 var app = angular.module('microTester');
 
-app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state) {
+app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state','$transitions', function ($scope, $http, $modal, $location, $window, $stateParams, $state, $transitions) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
     $scope.showData = [];
     $scope.startTime = "";
     $scope.suites = [];
     $scope.testsuite = {};
+
+    $transitions.onExit({exiting:"testClient"}, function() {
+        
+            if (!$scope.reqData.url == "") {
+               var retVal = confirm("Do you want to continue without saving ?");
+               if( retVal == true ){
+                     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
+                  return true;
+                  
+               }
+               else{
+                  return false;
+               }
+            }
+           
+    });
 
     $scope.testsuite = $stateParams.suite;
     $scope.showData = $stateParams.requests;
