@@ -1,6 +1,11 @@
 var schedule = require('./scheduler');
 const mongoose = require("mongoose");
 var scheduled = require('node-schedule');
+var fetch = require('node-fetch');
+
+
+const httpProxyAgent = require('http-proxy-agent');
+const agent = new httpProxyAgent("http://cis-india-pitc-bangalorez.proxy.corporate.ge.com:80");
 // mongoose.Promise = require("bluebird");
 // mongoose.connect("mongodb://localhost/SampleDB");
 // var db = mongoose.connection.db;
@@ -121,11 +126,11 @@ module.exports = {
                     //ses.id=docs._id;
 
                     res.end();
-                   
+
 
                 } else {
                     //res.json({ error: err });
-                     res.redirect("/delSuites");
+                    res.redirect("/delSuites");
                 };
 
             });
@@ -147,7 +152,7 @@ module.exports = {
         GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
             if (err) {
                 //console.log(docs);
-                  info = {
+                info = {
                     stat: false,
                     msg: err
                 }
@@ -163,7 +168,7 @@ module.exports = {
                 }
                 console.log(docs);
                 //res.json({ error: err });
-              
+
             };
             res.send(info);
             //ses.id=docs._id;
@@ -183,7 +188,7 @@ module.exports = {
             GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
                 if (err) {
                     //console.log(docs);
-                     info = {
+                    info = {
                         stat: false,
                         msg: err
                     }
@@ -195,7 +200,7 @@ module.exports = {
                     }
                     ses.app = req.params.id;
                     //res.json({ error: err });
-                   
+
                 };
                 res.send(info);
                 //ses.id=docs._id;
@@ -222,20 +227,20 @@ module.exports = {
             GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
                 if (err) {
                     //console.log(docs);
-                   
-                     info = {
+
+                    info = {
                         stat: false,
                         msg: err
                     }
 
                 } else {
 
-                     info = {
+                    info = {
                         stat: true,
                         doc: docs
                     }
                     //res.json({ error: err });
-                   
+
                 };
                 res.send(info);
                 res.end();
@@ -262,7 +267,7 @@ module.exports = {
             GetTestSuites.find({ 'appId': ses.app, "isScheduled": true }, (err, docs) => {
                 if (err) {
                     //console.log(docs);
-                      console.log(err);
+                    console.log(err);
                 } else {
 
                     suites = docs;
@@ -270,7 +275,7 @@ module.exports = {
                     //     stat: false,
                     //     msg: err
                     // }
-                  
+
 
                 };
                 // res.send(info);
@@ -288,14 +293,14 @@ module.exports = {
 
                 } else {
 
-                     info = {
+                    info = {
                         stat: true
                     }
                     for (var i = 0; i < suites.length; i++) {
                         scheduled.scheduledJobs[suites[i].suiteName].cancel();
                     }
                     //res.json({ error: err });
-                   
+
                 };
                 res.send(info);
                 res.end();
@@ -317,19 +322,19 @@ module.exports = {
 
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
-            GetTestSuites.findOne({ '_id': req.params.id }, (err, docs) => {
+            GetTestSuites.findOne({ '_id': req.params.id, 'isScheduled': true }, (err, docs) => {
                 if (err) {
                     //console.log(docs);
-                     console.log(err);
+                    console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                     if (docs != null) {
+                    if (docs != null) {
                         scheduled.scheduledJobs[docs.suiteName].cancel();
                     }
-                  
+
 
                 };
                 // res.send(info);
@@ -347,11 +352,11 @@ module.exports = {
 
                 } else {
 
-                     info = {
+                    info = {
                         stat: true
                     }
                     //res.json({ error: err });
-                   
+
                 };
                 res.send(info);
                 res.end();
@@ -393,7 +398,7 @@ module.exports = {
                 testSuite.save(function (err) {
                     if (err) {
 
-                         info = {
+                        info = {
                             stat: false,
                             msg: err
 
@@ -415,7 +420,7 @@ module.exports = {
                         if (ses.isScheduled) {
                             schedule.scheduler(req.body);
                         }
-                       
+
                     }
                     res.send(info);
                     res.end();
@@ -425,7 +430,7 @@ module.exports = {
 
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'test_suites': req.body.test_suites } }, function (err, doc) {
                     if (err) {
-                         info = {
+                        info = {
                             stat: false,
                             msg: err
 
@@ -439,7 +444,7 @@ module.exports = {
                             scheduled.scheduledJobs[req.body.suiteName].cancel();
                             schedule.scheduler(req.body);
                         }
-                       
+
                     }
                     res.send(info);
                     res.end();
@@ -473,7 +478,7 @@ module.exports = {
             TestSuite.findOne({ '_id': req.body._id }, (err, docs) => {
                 if (err) {
                     //console.log(docs);
-                     console.log(err);
+                    console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
@@ -481,7 +486,7 @@ module.exports = {
                     // }
                     ses.pastScheduled = docs.isScheduled;
                     ses.pastFrequency = docs.frequency;
-                   
+
 
                 };
                 // res.send(info);
@@ -508,7 +513,14 @@ module.exports = {
             }
 
             TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': frequency } }, function (err, doc) {
-                if (!err) {
+                if (err) {
+                    info = {
+                        stat: false,
+                        msg: err
+
+                    }
+                } else {
+
                     req.body.isScheduled = status;
                     req.body.frequency = frequency;
                     info = {
@@ -529,12 +541,7 @@ module.exports = {
                     } else {
 
                     }
-                } else {
-                    info = {
-                        stat: false,
-                        msg: err
 
-                    }
                 }
                 res.send(info);
                 res.end();
@@ -560,15 +567,16 @@ module.exports = {
             var testSuites = require('../models/testSuites.js');
             var TestSuite = mongoose.model('testsuites', testSuites);
             TestSuite.find({ 'isScheduled': false, 'appId': ses.app }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    suites = docs;
+                    console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                    suites = docs;
+
 
                 };
                 // res.send(info);
@@ -576,22 +584,32 @@ module.exports = {
 
             });
             TestSuite.update({ 'isScheduled': false, 'appId': ses.app }, { $set: { 'isScheduled': ses.isScheduled, 'frequency': ses.frequency, 'to': ses.to, 'cc': ses.cc, 'bcc': ses.bcc } }, function (err, doc) {
-                if (!err) {
+                if (err) {
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    console.log("err");
+                } else {
                     console.log("success changing testsuites");
                     info = {
                         stat: true
                     }
                     for (var i = 0; i < suites.length; i++) {
                         TestSuite.findOne({ '_id': suites[i]._id }, (err, docs) => {
-                            if (!err) {
+                            if (err) {
                                 //console.log(docs);
-                                schedule.scheduler(docs);
+                                console.log(err);
+
                             } else {
                                 // info = {
                                 //     stat: false,
                                 //     msg: err
                                 // }
-                                console.log(err);
+                                if (docs.isScheduled) {
+                                    schedule.scheduler(docs);
+                                }
+
 
                             };
                             // res.send(info);
@@ -599,12 +617,7 @@ module.exports = {
 
                         });
                     }
-                } else {
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
-                    console.log("err");
+
                 }
                 res.send(info);
                 res.end();
@@ -650,19 +663,20 @@ module.exports = {
             var GetClientApp = mongoose.model('clients', getClientApps);
 
             GetClientApp.find({ "email": ses.email }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                } else {
                     info = {
                         stat: true,
                         name: ses.name,
                         email: ses.email,
                         doc: docs
                     }
-                } else {
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
+
 
                 };
                 res.send(info);
@@ -692,12 +706,27 @@ module.exports = {
 
         console.log(req.body);
         RegisterUser.findOne({ "email": req.body.email }, (err, docs) => {
-            if (!err) {
+            if (err) {
                 //console.log(docs);
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+            } else {
                 if (docs != null) {
                     RegisterUser.findOne({ "email": req.body.email, "pwd": req.body.pwd }, (err, docs) => {
-                        if (!err) {
+                        if (err) {
                             //console.log(docs);
+                            info = {
+                                stat: false,
+                                msg: err
+                            }
+                            res.send(info);
+                            res.end();
+
+                        } else {
                             if (docs != null) {
 
                                 ses.name = docs.first + " " + docs.last;
@@ -717,14 +746,7 @@ module.exports = {
                             }
                             res.send(info);
                             res.end();
-                        } else {
                             //res.json({ error: err });
-                            info = {
-                                stat: false,
-                                msg: err
-                            }
-                            res.send(info);
-                            res.end();
 
                         };
                         // res.send(info);
@@ -747,14 +769,8 @@ module.exports = {
                     res.send(info);
                     res.end();
                 }
-            } else {
                 //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                res.send(info);
-                res.end();
+
             };
 
         });
@@ -783,8 +799,14 @@ module.exports = {
                     "scope": req.body.scope
                 }
             }).exec((err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+
+                } else {
                     if (docs != null) {
 
                         info = {
@@ -795,15 +817,10 @@ module.exports = {
                         console.log("inside");
                         info = {
                             stat: false,
-                            msg: err
+                            msg: "Data is not found"
                         }
                     }
-                } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
 
                 };
                 res.send(info);
@@ -854,8 +871,15 @@ module.exports = {
                     "isScheduled": status
                 }
             }).exec((err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    res.send(info);
+                    res.end();
+                } else {
                     if (docs != null) {
 
                         if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
@@ -880,20 +904,14 @@ module.exports = {
                         console.log("inside");
                         info = {
                             stat: false,
-                            msg: err
+                            msg: "Data is not found"
                         }
 
                         res.send(info);
                         res.end();
                     }
-                } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
-                    res.send(info);
-                    res.end();
+
 
                 };
 
@@ -909,77 +927,67 @@ module.exports = {
         }
 
     },
-    // sendEmail: (req, res) => {
-    //     ses = req.session;
-    //     //var xoauth2 = require('xoauth2');
-    //     const template = './services/email.html';
-    //     var nodemailer = require('nodemailer');
-    //     var handlebars = require('handlebars');
-    //     var fs = require('fs');
+    tokenGenerate: (req, res) => {
+        var info = {};
+        ses = req.session;
+        console.log(req.body);
+        // ses.email=true;
+        if (ses.email) {
 
-    //     var readHTMLFile = function (template, callback) {
-    //         fs.readFile(template, { encoding: 'utf-8' }, function (err, html) {
-    //             if (err) {
-    //                 throw err;
-    //                 callback(err);
-    //             }
-    //             else {
-    //                 callback(null, html);
-    //             }
-    //         });
-    //     };
-    //     //var smtpTransport = require('nodemailer-smtp-transport');
-    //     //process.env.MAIL_URL='smtp://:' + encodeURIComponent("Nodemailer123") + '@smtp.geips.ge.com:25';
-    //     var transport = nodemailer.createTransport({
-    //         host: 'smtp.geips.ge.com',
-    //         port: 25
-    //     });
-
-    //     console.log('SMTP Configured');
-    //     readHTMLFile(template, function (err, html) {
-    //         var template = handlebars.compile(html);
-    //         var replacements = {
-    //             username: "Chaithanya Bola"
-    //         };
-    //         var htmlToSend = template(replacements);
-    //         var message = {
-
-    //             // sender info
-    //             from: 'spanadana.bola@capgemini.com',
-
-    //             // Comma separated list of recipients
-    //             to: 'spanadana.bola@capgemini.com',
-
-    //             // Subject of the message
-    //             subject: 'Info regarding Test suite failure',
-
-    //             // plaintext body
-
-    //             // HTML body
-    //             html: `${htmlToSend}`
-    //         };
-    //         // ejs.renderFile(template, 'utf8', (err, html) => {
-    //         //     if (err) console.log(err); // Handle error
-
-    //         //     console.log(`HTML: ${html}`);
+            var getApps = require('../models/client.js');
+            var GetApp = mongoose.model('clients', getApps);
 
 
+            GetApp.findOne({ "_id": ses.app }, (err, doc) => {
+                if (err) {
+                    //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    res.send(info);
+                    res.end();
+                } else {
+                    if (doc != null) {
+                        var url = 'http://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
+                        console.log(url);
+                        fetch(url, { method: "POST", agent: agent })
+                            .then(function successCallback(response) {
+                                console.log("inside success");
+                                console.log(response);
+                                info = {
+                                    stat: true,
+                                    response: response
+                                }
 
-    //         console.log('Sending Mail');
-    //         transport.sendMail(message, function (error) {
-    //             if (error) {
-    //                 console.log('Error occured');
-    //                 console.log(error.message);
-    //                 return;
-    //             }
-    //             console.log('Message sent successfully!');
 
-    //             // if you don't want to use this transport object anymore, uncomment following line
-    //             //transport.close(); // close the connection pool
-    //         });
-    //     });
-    //     // Message object
+                            })
+                            .catch(function errorCallback(err) {
+                                console.log(err);
+                                info = {
+                                    stat: false,
+                                    msg: err
+                                }
+                            });
+                        res.send(info);
+                        res.end();
+                    }
+                    //res.json({ error: err });
+
+                };
+
+            });
 
 
-    // }
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+
+    }
+
 }
