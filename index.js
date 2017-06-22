@@ -1,19 +1,20 @@
 //const PORT=8080;
-var express=require("express");
-var bodyParser=require("body-parser");
-var path=require("path");
-var mainRouter=require("./routes/route.js");
-var apiRouter=require("./routes/api.js");
+var express = require("express");
+var bodyParser = require("body-parser");
+var path = require("path");
+var mainRouter = require("./routes/route.js");
+var apiRouter = require("./routes/api.js");
 // var session=require("express-session");
-var mongoose=require("mongoose");
-var app=express();
-var port     = process.env.PORT || 8999;
+var mongoose = require("mongoose");
+ mongoose.Promise = require("bluebird");
+var app = express();
+var port = process.env.PORT || 8999;
 //app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/",mainRouter);
-app.use("/api",apiRouter);
+app.use("/", mainRouter);
+app.use("/api", apiRouter);
 
 
 
@@ -36,15 +37,21 @@ app.use("/api",apiRouter);
 
 // app.set(process.env.MAIL_URL='smtp://test.nodemailer%40gmail.com:' + encodeURIComponent("Nodemailer123") + '@smtp.gmail.com:465')
 
-app.set("views",__dirname+"/client/views");
-app.set("view engine","ejs");
-app.engine("html",require("ejs").renderFile);
-app.use(express.static(__dirname+"/client"));
+app.set("views", __dirname + "/client/views");
+app.set("view engine", "ejs");
+app.engine("html", require("ejs").renderFile);
+app.use(express.static(__dirname + "/client"));
+
+mongoose.connect("mongodb://localhost/SampleDB").then(() => {
+    var db = mongoose.connection.db;
+    console.log("database connected to " + db.databaseName);
+}, (err) => {
+    console.log(err);
+});
 
 
-
-app.listen(port,()=>{
-    console.log("sever running on port "+ port);
+app.listen(port, () => {
+    console.log("sever running on port " + port);
 });
 
 module.exports = app; 
