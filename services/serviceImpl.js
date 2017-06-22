@@ -350,7 +350,7 @@ module.exports = {
                     appId: ses.app,
                     test_suites: req.body.test_suites,
                     suiteName: req.body.suiteName,
-                    isScheduled: ses.schedule,
+                    isScheduled: ses.isScheduled,
                     frequency: ses.frequency,
                     to: ses.to,
                     cc: ses.cc,
