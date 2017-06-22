@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 var fetch = require('node-fetch');
 var handlebars = require('handlebars');
+const mongoose = require("mongoose");
 
 const httpProxyAgent = require('http-proxy-agent');
 const agent = new httpProxyAgent("http://cis-india-pitc-bangalorez.proxy.corporate.ge.com:80");
@@ -113,20 +114,14 @@ function sendMail(name,app) {
 
 }
 function getAppName(app){
-        const mongoose = require("mongoose");
+        
     //console.log(req.params.id)
     // ses.id=1;
     var appName = "";
-    mongoose.Promise = require("bluebird");
     var getClientApps = require('../models/client.js');
     var GetClientApp = mongoose.model('clients', getClientApps);
-    var db = mongoose.connection.db;
-    db.close();
-    console.log("connection open in sendMail");
-    mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-    var db = mongoose.connection.db;
-    console.log("database connected to " + db.databaseName);
-    var getClientApp = new GetClientApp();
+  
+    
     GetClientApp.findOne({ "_id": app.appId }, (err, docs) => {
         if (!err) {
             //console.log(docs);
@@ -134,7 +129,6 @@ function getAppName(app){
             console.log(docs.title);
             appName = docs.title;
             if(appName!=null || appName!=""){
-                db.close();
                  console.log("connection closed in sendMail");
                  sendMail(appName,app);
             }
@@ -147,32 +141,16 @@ function getAppName(app){
             console.log(err);
         }
     });
-    }, (err) => {
-        //res.json({ error: err });
-        console.log(err);
-    });
 }
 
 function saveTest(app) {
-    const mongoose = require("mongoose");
-    mongoose.Promise = require("bluebird");
     var testSuites = require('../models/testSuites.js');
     var TestSuite = mongoose.model('testsuites', testSuites);
-    var db = mongoose.connection.db;
-    console.log("db name is");
-    console.log(db);
-    db.close();
-    mongoose.connect("mongodb://localhost/SampleDB").then(() => {
-        console.log("connection open in saveTest");
         console.log("inside saveTest");
         console.log(app.test_suites);
         
         TestSuite.update({ '_id': app._id }, { $set: { 'test_suites': app.test_suites } }, function (err, doc) {
             if (!err) {
-                // db.close();
-                console.log("connection closed in saveTest");
-                    console.log("connection closed");
-                    db.close();
                     for (var i = 0; i < app.test_suites.length; i++) {
                         if (app.test_suites[i].status === "Failed") {
 
@@ -192,11 +170,6 @@ function saveTest(app) {
             }
 
         })
-    }, (err) => {
-        console.log("error occured" + err);
-        console.log(err);
-
-    });
 }
 //data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader }
 function hitApi(data, app) {
