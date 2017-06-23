@@ -126,6 +126,10 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
     $scope.saveFormData = function () {
 
         if ($scope.reqData.id === "") {
+            if ($stateParams.requests.length != 0 && id == 0) {
+                var indexValue = $stateParams.requests.length;
+                id = $scope.showData[indexValue-1].id;
+            }
             id = id + 1;
 
             $scope.reqData.status = "Waiting";
@@ -280,7 +284,9 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
         var testSuiteName;
         var tempName = prompt("Please Enter Test Suite Name :", $scope.testsuite.suiteName);
-        if (tempName == null || tempName == "") {
+        if (tempName != null) {
+
+            if ( tempName == "") {
             testSuiteName = "TestSuite";
         } else {
             testSuiteName = tempName;
@@ -295,6 +301,9 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             $scope.saveData();
 
         }
+
+        }
+        
 
     };
 
@@ -454,6 +463,16 @@ app.directive("modalmatric", function () {
                         beta: 15,
                         depth: 50,
                         viewDistance: 25
+                    }
+                },
+                 xAxis: {
+                    title: {
+                        text: 'No Of Execution'
+                    }
+                },
+                yAxis: {
+                     title: {
+                        text: 'Time Intervel (Seconds)'
                     }
                 },
                  title: {

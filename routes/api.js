@@ -55,7 +55,6 @@ router.post("/registerUser", (req, res) => {
                 }
                 console.log(err);
                 res.send(info);
-                db.close();
                 res.end();
             }
         });

@@ -37,14 +37,12 @@
             <div class="control-group">
 
                 <div class="row">
-                    <div class="container">
-
-                        <cron-selection ng-model="appData.frequency" class="select-inline" ng-readonly="read"></cron-selection>
-
+                    <div ng-show="!appData.unScheduled" class="col-sm-10">
+                        <cron-selection ng-model="testsuite.frequency" class="select-inline" ng-readonly="read"></cron-selection>
                     </div>
-                    <div>
+                    <div class="col-sm-2">
                         <div class="checkbox">
-                            <label><input type="checkbox" ng-model="appData.unScheduled" value="true">Terminate Scheduler</label>
+                            <label><input ng-disabled="!appChecked"  type="checkbox" ng-model="appData.unScheduled" value="true">Terminate Scheduler</label>
                         </div>
                     </div>
                 </div>

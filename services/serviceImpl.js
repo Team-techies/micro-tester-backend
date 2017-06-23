@@ -148,7 +148,7 @@ module.exports = {
                 //console.log(docs);
                 for (var i = 0; i < docs.length; i++) {
                     console.log("inside docs");
-                    schedule.scheduler(docs[i]);
+                    // schedule.scheduler(docs[i]);
                 }
                 info = {
                     stat: true
@@ -274,9 +274,9 @@ module.exports = {
                     info = {
                         stat: true
                     }
-                    for(var i=0;i<suites.length;i++){
-                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
-                    }
+                    // for(var i=0;i<suites.length;i++){
+                    //     scheduled.scheduledJobs[suites[i].suiteName].cancel();
+                    // }
 
 
                 } else {
@@ -371,9 +371,9 @@ module.exports = {
                         req.body.isScheduled = ses.schedule;
                         req.body.frequency = ses.frequency;
                         req.body.appId = ses.app;
-                        if (ses.isScheduled) {
-                            schedule.scheduler(req.body);
-                        }
+                        // if (ses.isScheduled) {
+                        //     schedule.scheduler(req.body);
+                        // }
                     }
                     else {
                         info = {
@@ -394,10 +394,10 @@ module.exports = {
                         info = {
                             stat: true
                         }
-                        if (ses.isScheduled) {
-                            scheduled.scheduledJobs[req.body.suiteName].cancel();
-                            schedule.scheduler(req.body);
-                        }
+                        // if (ses.isScheduled) {
+                        //     scheduled.scheduledJobs[req.body.suiteName].cancel();
+                        //     schedule.scheduler(req.body);
+                        // }
                     } else {
                         info = {
                             stat: false,
@@ -478,18 +478,18 @@ module.exports = {
                         stat: true,
                         Data: req.body
                     }
-                    if (ses.pastScheduled == true && req.body.isScheduled == false) {
-                        scheduled.scheduledJobs[req.body.suiteName].cancel();
-                    }
-                    else if (ses.pastScheduled == false && req.body.isScheduled == true) {
-                        schedule.scheduler(req.body);
-                    }
-                    else if (ses.pastScheduled == true && req.body.isScheduled == true) {
-                        scheduled.scheduledJobs[req.body.suiteName].cancel();
-                        schedule.scheduler(req.body);
-                    } else {
+                    // if (ses.pastScheduled == true && req.body.isScheduled == false) {
+                    //     scheduled.scheduledJobs[req.body.suiteName].cancel();
+                    // }
+                    // else if (ses.pastScheduled == false && req.body.isScheduled == true) {
+                    //     schedule.scheduler(req.body);
+                    // }
+                    // else if (ses.pastScheduled == true && req.body.isScheduled == true) {
+                    //     scheduled.scheduledJobs[req.body.suiteName].cancel();
+                    //     schedule.scheduler(req.body);
+                    // } else {
 
-                    }
+                    // }
                 } else {
                     info = {
                         stat: false,
@@ -546,7 +546,7 @@ module.exports = {
                         TestSuite.findOne({'_id':suites[i]._id}, (err, docs) => {
                             if (!err) {
                                 //console.log(docs);
-                                schedule.scheduler(docs);
+                                // schedule.scheduler(docs);
                             } else {
                                 // info = {
                                 //     stat: false,
