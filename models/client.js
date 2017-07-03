@@ -42,7 +42,7 @@ var clientSchema = new Schema({
     },
     frequency: {
         type: String,
-        default:""
+         default: ""
     },
     to:{
         type:String,

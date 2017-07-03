@@ -60,8 +60,6 @@ router.get("/delSuites", service.delSuites);
 router.get("/delSuite/:id", service.delSuite);
 
 router.get("/logout", service.logout);
-
-router.get("/tokenGenerate", service.tokenGenerate);
 // router.all("/test",(req,res)=>{
 //     fetch(req.body.url,options).then((response)=>{
 //         console.log(response); 

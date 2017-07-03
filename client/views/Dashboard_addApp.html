@@ -1,0 +1,63 @@
+                  <div>
+                        <!-- #############################  ADd CARD  ############################ -->
+
+                        <form name="App">
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-heart"></i></span>
+                                <input id="appName" type="text" class="form-control" name="app.title" ng-model="app.title" placeholder="Enter Application Name.">
+                            </div>
+                            <br>
+                            <textarea name="App.description" class="form-control" rows="5" id="comment" ng-model="app.appDesc" placeholder="Enter Application Description."></textarea>
+                            <br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-superpowers"></i></span>
+                                <input id="appVersion" type="text" class="form-control" name="App.version" ng-model="app.appVer" placeholder="Enter Application Version.">
+                            </div>
+                            <br>
+                            <div>
+                                <div class="row">
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
+                                        <input id="appClinetID" type="text" class="form-control" name="app.clientId" ng-model="app.clientId" placeholder="Enter Client ID.">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password" ng-model="app.clientSecret" placeholder="Enter Client Secret Key.">
+                                    </div>
+
+
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-cog"></i></span>
+                                        <input id="appGrantType" type="text" class="form-control" name="app.grantType" ng-model="app.grantType" placeholder="Enter Grant Type.">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                        <input id="appScope" type="text" class="form-control" name="App.scope" ng-model="app.scope" placeholder="Enter Scope.">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3">
+                                    <input type="button" class="btn btn-primary btn-block btn-primary btn-md" ng-click="add()" value="Add Application">
+                                </div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-3">
+                                    <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
+                                </div>
+                                <div class="col-sm-1"></div>
+                            </div>
+
+                        </form>
+
+                        <!-- ############################################################## -->
+                    </div>

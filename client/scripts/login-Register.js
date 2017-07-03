@@ -35,7 +35,17 @@ app.controller('RegisterController', ['$scope', '$http', '$window', function ($s
     $scope.loginStatus = false;
     $scope.alertMsg = false;
     $scope.newUser = {};
+    $scope.password="";
     $scope.user = {};
+    $scope.confirmPassword = false;
+    $scope.reEnterPassword = function() {
+        
+        if ($scope.password === $scope.newUser.pwd) {
+            $scope.confirmPassword = true;
+        }
+
+    };
+
     $scope.registerUser = function () {
 
         $http({

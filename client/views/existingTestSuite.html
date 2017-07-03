@@ -3,7 +3,7 @@
     <div ng-hide='suites == undefined' class="row">
         <div class="col-sm-5"></div>
         <div class="col-sm-4">
-            <h3><i>Test Suites</i></h3>
+            <h3 style="color:white;"><b>Test Suites</b></h3>
         </div>
     </div>
     <div ng-hide='suites != undefined'>
@@ -26,22 +26,25 @@
             <div class="offer offer-radius offer-primary">
                 <div class="shape">
                     <div class="shape-text">
-                        {{$index}}
+                        {{$index+1}}
                     </div>
                 </div>
                 <div class="offer-content">
-                    <h3 class="lead">
-                        {{data.suiteName}}
+                    <h3  style="color:dodgerblue" class="lead">
+                       <b> {{data.suiteName}}</b>
                     </h3>
-                    <button type="button" class="btn btn-sm bt-info" ng-click="show(data)">View</button>
-                    <button type="button" class="btn btn-sm bt-danger" ng-click="deleteSuite(data)">Delete</button>
-                    <br>
-                    <p ng-bind="data.date |  date:'MM/dd/yyyy'">
+                    <button type="button"  style="color:black" class="btn btn-sm" ng-click="show(data)">View</button>
+                    <button type="button" style="color:black" class="btn btn-sm" ng-click="deleteSuite(data)">Delete</button>
+                     <button type="button" style="color:black" class="btn btn-sm" ng-click="viewStats(data)">View Stats</button>
+                     
+                     <h6  style="color:black" ng-bind="data.date |  date:'MM/dd/yyyy'">
 
-                    </p>
+                    </h6>
+                   
                 </div>
             </div>
         </div>
+
 
     </div>
 </div>

@@ -30,7 +30,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
     <script src="../scripts/app.js"></script>
     <script src="../scripts/dashboard.js"></script>
-      <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap-theme-yeti.min.css">
+    <!--     <link rel="stylesheet" href="../theme/bootstrap-theme-cyborg.min.css">-->
+    <link rel="stylesheet" href="../theme/bootstrap-theme-slate.min.css">
 </head>
 
 <body ng-app="microTester" ng-controller="DashboardController" ng-init="getUser()">
@@ -42,8 +43,8 @@
             <div class="container-fluid">
                 <div class="page-header">
 
-                    <h1>
-                        Tool
+                    <h2 style="color:white;font-size: 35px;">
+                        <b>Micro Testing Tool</b>
                         <small class="pull-right"><div class="dropdown">
     <span class="dropdown-toggle" data-toggle="dropdown">Logged In as {{name}}
     <span class="caret"></span></span>
@@ -51,7 +52,7 @@
       <li ng-click="logout()"><a href="#">Logout</a></li>
     </ul>
   </div></small>
-                    </h1>
+                    </h2>
 
 
                 </div>
@@ -95,10 +96,10 @@
                                         </div>
                                     </div>
                                     <div class="offer-content">
-                                        <h3 class="lead">
+                                        <h3 style="color:dodgerblue;" class="lead">
                                             {{data.title}}
                                         </h3>
-                                        <p>
+                                        <p style="color:black;font-family:  cursive">
                                             {{data.appDesc}}
                                             <br> more..
                                         </p>
@@ -166,11 +167,11 @@
                             <div class="row">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-3">
-                                    <input type="button" class="btn btn-primary btn-block btn-primary btn-md" ng-click="add()" value="Add Application">
+                                    <input type="button" class="btn btn-primary btn-block btn-success btn-md" ng-click="add()" value="Add Application">
                                 </div>
                                 <div class="col-sm-4"></div>
                                 <div class="col-sm-3">
-                                    <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
+                                    <input type="reset" class="btn btn-primary btn-block btn-warning btn-md" value="Reset">
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>

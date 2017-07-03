@@ -3,7 +3,16 @@ var app = angular.module('microTester');
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/overview");
 
-    $stateProvider
+$stateProvider
+ .state('dashboardShowApps', {
+            url: "/dashboardShowApps",
+            templateUrl: "../views/Dashboard_showApps.html"
+        })
+           .state('dashboardAddApps', {
+            url: "/dashboardAddApps",
+            templateUrl: "../views/Dashboard_addApp.html"
+        })
+
         .state('overview', {
             url: "/overview",
             templateUrl: "../views/overview.html"
@@ -15,6 +24,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('documents', {
             url: "/documents",
             templateUrl: "../views/documents.html"
+        })
+        .state('reports', {
+            url: "/reports",
+            templateUrl: "../views/reports.html"
         })
         .state('testClient', {
             url: "/testClient",
@@ -64,11 +77,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "../views/testSuite_tester.html"
 
         })
-
-
-
         .state('existingTestSuite', {
             url: "/existingTestSuite",
             templateUrl: "../views/existingTestSuite.html"
         })
+        
 }]);
