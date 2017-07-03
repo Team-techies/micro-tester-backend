@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">-->
 
 <div ng-controller="formController as formCtrl" class="container">
+
+
     <!-- Main Div Starting -->
     <!--  <h3>TOOL</h3>-->
     <div>
@@ -32,7 +34,7 @@
                     <div class="checkbox">
                         <label><input type="checkbox" ng-model="reqData.oauthFilter" value="true">OAuth Authentication</label>
                     </div>
-                <!--    <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
+                    <!--    <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
                         value="Execute">-->
                 </div>
             </div>
@@ -40,14 +42,14 @@
             <div class="row" style="margin-left: 1px;">
                 <ul class="nav nav-tabs">
                     <li class="active"><a ui-sref=".testerHeader">HEADER</a></li>
-                    <li><a  ui-sref=".testerBody">BODY</a></li>
+                    <li><a ui-sref=".testerBody">BODY</a></li>
                 </ul>
 
 
                 <div class="tab-content">
 
-                  <div ui-view></div>
-                   <!-- <div id="header" class="tab-pane fade in active">
+                    <div ui-view></div>
+                    <!-- <div id="header" class="tab-pane fade in active">
                        
                         <table class="table table-bordered">
 
@@ -83,26 +85,27 @@
                 <div class="row"><br></div>
 
                 <div class="row">
+               
                     <div class="col-sm-2">
-                       <!-- <input type="button" ng-disabled="!form.$dirty" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>-->
-                        <input type="button"  ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>
+                        <!-- <input type="button" ng-disabled="!form.$dirty" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"/>-->
+                        <input type="button" ng-click="saveFormData()" value="{{!reqData.id ? 'Add' : 'Update'}}" class="btn btn-success btn-block"
+                        />
                     </div>
                     <div class="col-sm-2">
-                        <button type="reset"  ng-click="reset()" class="btn btn-warning btn-block">Reset Form</button>
+                        <button type="reset" ng-click="reset()" class="btn btn-warning btn-block">Reset Form</button>
                     </div>
 
                     <div class="col-sm-2">
-                        <button type="button"  ng-click="saveRequestSuite()" class="btn btn-warning btn-block">Save</button>
+                        <button type="button" ng-click="saveRequestSuite()" class="btn btn-warning btn-block">Save</button>
                     </div>
                     <div ng-controller="MyCtrl" class="col-sm-2">
-                        <button type="button"  ng-click="exportToExcel('#tableToExport')" class="btn btn-warning btn-block">Export</button>
+                        <button type="button" ng-click="exportToExcel('#tableToExport')" class="btn btn-warning btn-block">Export</button>
                     </div>
 
                     <div class="col-sm-2">
-                      <!--  <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
+                        <!--  <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" ng-disabled="showData.length==0"
                             value="Execute">-->
-                              <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" 
-                            value="Execute">
+                        <input type="button" ng-click="formCtrl.testApi()" class="btn btn-success btn-md btn-block" value="Execute">
                     </div>
 
                 </div>
@@ -118,7 +121,7 @@
 
 
 
-        <div id="tableToExport">
+        <div  id="tableToExport">
 
             <table class="table table-bordered">
                 <thead>
@@ -136,9 +139,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                 
+
                     <tr ng-repeat="data in showData">
-                        <td>{{data.id}}</td>
+
+                        <td>{{data.id}} {{printLog($index)}}</td>
                         <td>{{data.selectedReqType}}</td>
                         <td>{{data.url}}</td>
                         <td>{{data.header}}</td>
@@ -153,7 +157,7 @@
 
                         </td>
                         <td>
-                            <button ng-click="getModal($index)"><span class="glyphicon glyphicon-stats"></span></button>
+                            <button ng-click="getModal($index)"><span style="color: blue;" class="glyphicon glyphicon-stats"></span></button>
                         </td>
                         <td>
                             <button type="button" ng-click="edit(data)" class="btn btn-success">Edit</button>

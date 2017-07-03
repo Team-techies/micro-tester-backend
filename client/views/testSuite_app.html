@@ -1,4 +1,7 @@
-<div class="tab-pane fade in active" ng-init="getUser()">
+<div class="container">
+
+
+<div ng-init="getUser()">
 
     <br>
 
@@ -38,7 +41,7 @@
 
                 <div class="row">
                     <div ng-show="!appData.unScheduled" class="col-sm-10">
-                        <cron-selection ng-model="testsuite.frequency" class="select-inline" ng-readonly="read"></cron-selection>
+                        <cron-selection ng-model="appData.frequency" class="select-inline" ng-readonly="read"></cron-selection>
                     </div>
                     <div class="col-sm-2">
                         <div class="checkbox">
@@ -52,9 +55,9 @@
 
 
 
-        <div class="col-ms-4  col-sm-offset-8">
-            <div class="container">
-                <input type="button" ng-click="appConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn btn-primary">
+        <div class="col-ms-1  col-sm-offset-11">
+            <div >
+                <input type="button"  style=" background-color: paleturquoise; color:black" ng-click="appConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}" class="btn-block">
             </div>
         </div>
 
@@ -66,5 +69,7 @@
 
 
 
+
+</div>
 
 </div>

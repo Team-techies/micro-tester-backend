@@ -6,6 +6,8 @@ app.controller('SettingsController', ['$state', '$scope', '$http', function ($st
     $scope.read = true;
     $scope.appData = {};
 
+
+
     function onload() {
         $state.go('testSuiteSettings.testAppsettings');
         /*alert();*/
@@ -75,6 +77,8 @@ app.controller('SettingsController', ['$state', '$scope', '$http', function ($st
 
 app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', function ($state, $scope, $http, $window) {
    
+    $scope.divCss = "width:200px; heigth:200px";
+
     $scope.suiteConfig = function () {
         console.log($scope.testsuite);
         if (!$scope.data) {
@@ -98,7 +102,7 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
                         if ($scope.suites[i]._id === $scope.testsuite._id) {
                             $scope.suites[i] = response.data.Data;
                             $scope.testsuite.unScheduled = !$scope.testsuite.isScheduled;
-                      
+                       $scope.showTestSuiteConfiguration = false;
                         }
                         //console.log($scope.testsuite);
                     }

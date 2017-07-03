@@ -25,6 +25,10 @@ $stateProvider
             url: "/documents",
             templateUrl: "../views/documents.html"
         })
+        .state('reports', {
+            url: "/reports",
+            templateUrl: "../views/reports.html"
+        })
         .state('testClient', {
             url: "/testClient",
             templateUrl: "../views/tester.html",

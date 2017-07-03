@@ -1,27 +1,32 @@
 var app = angular.module('microTester');
 
-app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state','$transitions', function ($scope, $http, $modal, $location, $window, $stateParams, $state, $transitions) {
+app.controller('formController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', '$transitions', function ($scope, $http, $modal, $location, $window, $stateParams, $state, $transitions) {
     $scope.reqParam = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
+    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg": [] };
     $scope.showData = [];
     $scope.startTime = "";
     $scope.suites = [];
     $scope.testsuite = {};
 
-    $transitions.onExit({exiting:"testClient"}, function() {
-        
-            if (!$scope.reqData.url == "") {
-               var retVal = confirm("Do you want to continue without saving ?");
-               if( retVal == true ){
-                     $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
-                  return true;
-                  
-               }
-               else{
-                  return false;
-               }
+ 
+    $scope.printLog = function (index) {
+        console.log(index);
+    }
+
+    $transitions.onExit({ exiting: "testClient" }, function () {
+
+        if (!$scope.reqData.url == "") {
+            var retVal = confirm("Do you want to continue without saving ?");
+            if (retVal == true) {
+                $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg": [] };
+                return true;
+
             }
-           
+            else {
+                return false;
+            }
+        }
+
     });
 
     $scope.testsuite = $stateParams.suite;
@@ -128,7 +133,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
         if ($scope.reqData.id === "") {
             if ($stateParams.requests.length != 0 && id == 0) {
                 var indexValue = $stateParams.requests.length;
-                id = $scope.showData[indexValue-1].id;
+                id = $scope.showData[indexValue - 1].id;
             }
             id = id + 1;
 
@@ -137,7 +142,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             $scope.reqData.id = id;
             $scope.reqData.header = $scope.rowBuilder();
             $scope.showData.push($scope.reqData);
-            $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
+            $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg": [] };
             $scope.rowMaker = [{ "key": "", "value": "" }];
         }
         else {
@@ -146,7 +151,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
                 if ($scope.reqData.id === $scope.showData[i].id) {
                     $scope.showData[i] = $scope.reqData;
-                    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg":[] };
+                    $scope.reqData = { "id": "", "selectedReqType": "", "url": "", "header": {}, "body": "", "status": "", "startTime": "", "oauthFilter": "false", "responseTime": [], "statusMsg": [] };
                 }
             }
             $scope.rowMaker = [{ "key": "", "value": "" }];
@@ -174,6 +179,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
             if (data.id === $scope.showData[i].id) {
                 $scope.showData.splice(i, 1);
+                $stateParams.requests = $scope.showData;
 
             }
         }
@@ -209,10 +215,10 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
             if (response.status === 200) {
                 // $scope.showData[counter].responseTime[0].endTime = new Date().getTime();
                 $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
-                $scope.showData[counter].statusMsg.push({"time":new Date(),"message":"Successfull"});
+                $scope.showData[counter].statusMsg.push({ "time": new Date(), "message": "Successfull" });
                 $scope.showData[counter].status = "Successfull";
                 //$scope.showData[counter].success.push({"time":new Date(),"message":"successfully running"});
-                 // $scope.showData[counter].error.push({"time":new Date(),"message":"no error"});
+                // $scope.showData[counter].error.push({"time":new Date(),"message":"no error"});
                 console.log("Start Time - ", $scope.showData[counter].responseTime[0].startTime);
                 console.log("End Time - ", $scope.showData[counter].responseTime[0].endTime);
                 console.log("Response Time - ", $scope.showData[counter].responseTime[0].endTime - $scope.showData[counter].responseTime[0].startTime);
@@ -228,9 +234,9 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
         }, function errorCallback(err) {
 
             $scope.showData[counter].responseTime.push({ "startTime": $scope.showData[counter].startTime, "endTime": new Date().getTime() });
-            $scope.showData[counter].statusMsg.push({"time":new Date(),"message":err});
+            $scope.showData[counter].statusMsg.push({ "time": new Date(), "message": err.data });
             $scope.showData[counter].status = "Failed";
-           // $scope.showData[counter].error.push({"time":new Date(),"message":err});
+            // $scope.showData[counter].error.push({"time":new Date(),"message":err});
             // $scope.showData[counter].success.push({"time":new Date(),"message":"Failed"});
             $scope.statusClassFailed = "glyphicon glyphicon-remove text-danger";
             counter = counter + 1;
@@ -286,24 +292,24 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
         var tempName = prompt("Please Enter Test Suite Name :", $scope.testsuite.suiteName);
         if (tempName != null) {
 
-            if ( tempName == "") {
-            testSuiteName = "TestSuite";
-        } else {
-            testSuiteName = tempName;
+            if (tempName == "") {
+                testSuiteName = "TestSuite";
+            } else {
+                testSuiteName = tempName;
+            }
+
+            if (testSuiteName != "") {
+
+
+
+                $scope.testsuite.suiteName = testSuiteName;
+                $scope.testsuite.test_suites = $scope.showData;
+                $scope.saveData();
+
+            }
+
         }
 
-        if (testSuiteName != "") {
-
-
-
-            $scope.testsuite.suiteName = testSuiteName;
-            $scope.testsuite.test_suites = $scope.showData;
-            $scope.saveData();
-
-        }
-
-        }
-        
 
     };
 
@@ -341,6 +347,22 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
 
 
 app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$location', '$window', '$stateParams', '$state', function ($scope, $http, $modal, $location, $window, $stateParams, $state) {
+    $scope.statsData = "";
+    $scope.viewStats = function (testSuiteDate) {
+        $scope.statsData = testSuiteDate;
+
+        var modalInstance = $modal.open({
+            templateUrl: 'testSuiteStats.html',
+            scope: $scope
+        }).result.then(function () {
+
+        }, function (res) {
+
+        });
+
+    };
+
+
 
 
     $scope.show = function (data) {
@@ -448,8 +470,8 @@ app.directive("modalmatric", function () {
 
             var responseMetricsDataSet = [];
             angular.forEach($scope.APImetrics.responseMetrics, function (responseTimeData) {
-                
-                responseMetricsDataSet.push([ responseTimeData.endTime - responseTimeData.startTime])
+
+                responseMetricsDataSet.push([responseTimeData.endTime - responseTimeData.startTime])
                 console.log(responseMetricsDataSet);
             })
 
@@ -465,17 +487,17 @@ app.directive("modalmatric", function () {
                         viewDistance: 25
                     }
                 },
-                 xAxis: {
+                xAxis: {
                     title: {
                         text: 'No Of Execution'
                     }
                 },
                 yAxis: {
-                     title: {
+                    title: {
                         text: 'Time Intervel (Seconds)'
                     }
                 },
-                 title: {
+                title: {
                     text: 'Micro Testing Tool'
                 },
                 subtitle: {
@@ -554,3 +576,72 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 };
 
 
+app.directive("stats", function () {
+    return {
+        controller: function ($scope) {
+            var statsData = $scope.statsData;
+            success = 0;
+            failure = 0;
+            waiting = 0;
+
+            for (var i = 0; i < statsData.test_suites.length; i++) {
+                if ($scope.statsData.test_suites[i].status == "Successfull") {
+                    success = success + 1;
+                }
+                if ($scope.statsData.test_suites[i].status == "Failed") {
+                    failure = failure + 1;
+                }
+                if ($scope.statsData.test_suites[i].status == "Waiting") {
+                    waiting = waiting + 1;
+                }
+
+            }
+
+
+
+    Highcharts.chart('container', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: statsData.suiteName + " ( No. of MicroServices - " + statsData.test_suites.length + " )" ,
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Browser share',
+        data: [
+          
+            ['Successful', success],
+            ['Failed', failure],
+            ['Waiting', waiting]
+        ]
+    }]
+});
+
+
+
+        }
+
+    }
+
+
+});

@@ -1,4 +1,4 @@
-<div ng-controller="TestSuiteSettingsController" ng-init="getTestSuite()">
+<div class="container" ng-controller="TestSuiteSettingsController" ng-init="getTestSuite()">
     <br>
 
     <div ng-show="suites == undefined" class="container">
@@ -14,15 +14,15 @@
         <div class="col-md-2">
             <label> Test Suites :</label>
             <select ng-model="suite" ng-change="showConfiguration()" ng-options="x.suiteName for x in suites" class="form-control">
-                   <option  value="" selected>select TestSuite</option>
+                   <option  value="" selected>---select---</option>
                     </select>
         </div>
 
         <div class="col-md-2">
             <label> <br></label>
             <!--       <input type="button" ng-click="showConfiguration()" value="Configure Test Suite" class="btn btn-primary btn-block" />-->
-            <input type="button" ng-disabled="!showTestSuiteConfiguration" ng-click="suiteConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}"
-                class="btn btn-primary btn-block">
+            <input type="button" style=" background-color: paleturquoise; color:black" ng-disabled="!showTestSuiteConfiguration" ng-click="suiteConfig()" value="{{!data ? 'EDIT' : 'SAVE'}}"
+                class="btn btn-block">
         </div>
 
     </div>

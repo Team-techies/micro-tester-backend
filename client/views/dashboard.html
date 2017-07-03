@@ -30,7 +30,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
     <script src="../scripts/app.js"></script>
     <script src="../scripts/dashboard.js"></script>
-      <link rel="stylesheet" href="../theme/bootstrap-theme-cyborg.min.css">
+    <!--     <link rel="stylesheet" href="../theme/bootstrap-theme-cyborg.min.css">-->
+    <link rel="stylesheet" href="../theme/bootstrap-theme-slate.min.css">
 </head>
 
 <body ng-app="microTester" ng-controller="DashboardController" ng-init="getUser()">
@@ -42,8 +43,8 @@
             <div class="container-fluid">
                 <div class="page-header">
 
-                    <h3>
-                        Micro Testing Tool
+                    <h2 style="color:white;font-size: 35px;">
+                        <b>Micro Testing Tool</b>
                         <small class="pull-right"><div class="dropdown">
     <span class="dropdown-toggle" data-toggle="dropdown">Logged In as {{name}}
     <span class="caret"></span></span>
@@ -51,7 +52,7 @@
       <li ng-click="logout()"><a href="#">Logout</a></li>
     </ul>
   </div></small>
-                    </h3>
+                    </h2>
 
 
                 </div>
@@ -95,10 +96,10 @@
                                         </div>
                                     </div>
                                     <div class="offer-content">
-                                        <h3 style="color:dodgerblue" class="lead">
+                                        <h3 style="color:dodgerblue;" class="lead">
                                             {{data.title}}
                                         </h3>
-                                        <p>
+                                        <p style="color:black;font-family:  cursive">
                                             {{data.appDesc}}
                                             <br> more..
                                         </p>
@@ -123,15 +124,15 @@
                             <br>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-heart"></i></span>
-                                <input id="appName" style="background: #ded1d1;" type="text" class="form-control" name="app.title" ng-model="app.title" placeholder="Enter Application Name.">
+                                <input id="appName" type="text" class="form-control" name="app.title" ng-model="app.title" placeholder="Enter Application Name.">
                             </div>
                             <br>
-                            <textarea name="App.description" style="background: #ded1d1;" class="form-control" rows="5" id="comment" ng-model="app.appDesc" placeholder="Enter Application Description."></textarea>
+                            <textarea name="App.description" class="form-control" rows="5" id="comment" ng-model="app.appDesc" placeholder="Enter Application Description."></textarea>
                             <br>
 
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-superpowers"></i></span>
-                                <input id="appVersion" style="background: #ded1d1;" type="text" class="form-control" name="App.version" ng-model="app.appVer" placeholder="Enter Application Version.">
+                                <input id="appVersion" type="text" class="form-control" name="App.version" ng-model="app.appVer" placeholder="Enter Application Version.">
                             </div>
                             <br>
                             <div>
@@ -139,24 +140,24 @@
 
                                     <div class="col-sm-3">
                                         <span class="input-group-addon"><i class="fa fa-id-badge"></i></span>
-                                        <input id="appClinetID" style="background: #ded1d1;" type="text" class="form-control" name="app.clientId" ng-model="app.clientId" placeholder="Enter Client ID.">
+                                        <input id="appClinetID" type="text" class="form-control" name="app.clientId" ng-model="app.clientId" placeholder="Enter Client ID.">
                                     </div>
 
                                     <div class="col-sm-3">
                                         <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                        <input id="password" style="background: #ded1d1;" type="password" class="form-control" name="password" ng-model="app.clientSecret" placeholder="Enter Client Secret Key.">
+                                        <input id="password" type="password" class="form-control" name="password" ng-model="app.clientSecret" placeholder="Enter Client Secret Key.">
                                     </div>
 
 
 
                                     <div class="col-sm-3">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-cog"></i></span>
-                                        <input id="appGrantType" style="background: #ded1d1;" type="text" class="form-control" name="app.grantType" ng-model="app.grantType" placeholder="Enter Grant Type.">
+                                        <input id="appGrantType" type="text" class="form-control" name="app.grantType" ng-model="app.grantType" placeholder="Enter Grant Type.">
                                     </div>
 
                                     <div class="col-sm-3">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                        <input id="appScope" style="background: #ded1d1;" type="text" class="form-control" name="App.scope" ng-model="app.scope" placeholder="Enter Scope.">
+                                        <input id="appScope" type="text" class="form-control" name="App.scope" ng-model="app.scope" placeholder="Enter Scope.">
                                     </div>
 
                                 </div>
@@ -166,11 +167,11 @@
                             <div class="row">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-3">
-                                    <input type="button" class="btn btn-primary btn-block btn-primary btn-md" ng-click="add()" value="Add Application">
+                                    <input type="button" class="btn btn-primary btn-block btn-success btn-md" ng-click="add()" value="Add Application">
                                 </div>
                                 <div class="col-sm-4"></div>
                                 <div class="col-sm-3">
-                                    <input type="reset" class="btn btn-primary btn-block btn-primary btn-md" value="Reset">
+                                    <input type="reset" class="btn btn-primary btn-block btn-warning btn-md" value="Reset">
                                 </div>
                                 <div class="col-sm-1"></div>
                             </div>

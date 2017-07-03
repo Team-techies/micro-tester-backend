@@ -148,7 +148,7 @@ module.exports = {
                 //console.log(docs);
                 for (var i = 0; i < docs.length; i++) {
                     console.log("inside docs");
-                    // schedule.scheduler(docs[i]);
+                     schedule.scheduler(docs[i]);
                 }
                 info = {
                     stat: true
@@ -274,9 +274,9 @@ module.exports = {
                     info = {
                         stat: true
                     }
-                    // for(var i=0;i<suites.length;i++){
-                    //     scheduled.scheduledJobs[suites[i].suiteName].cancel();
-                    // }
+                    for(var i=0;i<suites.length;i++){
+                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
+                    }
 
 
                 } else {
@@ -303,17 +303,36 @@ module.exports = {
     delSuite: (req, res) => {
         ses = req.session;
         if (ses.email) {
-
+            // var suite={};
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
+            GetTestSuites.findOne({"_id": req.params.id,"isScheduled":true}, (err, doc) => {
+                if (!err) {
+                    //console.log(docs);
+                    if(doc!=null){
+                         scheduled.scheduledJobs[doc.suiteName].cancel();
+                    }
+                    
+
+                } else {
+                    // info = {
+                    //     stat: false,
+                    //     msg: err
+                    // }
+                    console.log(err);
+
+                };
+                // res.send(info);
+                // res.end();
+
+            });
             GetTestSuites.remove({ "_id": req.params.id }, (err) => {
                 if (!err) {
                     //console.log(docs);
                     info = {
                         stat: true
                     }
-
-
+                   
                 } else {
                     //res.json({ error: err });
                     info = {
@@ -350,7 +369,7 @@ module.exports = {
                     appId: ses.app,
                     test_suites: req.body.test_suites,
                     suiteName: req.body.suiteName,
-                    isScheduled: ses.schedule,
+                    isScheduled: ses.isScheduled,
                     frequency: ses.frequency,
                     to: ses.to,
                     cc: ses.cc,
@@ -368,12 +387,12 @@ module.exports = {
                         req.body.to = ses.to;
                         req.body.cc = ses.cc;
                         req.body.bcc = ses.bcc;
-                        req.body.isScheduled = ses.schedule;
+                        req.body.isScheduled = ses.isScheduled;
                         req.body.frequency = ses.frequency;
                         req.body.appId = ses.app;
-                        // if (ses.isScheduled) {
-                        //     schedule.scheduler(req.body);
-                        // }
+                        if (ses.isScheduled) {
+                            schedule.scheduler(req.body);
+                        }
                     }
                     else {
                         info = {
@@ -388,16 +407,20 @@ module.exports = {
 
                 });
             } else {
-
+                
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'test_suites': req.body.test_suites } }, function (err, doc) {
                     if (!err) {
                         info = {
                             stat: true
                         }
-                        // if (ses.isScheduled) {
-                        //     scheduled.scheduledJobs[req.body.suiteName].cancel();
-                        //     schedule.scheduler(req.body);
-                        // }
+
+                        if (req.body.isScheduled) {
+                            console.log("inside update");
+                            console.log(req.body.suiteName);
+                            console.log(scheduled.scheduledJobs[req.body.suiteName].name);
+                            scheduled.scheduledJobs[req.body.suiteName].cancel();
+                            schedule.scheduler(req.body);
+                        }
                     } else {
                         info = {
                             stat: false,
@@ -455,9 +478,6 @@ module.exports = {
                 status = false;
                 frequency = "";
                 console.log("cancelling scheduler");
-                // if(schedule.scheduledJobs[req.body.suiteName]){
-                //         schedule.scheduledJobs[req.body.suiteName].cancel();
-                // }
 
             }
             else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
@@ -478,18 +498,18 @@ module.exports = {
                         stat: true,
                         Data: req.body
                     }
-                    // if (ses.pastScheduled == true && req.body.isScheduled == false) {
-                    //     scheduled.scheduledJobs[req.body.suiteName].cancel();
-                    // }
-                    // else if (ses.pastScheduled == false && req.body.isScheduled == true) {
-                    //     schedule.scheduler(req.body);
-                    // }
-                    // else if (ses.pastScheduled == true && req.body.isScheduled == true) {
-                    //     scheduled.scheduledJobs[req.body.suiteName].cancel();
-                    //     schedule.scheduler(req.body);
-                    // } else {
+                    if (ses.pastScheduled == true && req.body.isScheduled == false) {
+                        scheduled.scheduledJobs[req.body.suiteName].cancel();
+                    }
+                    else if (ses.pastScheduled == false && req.body.isScheduled == true) {
+                        schedule.scheduler(req.body);
+                    }
+                    else if (ses.pastScheduled == true && req.body.isScheduled == true) {
+                        scheduled.scheduledJobs[req.body.suiteName].cancel();
+                        schedule.scheduler(req.body);
+                    } else {
 
-                    // }
+                    }
                 } else {
                     info = {
                         stat: false,
@@ -542,11 +562,12 @@ module.exports = {
                     info = {
                         stat: true
                     }
-                    for (var i = 0; i < suites.length; i++) {
+                    if(ses.isScheduled){
+                        for (var i = 0; i < suites.length; i++) {
                         TestSuite.findOne({'_id':suites[i]._id}, (err, docs) => {
                             if (!err) {
                                 //console.log(docs);
-                                // schedule.scheduler(docs);
+                                schedule.scheduler(docs);
                             } else {
                                 // info = {
                                 //     stat: false,
@@ -560,6 +581,8 @@ module.exports = {
 
                         });
                     }
+                    }
+                    
                 } else {
                     info = {
                         stat: false,
@@ -785,6 +808,7 @@ module.exports = {
     configApp: (req, res) => {
         var info = {};
         ses = req.session;
+        console.log("here is config");
         console.log(req.body);
         if (ses.email) {
             var path = require("path");
@@ -798,7 +822,7 @@ module.exports = {
             if (req.body.unScheduled) {
                 status = false;
             }
-            else if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
+            else if (req.body.frequency != "" || req.body.frequency != null ||req.body.frequency != undefined ) {
                 status = true;
                 frequency = req.body.frequency;
 

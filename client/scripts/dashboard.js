@@ -62,8 +62,12 @@ app.controller('DashboardController', ['$scope','$http','$window', function($sco
            console.log(response.data.stat);
            if(response.data.stat){
                alert(response.data.msg);
+                location.reload();
+                $scope.app={};
            }else if(response.data.msg==="please login to create app "){
                $window.location.href = '../views/index.html';
+               location.reload();
+                $scope.app={};
            }
            else{
                 alert(response.data.msg);
