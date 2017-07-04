@@ -238,19 +238,11 @@ function tokenGenerated(appname, callback){
 // });
 // }
 // Hello();
-function hitApi(data, app) {
-
-    if(data.oauthFilter){
-        tokenGenerated(app.appId,function(response){
-        console.log("at",response);
-        var jsonHeader = JSON.parse(data.header);
-        jsonHeader.Authorization="Bearer "+response;
-});
-    }
-    //var jsonHeader = JSON.parse(data.header);
-    console.log(data);
+function fetching(data,app){
+        console.log(data);
     console.log("url " + data.url);
-    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader, agent: agent })
+    console.log(JSON.parse(data.header));
+    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: JSON.parse(data.header), agent: agent })
         .then(function successCallback(response) {
             console.log("inside success hitapi");
             console.log(response.status);
@@ -289,6 +281,26 @@ function hitApi(data, app) {
                 saveTest(app);
             }
         });
+}
+function hitApi(data, app) {
+    var jsonHeader={};
+    if(data.oauthFilter){
+        tokenGenerated(app.appId,function(response){
+        console.log("at",response);
+         jsonHeader = JSON.parse(data.header);
+        jsonHeader.Authorization="Bearer "+response;
+        data.header=JSON.stringify(jsonHeader);
+        console.log(data.header);
+        console.log(jsonHeader);
+        fetching(data,app);
+});
+    }else{
+        fetching(data,app);
+    }
+    //var jsonHeader = JSON.parse(data.header);
+        
+    
+    
 }
 function testApi(data, app) {
     counter = 0;
