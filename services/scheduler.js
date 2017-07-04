@@ -171,13 +171,78 @@ function saveTest(app) {
 
         })
 }
-//data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader }
-function hitApi(data, app) {
+function tokenGenerated(appname, callback){
+    var info={};
+     var getApps = require('../models/client.js');
+            var GetApp = mongoose.model('clients', getApps);
 
-    var jsonHeader = JSON.parse(data.header);
-    console.log(data);
+
+            GetApp.findOne({ "_id": appname }, (err, doc) => {
+                if (err) {
+                    //console.log(docs);
+                    // info = {
+                    //     stat: false,
+                    //     msg: err
+                    // }
+                    callback(err);
+                    //return info;
+                    // res.send(info);
+                    // res.end();
+                } else {
+                    if (doc != null) {
+                        var url = 'https://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
+                        console.log(url);
+                        fetch(url, { method: "POST" })
+                            .then(function successCallback(response) {
+                                
+                             
+                                return response.json();
+
+                            }).then(function(response){
+                                //  let info = {
+                                //     stat: true,
+                                //     token: response.access_token
+                                // }
+                                console.log(response.access_token);
+                                callback(response.access_token);
+
+
+                               //return info.token;
+                                // res.send(info);
+                                // res.end();
+                            })
+                            .catch(function errorCallback(err) {   
+                                next(err)
+                            });
+                        
+                    }
+                    //res.json({ error: err });
+                   
+                };
+                
+            });
+            // if(info.token!=undefined || info.token!=null){
+            //     return info;
+            // }       
+}
+
+// tokenGenerated('appname',function(response){
+//         console.log(response);
+//         return response;
+// });
+
+//data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader }
+// function Hello(){
+//     tokenGenerated("5959fd601722120ad46689b5",function(response){
+//         console.log("atxxxx",response);
+// });
+// }
+// Hello();
+function fetching(data,app){
+        console.log(data);
     console.log("url " + data.url);
-    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: jsonHeader, agent: agent })
+    console.log(JSON.parse(data.header));
+    fetch(data.url, { method: data.selectedReqType, body: data.body, headers: JSON.parse(data.header), agent: agent })
         .then(function successCallback(response) {
             console.log("inside success hitapi");
             console.log(response.status);
@@ -217,6 +282,26 @@ function hitApi(data, app) {
             }
         });
 }
+function hitApi(data, app) {
+    var jsonHeader={};
+    if(data.oauthFilter){
+        tokenGenerated(app.appId,function(response){
+        console.log("at",response);
+         jsonHeader = JSON.parse(data.header);
+        jsonHeader.Authorization="Bearer "+response;
+        data.header=JSON.stringify(jsonHeader);
+        console.log(data.header);
+        console.log(jsonHeader);
+        fetching(data,app);
+});
+    }else{
+        fetching(data,app);
+    }
+    //var jsonHeader = JSON.parse(data.header);
+        
+    
+    
+}
 function testApi(data, app) {
     counter = 0;
     console.log("inside testApi");
@@ -236,6 +321,57 @@ module.exports = {
            testApi(data.test_suites, data);
 
         });
-
     }
+//     },
+//     tokenGenerate:function(appname,callback){
+//          var info={};
+//      var getApps = require('../models/client.js');
+//             var GetApp = mongoose.model('clients', getApps);
+
+
+//             GetApp.findOne({ "_id": appname }, (err, doc) => {
+//                 if (err) {
+//                     //console.log(docs);
+//                     // info = {
+//                     //     stat: false,
+//                     //     msg: err
+//                     // }
+//                     callback(err);
+//                     //return info;
+//                     // res.send(info);
+//                     // res.end();
+//                 } else {
+//                     if (doc != null) {
+//                         var url = 'https://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
+//                         console.log(url);
+//                         fetch(url, { method: "POST" })
+//                             .then(function successCallback(response) {
+                                
+                             
+//                                 return response.json();
+
+//                             }).then(function(response){
+//                                 //  let info = {
+//                                 //     stat: true,
+//                                 //     token: response.access_token
+//                                 // }
+//                                 console.log(response.access_token);
+//                                 callback(response.access_token);
+
+
+//                                //return info.token;
+//                                 // res.send(info);
+//                                 // res.end();
+//                             })
+//                             .catch(function errorCallback(err) {   
+//                                 next(err)
+//                             });
+                        
+//                     }
+//                     //res.json({ error: err });
+                   
+//                 };
+                
+//             });
+// }
 }

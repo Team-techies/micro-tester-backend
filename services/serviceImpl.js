@@ -1,6 +1,7 @@
 var schedule = require('./scheduler');
 const mongoose = require("mongoose");
 var scheduled = require('node-schedule');
+var fetch = require('node-fetch');
 // mongoose.Promise = require("bluebird");
 // mongoose.connect("mongodb://localhost/SampleDB");
 // var db = mongoose.connection.db;
@@ -865,23 +866,26 @@ module.exports = {
                         console.log("inside");
                         info = {
                             stat: false,
-                            msg: err
+                            msg: "Data is not found"
                         }
 
                         res.send(info);
                         res.end();
                     }
-                } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
-                    res.send(info);
-                    res.end();
 
-                };
 
+                }else {
+                        console.log("inside");
+                        info = {
+                            stat: false,
+                            msg: err
+                        }
+
+                        res.send(info);
+                        res.end();
+                    };  
+                  
             });
 
         } else {
@@ -894,77 +898,71 @@ module.exports = {
         }
 
     },
-    // sendEmail: (req, res) => {
-    //     ses = req.session;
-    //     //var xoauth2 = require('xoauth2');
-    //     const template = './services/email.html';
-    //     var nodemailer = require('nodemailer');
-    //     var handlebars = require('handlebars');
-    //     var fs = require('fs');
+  tokenGenerate: (req, res) => {
+        var info = {};
+        var result;
+        ses = req.session;
+        console.log(req.body);
+        // ses.email=true;
+        if (ses.email) {
 
-    //     var readHTMLFile = function (template, callback) {
-    //         fs.readFile(template, { encoding: 'utf-8' }, function (err, html) {
-    //             if (err) {
-    //                 throw err;
-    //                 callback(err);
-    //             }
-    //             else {
-    //                 callback(null, html);
-    //             }
-    //         });
-    //     };
-    //     //var smtpTransport = require('nodemailer-smtp-transport');
-    //     //process.env.MAIL_URL='smtp://:' + encodeURIComponent("Nodemailer123") + '@smtp.geips.ge.com:25';
-    //     var transport = nodemailer.createTransport({
-    //         host: 'smtp.geips.ge.com',
-    //         port: 25
-    //     });
-
-    //     console.log('SMTP Configured');
-    //     readHTMLFile(template, function (err, html) {
-    //         var template = handlebars.compile(html);
-    //         var replacements = {
-    //             username: "Chaithanya Bola"
-    //         };
-    //         var htmlToSend = template(replacements);
-    //         var message = {
-
-    //             // sender info
-    //             from: 'spanadana.bola@capgemini.com',
-
-    //             // Comma separated list of recipients
-    //             to: 'spanadana.bola@capgemini.com',
-
-    //             // Subject of the message
-    //             subject: 'Info regarding Test suite failure',
-
-    //             // plaintext body
-
-    //             // HTML body
-    //             html: `${htmlToSend}`
-    //         };
-    //         // ejs.renderFile(template, 'utf8', (err, html) => {
-    //         //     if (err) console.log(err); // Handle error
-
-    //         //     console.log(`HTML: ${html}`);
+            var getApps = require('../models/client.js');
+            var GetApp = mongoose.model('clients', getApps);
 
 
+            GetApp.findOne({ "_id": ses.app }, (err, doc) => {
+                if (err) {
+                    //console.log(docs);
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+                    res.send(info);
+                    res.end();
+                } else {
+                    if (doc != null) {
+                        var url = 'https://fssfed.stage.ge.com/fss/as/token.oauth2?grant_type=' + doc.grantType + '&client_id=' + doc.clientId + '&client_secret=' + doc.clientSecret + '&scope=' + doc.scope;
+                        console.log(url);
+                        fetch(url, { method: "POST" })
+                            .then(function successCallback(response) {
+                                
+                             
+                                return response.json();
 
-    //         console.log('Sending Mail');
-    //         transport.sendMail(message, function (error) {
-    //             if (error) {
-    //                 console.log('Error occured');
-    //                 console.log(error.message);
-    //                 return;
-    //             }
-    //             console.log('Message sent successfully!');
+                            }).then(function(response){
+                                 let info = {
+                                    stat: true,
+                                    token: response.access_token
+                                }
+                                res.send(info);
+                                res.end();
+                            })
+                            .catch(function errorCallback(err) {   
+                                next(err)
+                            });
+                        
+                    }
+                    //res.json({ error: err });
 
-    //             // if you don't want to use this transport object anymore, uncomment following line
-    //             //transport.close(); // close the connection pool
-    //         });
-    //     });
-    //     // Message object
+                };
 
+            });
+        //   schedule.tokenGenerate(ses.app,function(response){
+        // console.log("at",response);
+        //  res.send(response);
+        // res.end();
+//});
+            //result=schedule.Hello();
+           
 
-    // }
+        } else {
+            info = {
+                stat: false,
+                msg: "please login to create app "
+            }
+            res.send(info);
+            res.end();
+        }
+
+    }
 }

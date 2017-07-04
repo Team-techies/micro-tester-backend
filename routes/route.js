@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path");
 var session = require("express-session");
+var RedisStore = require("connect-redis")(session)
 var router = express.Router();
 var service = require('../services/serviceImpl')
 var fetch=require('node-fetch');
@@ -10,22 +11,24 @@ var ejs = require('ejs');
 var http = require('http');
 const httpProxyAgent = require('http-proxy-agent');
 const agent = new httpProxyAgent("http://cis-india-pitc-bangalorez.proxy.corporate.ge.com:80");
-var options = {
-    method: 'GET'
-    , headers: {}        // request header. format {a:'1'} or {b:['1','2','3']}
-    , redirect: 'follow' // set to `manual` to extract redirect headers, `error` to reject redirect
-    , follow: 20         // maximum redirect count. 0 to not follow redirect
-    , timeout: 0         // req/res timeout in ms, it resets on redirect. 0 to disable (OS limit applies)
-    , compress: true     // support gzip/deflate content encoding. false to disable
-    , size: 0            // maximum response body size in bytes. 0 to disable
-    , agent: agent        // http.Agent instance, allows custom proxy, certificate etc.
-}
+// var options = {
+//     method: 'GET'
+//     , headers: {}        // request header. format {a:'1'} or {b:['1','2','3']}
+//     , redirect: 'follow' // set to `manual` to extract redirect headers, `error` to reject redirect
+//     , follow: 20         // maximum redirect count. 0 to not follow redirect
+//     , timeout: 0         // req/res timeout in ms, it resets on redirect. 0 to disable (OS limit applies)
+//     , compress: true     // support gzip/deflate content encoding. false to disable
+//     , size: 0            // maximum response body size in bytes. 0 to disable
+//     , agent: agent        // http.Agent instance, allows custom proxy, certificate etc.
+// }
 
-router.use(session({
+/*router.use(session({
     secret: 'hello',
     saveUninitialized: true,
     resave: true
-}));
+}));*/
+
+
 var ses;
 
 router.get("/", (req, res) => {
@@ -57,6 +60,8 @@ router.get("/delSuites", service.delSuites);
 router.get("/delSuite/:id", service.delSuite);
 
 router.get("/logout", service.logout);
+
+router.get("/tokenGenerate", service.tokenGenerate);
 // router.all("/test",(req,res)=>{
 //     fetch(req.body.url,options).then((response)=>{
 //         console.log(response); 

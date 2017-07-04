@@ -9,6 +9,17 @@ var mongoose = require("mongoose");
  mongoose.Promise = require("bluebird");
 var app = express();
 var port = process.env.PORT || 8999;
+var session = require("express-session");
+var RedisStore = require("connect-redis")(session)
+
+app.use(session({
+store:new RedisStore({
+    url:"redis://localhost:6379"
+}),
+secret:"123",
+resave: false,
+saveUninitialized:false
+}))
 //app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -54,4 +65,8 @@ app.listen(port, () => {
     console.log("sever running on port " + port);
 });
 
+app.use(function(err,req,res,next){
+    res.status(err.status||500);
+    res.send(err.message);
+})
 module.exports = app; 
