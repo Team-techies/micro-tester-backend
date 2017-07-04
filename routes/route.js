@@ -15,6 +15,13 @@ var configSuiteService = require('../services/configSuiteService');
 var getClientAppService = require('../services/getClientAppService');
 var createClientService = require('../services/createClientService');
 var saveTestSuiteService = require('../services/saveTestSuiteService');
+var testAppChangeService = require('../services/testAppChangeService');
+var getTestSuiteService = require('../services/getTestSuiteService');
+var delSuitesService = require('../services/delSuitesService');
+var delSuiteService = require('../services/delSuiteService');
+var logoutService = require('../services/logoutService');
+var tokenGenerateService = require('../services/tokenGenerateService');
+var changePwdService = require('../services/changePwdService');
 var fetch=require('node-fetch');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
@@ -62,17 +69,18 @@ router.post("/configSuite", configSuiteService.configSuite);
 router.get("/getClientApp/:id", getClientAppService.getClientApp);
 
 router.post("/createClient", createClientService.createClient)
+router.post("/changePwd", changePwdService.changePwd)
 
 router.post("/saveTestSuite", saveTestSuiteService.saveTestSuite);
-router.get("/testAppChange", service.testAppChange);
+router.get("/testAppChange", testAppChangeService.testAppChange);
 
-router.get("/getTestSuite", service.getTestSuite);
-router.get("/delSuites", service.delSuites);
-router.get("/delSuite/:id", service.delSuite);
+router.get("/getTestSuite", getTestSuiteService.getTestSuite);
+router.get("/delSuites", delSuitesService.delSuites);
+router.get("/delSuite/:id", delSuiteService.delSuite);
 
-router.get("/logout", service.logout);
+router.get("/logout", logoutService.logout);
 
-router.get("/tokenGenerate", service.tokenGenerate);
+router.get("/tokenGenerate", tokenGenerateService.tokenGenerate);
 // router.all("/test",(req,res)=>{
 //     fetch(req.body.url,options).then((response)=>{
 //         console.log(response); 
