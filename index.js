@@ -48,7 +48,7 @@ app.use("/api", apiRouter);
 
 // app.set(process.env.MAIL_URL='smtp://test.nodemailer%40gmail.com:' + encodeURIComponent("Nodemailer123") + '@smtp.gmail.com:465')
 
-app.set("views", __dirname + "/client/views");
+app.set("views", __dirname + "/client/src/Registration-Login/views");
 app.set("view engine", "ejs");
 app.engine("html", require("ejs").renderFile);
 app.use(express.static(__dirname + "/client"));
