@@ -3,7 +3,25 @@ var path = require("path");
 var session = require("express-session");
 var RedisStore = require("connect-redis")(session)
 var router = express.Router();
-var service = require('../services/serviceImpl')
+var service = require('../services/serviceImpl');
+var checkUserService = require('../services/checkUserService');
+var schedulerService = require('../services/schedulerService');
+var getClientAppsService = require('../services/getClientAppsService');
+var getAppService = require('../services/getAppService');
+var deleteAppService = require('../services/deleteAppService');
+var updateAppService = require('../services/updateAppService');
+var configAppService = require('../services/configAppService');
+var configSuiteService = require('../services/configSuiteService');
+var getClientAppService = require('../services/getClientAppService');
+var createClientService = require('../services/createClientService');
+var saveTestSuiteService = require('../services/saveTestSuiteService');
+var testAppChangeService = require('../services/testAppChangeService');
+var getTestSuiteService = require('../services/getTestSuiteService');
+var delSuitesService = require('../services/delSuitesService');
+var delSuiteService = require('../services/delSuiteService');
+var logoutService = require('../services/logoutService');
+var tokenGenerateService = require('../services/tokenGenerateService');
+var changePwdService = require('../services/changePwdService');
 var fetch=require('node-fetch');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
@@ -36,32 +54,33 @@ router.get("/", (req, res) => {
 });
 
 // router.get("/sendEmail", service.sendEmail);
-router.post("/checkUser", service.checkUser);
+router.post("/checkUser", checkUserService.checkUser);
 
-router.get("/scheduler", service.scheduler);
+router.get("/scheduler", schedulerService.scheduler);
 
-router.get("/getClientApps", service.getClientApps);
+router.get("/getClientApps", getClientAppsService.getClientApps);
 
-router.get("/getApp", service.getApp);
-router.get("/deleteApp", service.deleteApp);
-router.post("/updateApp", service.updateApp);
-router.post("/configApp", service.configApp);
-router.post("/configSuite", service.configSuite);
+router.get("/getApp", getAppService.getApp);
+router.get("/deleteApp", deleteAppService.deleteApp);
+router.post("/updateApp", updateAppService.updateApp);
+router.post("/configApp", configAppService.configApp);
+router.post("/configSuite", configSuiteService.configSuite);
 
-router.get("/getClientApp/:id", service.getClientApp);
+router.get("/getClientApp/:id", getClientAppService.getClientApp);
 
-router.post("/createClient", service.createClient)
+router.post("/createClient", createClientService.createClient)
+router.post("/changePwd", changePwdService.changePwd)
 
-router.post("/saveTestSuite", service.saveTestSuite);
-router.get("/testAppChange", service.testAppChange);
+router.post("/saveTestSuite", saveTestSuiteService.saveTestSuite);
+router.get("/testAppChange", testAppChangeService.testAppChange);
 
-router.get("/getTestSuite", service.getTestSuite);
-router.get("/delSuites", service.delSuites);
-router.get("/delSuite/:id", service.delSuite);
+router.get("/getTestSuite", getTestSuiteService.getTestSuite);
+router.get("/delSuites", delSuitesService.delSuites);
+router.get("/delSuite/:id", delSuiteService.delSuite);
 
-router.get("/logout", service.logout);
+router.get("/logout", logoutService.logout);
 
-router.get("/tokenGenerate", service.tokenGenerate);
+router.get("/tokenGenerate", tokenGenerateService.tokenGenerate);
 // router.all("/test",(req,res)=>{
 //     fetch(req.body.url,options).then((response)=>{
 //         console.log(response); 
@@ -71,14 +90,14 @@ router.get("/tokenGenerate", service.tokenGenerate);
 //           res.send(error);
 //     })
 // })
-router.get("/success",(req,res)=>{
-    res.send({
-        status:200
-        });
-})
-router.get("/fail",(req,res)=>{
-    res.send({
-        status:500
-        });
-})
+// router.get("/success",(req,res)=>{
+//     res.send({
+//         status:200
+//         });
+// })
+// router.get("/fail",(req,res)=>{
+//     res.send({
+//         status:500
+//         });
+// })
 module.exports = router;

@@ -20,7 +20,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
     $scope.changePwd = function () {
         console.log("hell0");
         $http({
-            url: '/api/changePwd',
+            url: '/changePwd',
             method: "POST",
             data: $scope.user,
             headers: { 'Content-Type': 'application/json' }
