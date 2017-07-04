@@ -3,7 +3,18 @@ var path = require("path");
 var session = require("express-session");
 var RedisStore = require("connect-redis")(session)
 var router = express.Router();
-var service = require('../services/serviceImpl')
+var service = require('../services/serviceImpl');
+var checkUserService = require('../services/checkUserService');
+var schedulerService = require('../services/schedulerService');
+var getClientAppsService = require('../services/getClientAppsService');
+var getAppService = require('../services/getAppService');
+var deleteAppService = require('../services/deleteAppService');
+var updateAppService = require('../services/updateAppService');
+var configAppService = require('../services/configAppService');
+var configSuiteService = require('../services/configSuiteService');
+var getClientAppService = require('../services/getClientAppService');
+var createClientService = require('../services/createClientService');
+var saveTestSuiteService = require('../services/saveTestSuiteService');
 var fetch=require('node-fetch');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
@@ -36,23 +47,23 @@ router.get("/", (req, res) => {
 });
 
 // router.get("/sendEmail", service.sendEmail);
-router.post("/checkUser", service.checkUser);
+router.post("/checkUser", checkUserService.checkUser);
 
-router.get("/scheduler", service.scheduler);
+router.get("/scheduler", schedulerService.scheduler);
 
-router.get("/getClientApps", service.getClientApps);
+router.get("/getClientApps", getClientAppsService.getClientApps);
 
-router.get("/getApp", service.getApp);
-router.get("/deleteApp", service.deleteApp);
-router.post("/updateApp", service.updateApp);
-router.post("/configApp", service.configApp);
-router.post("/configSuite", service.configSuite);
+router.get("/getApp", getAppService.getApp);
+router.get("/deleteApp", deleteAppService.deleteApp);
+router.post("/updateApp", updateAppService.updateApp);
+router.post("/configApp", configAppService.configApp);
+router.post("/configSuite", configSuiteService.configSuite);
 
-router.get("/getClientApp/:id", service.getClientApp);
+router.get("/getClientApp/:id", getClientAppService.getClientApp);
 
-router.post("/createClient", service.createClient)
+router.post("/createClient", createClientService.createClient)
 
-router.post("/saveTestSuite", service.saveTestSuite);
+router.post("/saveTestSuite", saveTestSuiteService.saveTestSuite);
 router.get("/testAppChange", service.testAppChange);
 
 router.get("/getTestSuite", service.getTestSuite);
@@ -71,14 +82,14 @@ router.get("/tokenGenerate", service.tokenGenerate);
 //           res.send(error);
 //     })
 // })
-router.get("/success",(req,res)=>{
-    res.send({
-        status:200
-        });
-})
-router.get("/fail",(req,res)=>{
-    res.send({
-        status:500
-        });
-})
+// router.get("/success",(req,res)=>{
+//     res.send({
+//         status:200
+//         });
+// })
+// router.get("/fail",(req,res)=>{
+//     res.send({
+//         status:500
+//         });
+// })
 module.exports = router;
