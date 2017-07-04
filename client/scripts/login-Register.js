@@ -40,8 +40,10 @@ app.controller('RegisterController', ['$scope', '$http', '$window', function ($s
     $scope.confirmPassword = false;
     $scope.reEnterPassword = function() {
         
-        if ($scope.password === $scope.newUser.pwd) {
+        if ($scope.password == $scope.newUser.pwd) {
             $scope.confirmPassword = true;
+        } else {
+              $scope.confirmPassword = false;
         }
 
     };
@@ -56,10 +58,13 @@ app.controller('RegisterController', ['$scope', '$http', '$window', function ($s
         }).then(function (response) {
             console.log(response.data.stat);
             if (response.data.stat) {
+                console.log(response.data.msg);
                 alert(response.data.msg);
             }
             else {
-                alert(response.data.msg);
+                alert("Server Error Register Again");
+                //alert(response.data.msg);
+                console.log(response.data.msg);
             }
         }, function (err) {
             console.log(err);

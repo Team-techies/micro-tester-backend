@@ -20,26 +20,21 @@
   <title>Tool</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="../library/angular/angular.min.js"></script>
+  <script src="../bower_components/angular/angular.min.js"></script>
   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
   <script src="../scripts/app.js"></script>
   <script src="../scripts/login-Register.js"></script>
   <link rel="stylesheet" href="../styles/style.css">
-  <script src="../library/@uirouter/angularjs/release/angular-ui-router.js"></script>
+  <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="../scripts/angular-cron-jobs.js"></script>
   <link rel="stylesheet" href="../styles/angular-cron-jobs.less" />
   <link rel="stylesheet" href="../styles/angular-cron-jobs.css" />
-  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
-
   <link rel="stylesheet" href="../library/bootstrap/dist/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="../theme/bootstrap-theme-yeti.min.css">-->
   <link rel="shortcut icon" href="">
-  <script src="../library/jquery/dist/jquery.min.js"></script>
-  <script src="../library/bootstrap/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="../library/font-awesome/css/font-awesome.min.css">
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+
 
 </head>
 
@@ -91,17 +86,20 @@
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 
                 <div>
-                <input id="fname" title="First Name Should Have Min 2 Characters"  ng-pattern="/^[a-zA-Z]+$/" ng-minlength="2" style="width: 50%" ng-model="newUser.first" type="text" class="form-control" name="first"
-                  placeholder="Enter Your First Name" required>
-        
+                  <input id="fname" title="First Name Should Have Min 2 Characters" ng-pattern="/^[a-zA-Z]+$/" ng-minlength="2" style="width: 50%"
+                    ng-model="newUser.first" type="text" class="form-control" name="first" placeholder="Enter Your First Name"
+                    required>
+
                 </div>
 
-              <div>
-                <input id="lname" title="Last Name Should Have Min 3 Characters" ng-pattern="/^[a-zA-Z]+$/" ng-minlength="3" style="width: 50%" ng-model="newUser.last" type="text" class="form-control" name="last" placeholder="Enter Your Last Name"
-                  required>
-                   <span ng-show="registerForm.first.$valid && registerForm.last.$valid" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
-                  <span ng-show="registerForm.first.$invalid && registerForm.first.$touched || registerForm.last.$invalid && registerForm.last.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
-              </div>
+                <div>
+                  <input id="lname" title="Last Name Should Have Min 3 Characters" ng-pattern="/^[a-zA-Z]+$/" ng-minlength="3" style="width: 50%"
+                    ng-model="newUser.last" type="text" class="form-control" name="last" placeholder="Enter Your Last Name"
+                    required>
+                  <span ng-show="registerForm.first.$valid && registerForm.last.$valid" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
+                  <span ng-show="registerForm.first.$invalid && registerForm.first.$touched || registerForm.last.$invalid && registerForm.last.$touched"
+                    class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
+                </div>
 
               </div>
 
@@ -111,7 +109,8 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input id="email" ng-minlength="12" title="Email should contain atleast 12 characters" ng-model="newUser.email" type="email" class="form-control" name="email" placeholder="Enter Your Email" required>
+                <input id="email" ng-minlength="12" title="Email should contain atleast 12 characters" ng-model="newUser.email" type="email"
+                  class="form-control" name="email" placeholder="Enter Your Email" required>
                 <span ng-show="registerForm.email.$valid  && registerForm.email.$touched" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
                 <span ng-show="registerForm.email.$invalid && registerForm.email.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
               </div>
@@ -119,8 +118,9 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-sort-by-order"></i></span>
-                <input id="empId" ng-pattern="/^[0-9]{5,6}$/" ng-minlength="5" ng-maxlength="6" ng-model="newUser.empId" type="text" class="form-control" name="empId" placeholder="Enter Your Employee Id" required>
-               <span ng-show="registerForm.empId.$valid  && registerForm.empId.$touched" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
+                <input id="empId" ng-pattern="/^[0-9]{5,6}$/" ng-minlength="5" ng-maxlength="6" ng-model="newUser.empId" type="text" class="form-control"
+                  name="empId" placeholder="Enter Your Employee Id" required>
+                <span ng-show="registerForm.empId.$valid  && registerForm.empId.$touched" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
                 <span ng-show="registerForm.empId.$invalid && registerForm.empId.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
               </div>
               <br>
@@ -128,13 +128,13 @@
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                 <div>
-                <input id="pwd" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/" type="password" title="# must contains one digit from 0-9 
+                  <input id="pwd" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/" type="password" title="# must contains one digit from 0-9 
 # must contains one lowercase characters
 # must contains one special symbols in the list '@#$%' 
-# length at least 8 characters and maximum of 20"
-                 class="form-control" name="pwd" ng-model="password" placeholder="Enter Your Password" required>
-                   <span ng-show="registerForm.pwd.$valid" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
-                <span ng-show="registerForm.pwd.$invalid && registerForm.pwd.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
+# length at least 8 characters and maximum of 20" class="form-control" name="pwd" ng-model="password" placeholder="Enter Your Password"
+                    required>
+                  <span ng-show="registerForm.pwd.$valid" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
+                  <span ng-show="registerForm.pwd.$invalid && registerForm.pwd.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
                 </div>
               </div>
               <br>
@@ -142,17 +142,18 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input id="password" ng-keyup="reEnterPassword()" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/" title="Re-Enter Password"
-                 ng-model="newUser.pwd" type="password" class="form-control" name="rePassword" placeholder="Re-Enter Password" required>
-                 <span ng-show="confirmPassword" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
+                <input id="password" ng-keyup="reEnterPassword()" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/"
+                  title="Re-Enter Password" ng-model="newUser.pwd" type="password" class="form-control" name="rePassword" placeholder="Re-Enter Password"
+                  required>
+                <span ng-show="confirmPassword" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
                 <span ng-show="!confirmPassword && registerForm.pwd.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
               </div>
               <br>
               <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-3">
-                  <input type="submit" ng-disabled="registerForm.$invalid && !confirmPassword" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-click="registerUser()"
-                    value="Register">
+                  <input type="submit" ng-disabled="!(confirmPassword && (!registerForm.$invalid))" class="btn btn-primary btn-block btn-primary btn-md"
+                    data-dismiss="modal" ng-click="registerUser()" value="Register">
                 </div>
 
                 <div class="col-sm-3">
@@ -203,19 +204,20 @@
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                 <div>
-                <input id="password" title="# must contains one digit from 0-9 
+                  <input id="password" title="# must contains one digit from 0-9 
 # must contains one lowercase characters
 # must contains one special symbols in the list '@#$%' 
 # length at least 8 characters and maximum of 20" ng-model="user.pwd" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/"
-                  type="password" class="form-control" name="password" placeholder="Password">
-                <span ng-show="loginForm.password.$valid  && loginForm.password.$touched" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
-                <span ng-show="loginForm.password.$invalid && loginForm.password.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
+                    type="password" class="form-control" name="password" placeholder="Password">
+                  <span ng-show="loginForm.password.$valid  && loginForm.password.$touched" class="glyphicon glyphicon-ok form-control-feedback text-success"></span>
+                  <span ng-show="loginForm.password.$invalid && loginForm.password.$touched" class="glyphicon glyphicon-remove  form-control-feedback text-danger"></span>
                 </div>
               </div>
               <br>
               <div>
 
-                <input type="button" ng-click="login()" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-disabled="loginForm.$invalid" value="Login">
+                <input type="button" ng-click="login()" class="btn btn-primary btn-block btn-primary btn-md" data-dismiss="modal" ng-disabled="loginForm.$invalid"
+                  value="Login">
 
               </div>
             </form>
