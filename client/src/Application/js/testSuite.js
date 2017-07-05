@@ -83,7 +83,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 
@@ -281,8 +281,7 @@ app.controller('formController', ['$scope', '$http', '$modal', '$location', '$wi
                 alert(response.data.msg);
             }
         }, function errorCallback(err) {
-            console.log(response.data.msg);
-            alert(response.data.msg);
+            alert(err);
 
         });
     }
@@ -401,7 +400,7 @@ app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$locati
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+               alert(err);
             });
         }
 
@@ -428,8 +427,7 @@ app.controller('ViewTestSuiteController', ['$scope', '$http', '$modal', '$locati
                 alert(response.data.msg);
             }
         }, function errorCallback(err) {
-            console.log(response.data.msg);
-            alert(response.data.msg);
+           alert(err);
 
         });
     };

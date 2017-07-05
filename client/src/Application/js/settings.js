@@ -35,7 +35,7 @@ app.controller('SettingsController', ['$state', '$scope', '$http', function ($st
                 alert(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+            alert(err);
         });
     };
 
@@ -64,7 +64,7 @@ app.controller('SettingsController', ['$state', '$scope', '$http', function ($st
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 
@@ -114,7 +114,7 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 
@@ -163,8 +163,8 @@ app.controller('TestSuiteSettingsController', ['$state', '$scope', '$http', func
                 alert(response.data.msg);
             }
         }, function errorCallback(err) {
-            console.log(response.data.msg);
-            alert(response.data.msg);
+            console.log(err.data);
+            alert(err.data);
 
         });
     };

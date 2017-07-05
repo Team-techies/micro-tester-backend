@@ -36,7 +36,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                 alert(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+            alert(err);
         });
     };
     $scope.getUser = function () {
@@ -59,7 +59,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                 alert(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+            alert(err);
         });
     };
     $scope.deleteApp = function () {
@@ -83,7 +83,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 
@@ -102,7 +102,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                 alert(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+            alert(err);
         });
 
     };
@@ -136,7 +136,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 
@@ -166,7 +166,7 @@ app.controller('OverviewController',['$scope', '$http', '$window', function($sco
                     alert(response.data.msg);
                 }
             }, function (err) {
-                console.log(err);
+                alert(err);
             });
         }
 

@@ -38,7 +38,7 @@ app.controller('RegisterController', ['$scope', '$http', '$window', function ($s
                 console.log(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+           alert(err);
         });
     };
 

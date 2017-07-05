@@ -12,6 +12,7 @@ module.exports = {
         RegisterUser.findOne({ "email": req.body.email }, (err, docs) => {
             if (err) {
                 //console.log(docs);
+                //console.log(hello);
                 info = {
                     stat: false,
                     msg: err

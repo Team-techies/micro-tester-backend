@@ -25,7 +25,7 @@ app.controller('DashboardController', ['$scope','$http','$window', function($sco
                 alert(response.data.msg);
            }
         },function (err) {
-                console.log(err);
+                alert(err);
             });
     };
      $scope.show = function (data) {
@@ -48,7 +48,7 @@ app.controller('DashboardController', ['$scope','$http','$window', function($sco
                 alert(response.data.msg);
            }
         },function (err) {
-                console.log(err);
+                alert(err);
             });
     };
     $scope.add = function () {
@@ -73,7 +73,7 @@ app.controller('DashboardController', ['$scope','$http','$window', function($sco
                 alert(response.data.msg);
            }
         },function (err) {
-                console.log(err);
+                alert(err);
             });
     };
 
@@ -93,7 +93,7 @@ app.controller('DashboardController', ['$scope','$http','$window', function($sco
                 alert(response.data.msg);
            }
         },function (err) {
-                console.log(err);
+                alert(err);
             });
 
     }

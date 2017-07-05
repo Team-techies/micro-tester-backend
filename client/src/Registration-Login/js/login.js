@@ -24,7 +24,7 @@ app.controller('LoginController', ['$scope', '$http', '$window', function ($scop
                 alert(response.data.msg);
             }
         }, function (err) {
-            console.log(err);
+            alert(err);
         });
     };
 
