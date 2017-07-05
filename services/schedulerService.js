@@ -7,9 +7,18 @@ module.exports={
         var getTestSuites = require('../models/testSuites.js');
         var GetTestSuite = mongoose.model('testsuites', getTestSuites);
         GetTestSuite.find({ "isScheduled": true }, (err, docs) => {
-            if (!err) {
+            if (err) {
+
+                 info = {
+                    stat: false,
+                    msg: err
+                }
+                console.log(err);
                 //console.log(docs);
-                for (var i = 0; i < docs.length; i++) {
+                
+            } else {
+                //res.json({ error: err });
+               for (var i = 0; i < docs.length; i++) {
                     console.log("inside docs");
                      schedule.scheduler(docs[i]);
                 }
@@ -17,13 +26,6 @@ module.exports={
                     stat: true
                 }
                 console.log(docs);
-            } else {
-                //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                console.log(err);
             };
             res.send(info);
             //ses.id=docs._id;

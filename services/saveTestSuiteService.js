@@ -27,8 +27,16 @@ module.exports={
                 });
                 testSuite.save(function (err) {
                     if (!err) {
+                        info = {
+                            stat: false,
+                            msg: err
 
-                        var info = {};
+                        }
+                        console.log(err);
+                       
+                        
+                    }
+                    else {
                         info = {
                             stat: true
                         }
@@ -42,14 +50,6 @@ module.exports={
                             schedule.scheduler(req.body);
                         }
                     }
-                    else {
-                        info = {
-                            stat: false,
-                            msg: err
-
-                        }
-                        console.log(err);
-                    }
                     res.send(info);
                     res.end();
 
@@ -57,8 +57,15 @@ module.exports={
             } else {
                 
                 TestSuite.update({ '_id': req.body._id }, { $set: { 'test_suites': req.body.test_suites } }, function (err, doc) {
-                    if (!err) {
-                        info = {
+                    if (err) {
+                         info = {
+                            stat: false,
+                            msg: err
+
+                        }
+                        
+                    } else {
+                       info = {
                             stat: true
                         }
 
@@ -68,12 +75,6 @@ module.exports={
                             console.log(scheduled.scheduledJobs[req.body.suiteName].name);
                             scheduled.scheduledJobs[req.body.suiteName].cancel();
                             schedule.scheduler(req.body);
-                        }
-                    } else {
-                        info = {
-                            stat: false,
-                            msg: err
-
                         }
                     }
                     res.send(info);

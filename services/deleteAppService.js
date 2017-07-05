@@ -7,13 +7,8 @@ module.exports={
             var getClientApps = require('../models/client.js');
             var GetClientApp = mongoose.model('clients', getClientApps);
             GetClientApp.findByIdAndRemove(ses.app, (err, docs) => {
-                if (!err) {
-
-                    res.redirect("/delSuites");
-
-                } else {
-                    //res.json({ error: err });
-                    info = {
+                if (err) {
+                     info = {
                         stat: false,
                         msg: err
                     }
@@ -21,6 +16,11 @@ module.exports={
                     //ses.id=docs._id;
 
                     res.end();
+                  
+
+                } else {
+                    //res.json({ error: err });
+                     res.redirect("/delSuites");
                 };
 
             });

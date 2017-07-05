@@ -13,11 +13,17 @@ module.exports = {
 
 
         RegisterUser.findOne({ "email": req.body.email }, (err, docs) => {
-            if (!err) {
+            if (err) {
                 //console.log(docs);
+                info = {
+                    stat: false,
+                    msg: err
+                }
+            } else {
                 if (docs != null) {
                     info = {
-                        stat: true
+                        stat: true,
+                        msg: "email already exist"
                     }
                 }
 
@@ -27,13 +33,12 @@ module.exports = {
                     }
                 }
                 console.log(docs);
-                res.send(info);
-                res.end();
-            } else {
+
                 //res.json({ error: err });
-                res.send(err);
-                res.end();
+
             };
+            res.send(info);
+            res.end();
         });
     }
 }

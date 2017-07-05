@@ -1,43 +1,52 @@
 const mongoose = require('mongoose');
 module.exports = {
-    changePwd: (req, res) => {
+    updateUser: (req, res) => {
+        var info = {};
         ses = req.session;
+        console.log(req.body);
         if (ses.email) {
 
+            var path = require("path");
             var registerUsers = require('../models/registerUser.js');
             var RegisterUser = mongoose.model('registerusers', registerUsers);
+
             console.log(req.body);
 
-
-            RegisterUser.findOneAndUpdate({ 'email': ses.email, 'pwd': req.body.old }, { $set: { 'pwd': req.body.new } }).exec(function (err, docs) {
+            RegisterUser.findOneAndUpdate({ "email": req.body.email }, {
+                $set: {
+                    "first": req.body.first,
+                    "last": req.body.last,
+                    "empId": req.body.empId
+                }
+            }).exec((err, docs) => {
                 if (err) {
                     info = {
                         stat: false,
-                        status: 404,
-                        msg: "you are failed to change " + err
+                        msg: err
                     }
-                    console.log(err);
 
+                    //console.log(docs);
 
-                }
-                else {
+                } else {
+                    //res.json({ error: err });
                     if (docs != null) {
+
                         info = {
-                            stat: true,
-                            msg: "you changed password successfully"
+                            stat: true
                         }
-                    } else {
+                    }
+                    else {
+                        console.log("inside");
                         info = {
                             stat: false,
-                            msg: "you have entered wrong old password"
+                            msg: "User not Found"
                         }
                     }
-
-                }
+                };
                 res.send(info);
-
                 res.end();
             });
+
 
         } else {
             info = {
@@ -47,7 +56,6 @@ module.exports = {
             res.send(info);
             res.end();
         }
-        // ses.email="spandanabola@gmail.com";
 
     }
 }

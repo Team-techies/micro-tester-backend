@@ -1,6 +1,6 @@
-const mongoose=require('mongoose');
-module.exports={
-     configApp: (req, res) => {
+const mongoose = require('mongoose');
+module.exports = {
+    configApp: (req, res) => {
         var info = {};
         ses = req.session;
         console.log("here is config");
@@ -17,7 +17,7 @@ module.exports={
             if (req.body.unScheduled) {
                 status = false;
             }
-            else if (req.body.frequency != "" || req.body.frequency != null ||req.body.frequency != undefined ) {
+            else if (req.body.frequency != "" || req.body.frequency != null || req.body.frequency != undefined) {
                 status = true;
                 frequency = req.body.frequency;
 
@@ -34,8 +34,21 @@ module.exports={
                     "isScheduled": status
                 }
             }).exec((err, docs) => {
-                if (!err) {
+                if (err) {
+                    console.log("inside");
+                    info = {
+                        stat: false,
+                        msg: err
+                    }
+
+                    res.send(info);
+                    res.end();
                     //console.log(docs);
+
+                    //res.json({ error: err });
+
+
+                } else {
                     if (docs != null) {
 
                         if (req.body.frequency != undefined || req.body.frequency != "" || req.body.frequency != null) {
@@ -66,20 +79,8 @@ module.exports={
                         res.send(info);
                         res.end();
                     }
-                    //res.json({ error: err });
+                };
 
-
-                }else {
-                        console.log("inside");
-                        info = {
-                            stat: false,
-                            msg: err
-                        }
-
-                        res.send(info);
-                        res.end();
-                    };  
-                  
             });
 
         } else {

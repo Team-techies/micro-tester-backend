@@ -7,8 +7,15 @@ module.exports={
             var getClientApps = require('../models/client.js');
             var GetClientApp = mongoose.model('clients', getClientApps);
             GetClientApp.findOne({ "_id": ses.app }, (err, docs) => {
-                if (!err) {
+                if (err) {
+                     info = {
+                        stat: false,
+                        msg: err
+                    }
                     //console.log(docs);
+                   
+                } else {
+                    //res.json({ error: err });
                     info = {
                         stat: true,
                         doc: docs,
@@ -22,12 +29,6 @@ module.exports={
                     ses.bcc = docs.bcc;
                     console.log(docs);
 
-                } else {
-                    //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
                 };
                 res.send(info);
                 //ses.id=docs._id;

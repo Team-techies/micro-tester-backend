@@ -18,20 +18,21 @@ module.exports = {
                 "pwd": req.body.pwd
             }
         }).exec((err, docs) => {
-            if (!err) {
+            if (err) {
+                console.log("inside");
+                info = {
+                    stat: false,
+                    msg: err
+                }
                 //console.log(docs);
+
+            }
+            else {
                 if (docs != null) {
 
                     info = {
                         stat: true
                     }
-                }
-            }
-            else {
-                console.log("inside");
-                info = {
-                    stat: false,
-                    msg: err
                 }
             }
             res.send(info);

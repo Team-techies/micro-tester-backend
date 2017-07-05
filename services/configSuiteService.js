@@ -17,16 +17,17 @@ module.exports={
             console.log("scheduler");
             console.log(req.body.unScheduled);
             TestSuite.findOne({'_id':req.body._id}, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    ses.pastScheduled = docs.isScheduled;
-                    ses.pastFrequency = docs.frequency;
+                   console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                     ses.pastScheduled = docs.isScheduled;
+                    ses.pastFrequency = docs.frequency;
+                    
 
                 };
                 // res.send(info);
@@ -50,7 +51,14 @@ module.exports={
             }
 
             TestSuite.update({ '_id': req.body._id }, { $set: { 'to': req.body.to, 'cc': req.body.cc, 'bcc': req.body.bcc, 'isScheduled': status, 'frequency': frequency } }, function (err, doc) {
-                if (!err) {
+                if (err) {
+                     info = {
+                        stat: false,
+                        msg: err
+
+                    }
+                   
+                } else {
                     req.body.isScheduled = status;
                     req.body.frequency = frequency;
                     info = {
@@ -67,12 +75,6 @@ module.exports={
                         scheduled.scheduledJobs[req.body.suiteName].cancel();
                         schedule.scheduler(req.body);
                     } else {
-
-                    }
-                } else {
-                    info = {
-                        stat: false,
-                        msg: err
 
                     }
                 }

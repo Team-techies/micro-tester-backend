@@ -10,20 +10,21 @@ module.exports={
             var GetClientApp = mongoose.model('clients', getClientApps);
 
             GetClientApp.find({ "email": ses.email }, (err, docs) => {
-                if (!err) {
+                if (err) {
+                     info = {
+                        stat: false,
+                        msg: err
+                    }
+
                     //console.log(docs);
-                    info = {
+                    
+                } else {
+                   info = {
                         stat: true,
                         name: ses.name,
                         email: ses.email,
                         doc: docs
                     }
-                } else {
-                    info = {
-                        stat: false,
-                        msg: err
-                    }
-
                 };
                 res.send(info);
                 res.end();

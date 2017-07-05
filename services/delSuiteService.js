@@ -1,26 +1,27 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 var scheduled = require('node-schedule');
-module.exports={
+module.exports = {
     delSuite: (req, res) => {
         ses = req.session;
         if (ses.email) {
             // var suite={};
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
-            GetTestSuites.findOne({"_id": req.params.id,"isScheduled":true}, (err, doc) => {
-                if (!err) {
+            GetTestSuites.findOne({ "_id": req.params.id, "isScheduled": true }, (err, doc) => {
+                if (err) {
+                    console.log(err);
                     //console.log(docs);
-                    if(doc!=null){
-                         scheduled.scheduledJobs[doc.suiteName].cancel();
-                    }
-                    
+
+
 
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                    if (doc != null) {
+                        scheduled.scheduledJobs[doc.suiteName].cancel();
+                    }
 
                 };
                 // res.send(info);
@@ -28,17 +29,19 @@ module.exports={
 
             });
             GetTestSuites.remove({ "_id": req.params.id }, (err) => {
-                if (!err) {
-                    //console.log(docs);
-                    info = {
-                        stat: true
+                if (err) {
+
+                     info = {
+                        stat: false,
+                        msg: err
                     }
+                    //console.log(docs);
                    
+
                 } else {
                     //res.json({ error: err });
                     info = {
-                        stat: false,
-                        msg: err
+                        stat: true
                     }
                 };
                 res.send(info);
@@ -55,6 +58,6 @@ module.exports={
         // ses.email="spandanabola@gmail.com";
 
     }
-    
- 
+
+
 }

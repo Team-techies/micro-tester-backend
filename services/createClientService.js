@@ -1,6 +1,6 @@
-const mongoose=require('mongoose');
-module.exports={
-     createClient: (req, res) => {
+const mongoose = require('mongoose');
+module.exports = {
+    createClient: (req, res) => {
         ses = req.session;
         if (ses.email) {
 
@@ -23,23 +23,21 @@ module.exports={
                 email: ses.email
             });
             createClient.save(function (err) {
-                if (!err) {
-
-
-                    info = {
-                        stat: true,
-                        status: 200,
-                        msg: "Successfully created app"
-                    }
-                }
-                else {
+                if (err) {
                     console.log(err);
                     info = {
                         stat: false,
                         status: 404,
                         msg: "failed to create app " + err
                     }
+                }
+                else {
 
+                    info = {
+                        stat: true,
+                        status: 200,
+                        msg: "Successfully created app"
+                    }
                 }
                 res.send(info);
 

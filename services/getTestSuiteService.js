@@ -1,5 +1,5 @@
-const mongoose=require('mongoose');
-module.exports={
+const mongoose = require('mongoose');
+module.exports = {
     getTestSuite: (req, res) => {
         ses = req.session;
         if (ses.email) {
@@ -8,20 +8,21 @@ module.exports={
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
 
             GetTestSuites.find({ "appId": ses.app }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    info = {
-                        stat: true,
-                        doc: docs
-                    }
 
-
-                } else {
-                    //res.json({ error: err });
                     info = {
                         stat: false,
                         msg: err
                     }
+
+                } else {
+                    info = {
+                        stat: true,
+                        doc: docs
+                    }
+                    //res.json({ error: err });
+
                 };
                 res.send(info);
                 res.end();

@@ -23,8 +23,15 @@ module.exports={
                     "scope": req.body.scope
                 }
             }).exec((err, docs) => {
-                if (!err) {
+                if (err) {
+                     info = {
+                        stat: false,
+                        msg: err
+                    }
                     //console.log(docs);
+                   
+                } else {
+                    //res.json({ error: err });
                     if (docs != null) {
 
                         info = {
@@ -35,14 +42,8 @@ module.exports={
                         console.log("inside");
                         info = {
                             stat: false,
-                            msg: err
+                            msg: req.body.title+" App is not found"
                         }
-                    }
-                } else {
-                    //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
                     }
 
                 };

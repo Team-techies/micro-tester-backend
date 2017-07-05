@@ -14,8 +14,18 @@ module.exports = {
 
 
         RegisterUser.findOne({ "email": req.body.email }, (err, docs) => {
-            if (!err) {
+            if (err) {
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
                 //console.log(docs);
+
+
+            } else {
+                //res.json({ error: err });
                 var randomNum;
                 if (docs != null) {
                     randomNum = Math.round(Math.random() * (999999 - 100000) + 100000);
@@ -25,10 +35,19 @@ module.exports = {
                             "pwd": "" + randomNum
                         }
                     }).exec((err, docs) => {
-                        if (!err) {
+                        if (err) {
+                            info = {
+                                stat: false,
+                                msg: err
+                            }
+                            res.send(info);
+                            res.end();
                             //console.log(docs);
+                            
+                        } else {
+                            //res.json({ error: err });
                             if (docs != null) {
-                                schedule.sendOTPMail(req.body.email,randomNum);
+                                schedule.sendOTPMail(req.body.email, randomNum);
                                 info = {
                                     stat: true
                                 }
@@ -37,16 +56,8 @@ module.exports = {
                                 console.log("inside");
                                 info = {
                                     stat: false,
-                                    msg: err
+                                    msg: "Data is not found"
                                 }
-                            }
-                            res.send(info);
-                            res.end();
-                        } else {
-                            //res.json({ error: err });
-                            info = {
-                                stat: false,
-                                msg: err
                             }
                             res.send(info);
                             res.end();
@@ -61,19 +72,10 @@ module.exports = {
                         stat: false,
                         msg: "entered email is not found"
                     }
-                     res.send(info);
-                     res.end();
+                    res.send(info);
+                    res.end();
                 }
                 //console.log(docs);
-               
-            } else {
-                //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                res.send(info);
-                res.end();
             };
         });
     }

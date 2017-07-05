@@ -3,7 +3,7 @@ var path = require("path");
 var session = require("express-session");
 var RedisStore = require("connect-redis")(session)
 var router = express.Router();
-var service = require('../services/serviceImpl');
+//var service = require('../services/serviceImpl');
 var checkUserService = require('../services/checkUserService');
 var schedulerService = require('../services/schedulerService');
 var getClientAppsService = require('../services/getClientAppsService');
@@ -22,6 +22,7 @@ var delSuiteService = require('../services/delSuiteService');
 var logoutService = require('../services/logoutService');
 var tokenGenerateService = require('../services/tokenGenerateService');
 var changePwdService = require('../services/changePwdService');
+var updateUserService = require('../services/updateUserService');
 var fetch=require('node-fetch');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
@@ -72,6 +73,7 @@ router.post("/createClient", createClientService.createClient)
 router.post("/changePwd", changePwdService.changePwd)
 
 router.post("/saveTestSuite", saveTestSuiteService.saveTestSuite);
+router.post("/updateUser", updateUserService.updateUser);
 router.get("/testAppChange", testAppChangeService.testAppChange);
 
 router.get("/getTestSuite", getTestSuiteService.getTestSuite);

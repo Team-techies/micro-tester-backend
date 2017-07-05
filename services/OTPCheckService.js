@@ -13,15 +13,22 @@ module.exports = {
         // }
 
 
-        RegisterUser.findOne({ "email": req.body.email, "pwd":req.body.otp }, (err, docs) => {
-            if (!err) {
+        RegisterUser.findOne({ "email": req.body.email, "pwd": req.body.otp }, (err, docs) => {
+            if (err) {
+                info = {
+                    stat: false,
+                    msg: err
+                }
                 //console.log(docs);
+
+
+            } else {
+                //res.json({ error: err });
                 var randomNum;
                 if (docs != null) {
                     info = {
-                        stat: true 
+                        stat: true
                     }
-
                 }
 
                 else {
@@ -29,20 +36,12 @@ module.exports = {
                         stat: false,
                         msg: "Invalid OTP"
                     }
-                    
+
                 }
-                //console.log(docs);
-                res.send(info);
-                res.end();
-            } else {
-                //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                res.send(info);
-                res.end();
+
             };
+            res.send(info);
+            res.end();
         });
     }
 }

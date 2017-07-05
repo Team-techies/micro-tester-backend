@@ -10,19 +10,20 @@ module.exports={
             var GetClientApp = mongoose.model('clients', getClientApps);
 
             GetClientApp.findOne({ "_id": req.params.id }, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    info = {
-                        stat: true
-                    }
-                    ses.app = req.params.id;
-
-                } else {
-                    //res.json({ error: err });
-                    info = {
+                   info = {
                         stat: false,
                         msg: err
                     }
+
+                } else {
+                    //res.json({ error: err });
+                     info = {
+                        stat: true
+                    }
+                    ses.app = req.params.id;
+                    
                 };
                 res.send(info);
                 //ses.id=docs._id;

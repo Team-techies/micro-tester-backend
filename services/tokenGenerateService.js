@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+var fetch = require('node-fetch');
 module.exports={
     tokenGenerate: (req, res) => {
         var info = {};

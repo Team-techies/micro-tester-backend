@@ -8,15 +8,16 @@ module.exports={
             var getTestSuites = require('../models/testSuites.js');
             var GetTestSuites = mongoose.model('testsuites', getTestSuites);
             GetTestSuites.find({'appId':ses.app,"isScheduled":true}, (err, docs) => {
-                if (!err) {
+                if (err) {
                     //console.log(docs);
-                    suites=docs;
+                    console.log(err);
                 } else {
                     // info = {
                     //     stat: false,
                     //     msg: err
                     // }
-                    console.log(err);
+                     suites=docs;
+                   
 
                 };
                 // res.send(info);
@@ -24,21 +25,22 @@ module.exports={
 
             });
             GetTestSuites.remove({ "appId": ses.app }, (err) => {
-                if (!err) {
-                    //console.log(docs);
+                if (err) {
                     info = {
-                        stat: true
+                        stat: false,
+                        msg: err
                     }
-                    for(var i=0;i<suites.length;i++){
-                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
-                    }
+                    //console.log(docs);
+                   
 
 
                 } else {
                     //res.json({ error: err });
-                    info = {
-                        stat: false,
-                        msg: err
+                     info = {
+                        stat: true
+                    }
+                    for(var i=0;i<suites.length;i++){
+                        scheduled.scheduledJobs[suites[i].suiteName].cancel();
                     }
                 };
                 res.send(info);

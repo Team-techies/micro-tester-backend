@@ -1,6 +1,6 @@
-const mongoose=require('mongoose');
-module.exports={
-     checkUser: (req, res) => {
+const mongoose = require('mongoose');
+module.exports = {
+    checkUser: (req, res) => {
         var info = {};
         ses = req.session;
         var path = require("path");
@@ -10,12 +10,29 @@ module.exports={
 
         console.log(req.body);
         RegisterUser.findOne({ "email": req.body.email }, (err, docs) => {
-            if (!err) {
+            if (err) {
                 //console.log(docs);
+                info = {
+                    stat: false,
+                    msg: err
+                }
+                res.send(info);
+                res.end();
+            } else {
                 if (docs != null) {
                     RegisterUser.findOne({ "email": req.body.email, "pwd": req.body.pwd }, (err, docs) => {
-                        if (!err) {
+                        if (err) {
+
+                            info = {
+                                stat: false,
+                                msg: err
+                            }
+                            res.send(info);
+                            res.end();
                             //console.log(docs);
+
+                        } else {
+                            //res.json({ error: err });
                             if (docs != null) {
 
                                 ses.name = docs.first + " " + docs.last;
@@ -35,27 +52,9 @@ module.exports={
                             }
                             res.send(info);
                             res.end();
-                        } else {
-                            //res.json({ error: err });
-                            info = {
-                                stat: false,
-                                msg: err
-                            }
-                            res.send(info);
-                            res.end();
 
                         };
-                        // res.send(info);
-                        // res.end();
-                        // db.close();
                     });
-                    // ses.name = docs.first + " " + docs.last;
-                    // info = {
-                    //     stat: true,
-                    //     name: ses.name
-                    // }
-                    // ses.email = docs.email;
-                    // console.log(ses.name);
                 }
                 else {
                     info = {
@@ -65,14 +64,8 @@ module.exports={
                     res.send(info);
                     res.end();
                 }
-            } else {
                 //res.json({ error: err });
-                info = {
-                    stat: false,
-                    msg: err
-                }
-                res.send(info);
-                res.end();
+
             };
 
         });
